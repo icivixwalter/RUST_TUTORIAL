@@ -14,7 +14,7 @@ goto git_remote
 @REM  esempio 
 	
 git utilizzo username : icivixwalter@gmail.com
-			 passowor : walter_02
+			 password : walter_02
 
 	Per aggiungere un nuovo telecomando, utilizzare il comando sul terminale, nella directory in cui è memorizzato il repository
 		git remote add 
@@ -28,8 +28,8 @@ git utilizzo username : icivixwalter@gmail.com
 		esempio: git remote add origin https://github.com/OWNER/REPOSITORY.git
 
 	utilizza questo :
-		git remote icivixwalter https://github.com/icivixwalter && git remote -v
-		git remote -m icivixwalter https://github.com/icivixwalter 
+		git remote add icivixwalter https://github.com/icivixwalter && git remote -v
+		git remote add icivixwalter@gmail.com https://github.com/icivixwalter 
 
 
 
