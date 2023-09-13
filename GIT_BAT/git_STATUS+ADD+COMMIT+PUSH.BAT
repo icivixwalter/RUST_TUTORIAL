@@ -10,7 +10,6 @@ ECHO pausa di 3 secondi per il controllo
 @TIMEOUT /T 3 /NOBREAK
 
 
-
 git add .
 git commit -m "aggiornamento"
 
@@ -34,3 +33,7 @@ ECHO
 
 ECHO pausa di 5 secondi per il controllo
 @TIMEOUT /T 5 /NOBREAK
+
+
+ECHO - comando unico per linux : git status && git add . && git commit -m "aggiornamento" && git push
+
