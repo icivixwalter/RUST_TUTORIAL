@@ -16,23 +16,7 @@ goto git_remote
 git utilizzo username : icivixwalter@gmail.com
 			 password : walter_02
 
-	Per aggiungere un nuovo telecomando, utilizzare il comando sul terminale, nella directory in cui è memorizzato il repository
-		git remote add 
-			con (2 parametri)
-
-	Il comando accetta due argomenti:git remote add
-		1) Un nome remoto, ad esempio origin
-		2) Un URL remoto, ad esempio https://github.com/OWNER/REPOSITORY.git
-
-                    			 1)    2)
-		esempio: git remote add origin https://github.com/OWNER/REPOSITORY.git
-
-	utilizza questo :
-		git remote add icivixwalter https://github.com/icivixwalter && git remote -v
-		git remote add icivixwalter@gmail.com https://github.com/icivixwalter 
-
-
-
+	impostata una nuova REPOSITORY		 
 
 
 		..... da finire con altri argomenti
