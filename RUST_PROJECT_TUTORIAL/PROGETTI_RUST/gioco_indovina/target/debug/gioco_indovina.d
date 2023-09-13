@@ -1,0 +1,1 @@
+/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/PROGETTI_RUST/gioco_indovina/target/debug/gioco_indovina: /home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/PROGETTI_RUST/gioco_indovina/src/main.rs

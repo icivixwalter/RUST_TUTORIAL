@@ -1,0 +1,1 @@
+/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/PROGETTI_RUST/genera_numero_segreto/target/debug/numero_segreto: /home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/PROGETTI_RUST/genera_numero_segreto/src/main.rs

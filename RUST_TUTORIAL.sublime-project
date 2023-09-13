@@ -1,8 +1,9 @@
 {
 	"folders":
 	[
-		{
-			"path": "c:/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/"
+		{	
+			// in lunux /home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/
+			"path": ".",
 		}
-	]
+	],
 }
