@@ -8,15 +8,21 @@ goto git_remote
 	vedi qui :
 		https://docs.github.com/en/get-started/getting-started-with-git/managing-remote-repositories
 
-
-@REM  per fare il git remote con il comando
-@REM  git remote add
-@REM  esempio 
 	
-git utilizzo username : icivixwalter@gmail.com
-			 password : walter_02
-
 	impostata una nuova REPOSITORY		 
+git utilizzo username : icivixwalter@gmail
+			 password : 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
+
+			 esegue il comando PER ATTIVARE IL GIT ma sei obbligato anche all'utente + alla password:
+			 	git push --set-upstream origin master
+			 		icivixwalter@gmail
+			 			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
+			 
+			 
+
+
+
+
 
 
 		..... da finire con altri argomenti
