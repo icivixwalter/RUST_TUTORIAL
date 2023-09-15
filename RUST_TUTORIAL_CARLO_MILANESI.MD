@@ -486,27 +486,592 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 			FUNZIONI DIVERGENTI
 
-			sono le funzioni che non restituiscono mai il controllo al chiamante:
+				sono le funzioni che non restituiscono mai il controllo al chiamante:
 
-				fn diverge() -> ! {
-				    panic!("Questa funzione non restituisce mai il controllo al chiamante!");
+					fn diverge() -> ! {
+					    panic!("Questa funzione non restituisce mai il controllo al chiamante!");
+					}
+
+					panic! è una macro, come lo è println!() che abbiamo già visto. Diversamente da println!(), panic!() manda in crash il thread corrente, stampando il messaggio ricevuto come argomento. Dato che questa funzione provocherà un crash, non restituirà mai il controllo al chiamante, e quindi ha il tipo ‘!’, che si legge ‘diverge’
+
+
+				Se si aggiunge una funzione main che chiama diverge() e la si esegue, si otterrà un output simile a questo:
+					thread ‘main’ panicked at ‘Questa funzione non restituisce mai il controllo al chiamante!’, main.rs:2
+
+				Una funzione divergente può essere usata dove ci si aspetta un'espressione di qualunque tipo:
+
+						let x: i32 = diverge();
+						let x: String = diverge();
+			
+			PUNTATORI DI FUNZIONE
+					@puntatori_(a @funzione con @interferenza o senza)
+
+				Possiamo anche creare legami di variabili che puntano a funzioni:
+					
+					let f: fn(i32) -> i32;
+
+				f è un legame di variabile che punta a una funzione che prende un i32 come argomento e restituisce un i32. Per esempio:
+					
+					fn piu_uno(i: i32) -> i32 {
+						    i + 1
+						}
+
+						// senza l'inferenza di tipo
+						let f: fn(i32) -> i32 = piu_uno;
+
+						// con l'inferenza di tipo
+						let f = piu_uno;
+							
+				Poi possiamo usare f per chiamare la funzione:
+					let sei = f(5);    //variabile che punta alla funzione f e la chiama 					e poi assegna il risultato a sei.
+
+	TIPI PRIMITIVI 4.3
+		Note
+				Il linguaggio Rust ha vari tipi che sono considerati ‘primitivi’. Ciò significa che fanno parte del linguaggio. Rust è strutturato in modo tale che la libreria standard fornisca anche vari altri tipi utili, costruiti basandosi su quelli primitivi, ma quelli che vedremo sono i più primitivi.
+
+		Booleani 							4.3.1
+			Rust ha un tipo booleano primitivo, chiamato bool. Ha solo due valori, true ("vero") e false ("falso"):
+
+				let x = true;
+
+				let y: bool = false;
+				Nella documentazione della libreria standard si trova ulteriore documentazione sui bool.
+
+
+				I booleani sono usati tipicamente nei costrutti if.
+		char 								4.3.2
+			Il tipo char rappresenta un singolo valore scalare Unicode. Si possono creare dei char racchiudendoli tra apici singoli: (')
+					let x = 'x';
+					let two_hearts = '💕';
+					Diversamente da alcuni altri linguaggi, ciò significa che il char di Rust non è rappresentato con un singolo byte, ma da quattro byte.
+
+		Tipi numerici						4.3.3
+
+			Note
+				Rust ha parecchi tipi numerici, appartenenti alle seguenti categorie: con segno e senza segno, fissi e variabili, a virgola mobile e interi.
+
+				Questi tipi consistono di due parti: la categoria, e la dimensione. Per esempio, u16 è un tipo senza segno con una dimensione di sedici bit. Più bit consentono di rappresentare numeri più grandi.
+
+				Se un letterale numerico non specifica il tipo esatto a cui appartiene, il suo tipo viene inferito nel seguente modo:
+
+				Ecco una lista dei diversi tipi numerici, con dei link alla loro documentazione nella libreria standard:
+
+					i8
+					i16
+					i32
+					i64
+					u8
+					u16
+					u32
+					u64
+					isize
+					usize
+					f32
+					f64
+					Esaminiamoli in base alla loro categoria:
+
+		Con segno e senza segno 			4.3.4
+			Ci sono due categorie di tipi interi: 
+				- con segno 	= da -8 a + 7
+				e 
+				- senza segno 	= 0 a +15 (no rappresenta i negativi)
+			Per comprendere la differenza, consideriamo un numero di quattro bit. 
+
+			Un numero di quattro bit, con segno, consentirebbe di rappresentare i numeri da -8 a +7. 
+			I numeri con segno usano la "rappresentazione in complemento a due". 
+
+			Un numero di quattro bit, senza segno, dato che non ha bisogno di rappresentare valori negativi, può rappresentare valori da 0 a +15.
+
+		Tipi a dimensione fissa 			4.3.5
+			I tipi dimensione fissa hanno uno specifico numero di bit nella loro rappresentazione. Le dimensioni in bit valide sono :
+				8, 16, 32, e 64. 
+			Perciò, u32 è un intero senza segno, a 32 bit, e i64 è un intero con segno, a 64 bit.
+
+		Tipi a dimensione variabile 		4.3.6
+				
+				@usize_{dimensione dipende dall'architettura}
+
+			Rust fornisce anche dei tipi la cui effettiva dimensione dipende dall'architettura della macchina in questione. L'ampiezza di questi tipi è sufficiente ad esprimere la dimensione di qualunque collezione, perciò questi tipi appartengono alla categoria ‘size’ ('dimensione'). Anche loro hanno la versione con segno e quella senza segno, e quindi sono due: isize e usize.
+
+		Tipi a virgola mobile 				4.3.7
+				@float_(numeri a @virgola @mobile con @f32 e @f64 sono a @precisione @singola o @doppia)
+
+			Rust ha anche due tipi a virgola mobile: f32 e f64. Questi corrispondono rispettivamente ai numeri a precisione singola e a precisione doppia secondo lo standard IEEE-754.
+
+		Arrays 								4.3.8
+				@array_(@array@fisso o schiera per seguenze di dati o lista  a lunghezza fissa, si distingue dal vettore perche esso è dinamico mentre il semplice @array è fisso = alloca nello stack)
+
+			Come molti linguaggi di programmazione, Rust ha dei tipi compositi per rappresentare sequenze di dati. Il più basilare è il tipo array ("schiera"), una lista a lunghezza fissa di elementi dello stesso tipo. Di default, gli array sono @immutabili.
+				let a = [1, 2, 3]; // a: [i32; 3]
+				let mut m = [1, 2, 3]; // m: [i32; 3]
+
+			Gli arrays hanno tipo [T; N]. 
+			Parleremo di questa notazione T nella [sezione sulla genericità][generics]. La N è una costante nota in fase di compilazione, che indica il numero di oggetti contenuto nell'array.
+
+			C'è un'abbreviazione per inizializzare ogni elemento di un array allo stesso valore. Ecco come inizializzare a 0 ognuno dei 20 elementi dell'array a:
+
+				let a = [0; 20]; // a: [i32; 20] attenzione con il ; resetta tutti a 20 a 
+												 zero
+
+			Si può ottenere il numero di elementi di un array a con l'espressione a.len(): 
+				let a = [1, 2, 3];
+
+				println!("a ha {} elementi", a.len());
+
+			Si può accedere a un particolare elemento di un array con la notazione a indice:
+					@accesso_(@elemento di un @array con l)
+
+				let nomi = ["Graydon", "Brian", "Niko"]; // nomi: [&str; 3]
+
+				println!("Il secondo nome è: {}", nomi[1]);
+
+			Gli indici partono da zero, come nella maggior parte dei linguaggi di programmazione, e perciò il primo nome è nomi[0] e il secondo nome è nomi[1]. L'esempio precedente stampa Il secondo nome è: Brian. Provando ad usare un indice non compreso nell'array, si ottiene un errore, perché per ogni accesso ad un array, in fase di esecuzione si verifica che l'indice sia compreso nei limiti. Accessi erronei di questo tipo causano molti bug in altri linguaggi di programmazione di sistema.
+
+		Slices ("@Fette")					4.3.9
+
+				@slice_(sono viste dentro una struttura come una parte di array ed un putnatore all'inizio dei dati)
+
+			Le ‘slices’ (pronunciato "slaises") sono riferimenti a (o “viste" dentro) un'altra struttura dati. Servono a consentire un accesso sicuro ed efficiente ad una porzione di un array senza fare copie. Per esempio, si potrebbe voler far riferimento solamente ad una riga di un file letto in memoria. Per sua natura, una slice non viene creata direttamente, ma partendo da un legame di variabile esistente. Le slices hanno una lunghezza fissa, e il loro contenuto può essere mutabile o immutabile.
+
+			Internamente, le slice sono rappresentate come un @puntatore all'inizio dei dati e una lunghezza.
+
+
+
+			Sintassi delle @slices			4.4.9.1
+
+				Per creare una slice da vari oggetti si può usare la combinazione del carattere @& e della coppia di caratteri @[]. Il carattere & indica che le slices sono simili ai [riferimenti], che tratteremo in dettaglio più avanti in questa sezione. La coppia di caratteri [], utilizzata con un range, permette di definire la lunghezza della slice:
+
+					let a = [0, 1, 2, 3, 4];
+					let completo = &a[..]; // Una slice contenente tutti gli elementi di a
+					let mezzo = &a[1..4]; // Una slice contenente solo gli elementi 1, 2, e 3
+
+				Le slice sono di tipo &[T]. Parleremo di quella T quando tratteremo la genericità.??
+
+
+			str 							4.4.9.2
+				Il tipo @str di Rust è il tipo di stringa più primitivo. Come tipo unsized, non è molto utile di suo, ma diventa utile quando è utilizzato come riferimento, come per esempio &str. Tratteremo l'argomento in maniera più approfondita quando tratteremo le Stringhe e i riferimenti.
+
+		Ennuple 							4.3.10
+			definizione
+				Una ennupla è una lista ordinata di lunghezza fissa. Come questa:
+					let x = (1, "ciao");
+						     //lista ordinara 1, ciao nelle ennuple conta l'ordine e
+						     possono essere eterogenee
+
+
+					Le parentesi e le virgole formano questa ennupla di lunghezza due. Ecco lo stesso codice, ma con il tipo annotato:
+
+						let x: (i32, &str) = (1, "ciao");
+
+					Come si vede, il tipo di una ennupla somiglia all'ennupla, ma in ogni posizione c'è il tipo invece del valore. I lettori attenti noteranno anche che le ENNUPLE SONO ETEROGENEE: in questa ennupla c'è un i32 e un &str. Nei linguaggi di programmazione di sistema, le stringhe sono un pochino più complesse che negli altri linguaggi. Per adesso, si legga &str come slice di stringa, presto impareremo di più a riguardo.
+
+					BIN FRA ENNUPLE
+						È possibile assegnare un bind su una ennupla ad un'altra ennupla, se entrambe le ennuple contengono gli stessi tipi di dato e hanno la stessa arity (STESSO NUMERO DI ARGOMENTI E STESSA LUNGHEZZA). Le tuple hanno la stessa arity quando hanno la stessa lunghezza.
+
+								//Bind tra ennuple con gli stessi argomenti e stessa lunghezza
+								let mut x = (1, 2); // x: (i32, i32)
+								let y = (2, 3); // y: (i32, i32)
+
+						Si può accedere ai campi di una ennupla usando un let destrutturante. Ecco un esempio:
+
+							//pattern dx = sx assegni piu legami
+							let (x, y, z) = (1, 2, 3);
+
+							println!("x is {}", x);
+
+								x = y;
+
+						Questo pattern è molto efficace, e lo ritroveremo ripetuto in seguito.
+
+						Per discriminare una ennupla con un solo elemento da un valore tra parentesi, basta usare una virgola:
+
+						(0,); // ennupla con un solo elemento
+						(0); // zero tra parentesi
+
+			Indicizzazione delle ennuple 	4.4.10.1
+					I campi di una ennupla possono essere acceduti anche con la sintassi di indicizzazione:
+
+						let ennupla = (1, 2, 3);
+
+						let x = ennupla.0;
+						let y = ennupla.1;
+						let z = ennupla.2;
+
+						println!("x contiene {}", x);
+
+						@differenza@indicizazione_(nelle ennuple l'indicizzazione si fa con il . negli array con le [])
+					L'indicizzazione, come per gli di array, parte da zero, ma diversamente dall'indicizzazione di array, usa un carattere ., invece della coppia di caratteri [].
+		Funzioni
+						@puntatore@a@funzione_(puntatore a funzione che restituisce un valore )
+					Anche le funzioni hanno un tipo! Ecco un esempio:
+						//creo la funzione foo
+						fn foo(x: i32) -> i32 { x }
+
+						//let x: fn(i32) = crea un puntatore a funzione che restituisce un i32
+						let x: fn(i32) -> i32 = foo;
+
+					In questo caso, x è un ‘puntatore a funzione’ che punta a una funzione che prende un i32 e restituisce un i32.
+
+	COMMENTI 4.4
+		Note
+
+				@commenti_(come annotazione e come @documentazione)
+
+			I commenti sono annotazioni che si lasciano per gli altri programmatori, per aiutarli a spiegare il proprio codice. Il compilatore per lo più li ignora.
+
+			Rust ha due tipi di commenti a cui si dovrebbe essere interessati: i commenti di riga e i commenti di documentazione ["doc comment"].
+			// I commenti di riga sono i caratteri tra la coppia di caratteri ‘//’ e la fine della riga.
+
+
+			let x = 5; // anche questo è un commento di riga
+
+			// Se si ha una lunga spiegazione da scrivere, si possono mettere più
+			// commenti di riga, uno dopo l'altro. Mettere uno spazio tra // e il testo
+			// rende più leggibile il commento.
+
+			L'altro genere di commenti è il commento di documentazione. I commenti di documentazione usano /// invece di //, e supportano la notazione Markdown al loro interno:
+						/// Aggiunge uno al numero dato.
+						///
+						/// # Esempi
+						///
+						/// ```
+						/// let cinque = 5;
+						///
+						/// assert_eq!(6, somma_uno(5));
+						/// # fn somma_uno(x: i32) -> i32 {
+						/// #     x + 1
+						/// # }
+						/// ```
+						fn somma_uno(x: i32) -> i32 {
+						x + 1
+						}
+
+			C'è un altro stile di commento di documentazione, //!, usato per commentare gli elementi (per es. crate, moduli, o funzioni) che contengono tali commenti, invece che per commentare gli elementi che li seguono. Sono usati tipicamente all'interno delle radici di crate (lib.rs) o delle radici di moduli (mod.rs):
+
+				//! # The Rust Standard Library
+				//!
+				//! The Rust Standard Library provides the essential runtime
+				//! functionality for building portable Rust software.
+
+				Quando si scrivono commenti di documentazione, fornire degli esempi di utilizzo è di enorme aiuto. Si noterà che qui abbiamo usato una nuova macro: 
+					@assert_eq!. 
+				Questa macro confronta due valori, e va in panic! se non sono uguali tra di loro. È di grande aiuto nella documentazione. C'è un'altra macro, 
+					assert!, 
+				che va in panic! se il valore passatole vale false.
+
+				Si può usare lo strumento @rustdoc per generare @documentazione @HTML da questi commenti di documentazione, e anche per eseguire gli esempi di codice come collaudo!
+
+		CREARE LA LIBRERIA COMMENTI
+			Attenzione per creare la libreria in html occorre la funzione sia pubblica,
+				1) es. 
+					//!main procedura prodotta con cargo.
+					//! # The Rust Standard Library
+					//!
+					//! The Rust Standard Library provides the essential runtime
+					//! functionality for building portable Rust software.
+
+					pub fn main() {
+						
+						println!("hello word");
+					}
+
+				2) PER CREARE LA LIBRERIA DIGITARE
+					cargo doc
+						crea la libreria html in target/doc ... con html
+					cargo doc --verbose = per visualizzarlo sul terminale
+
+	IF 4.6
+		Nota
+				@if_(la if e la @elseif )
+
+			E semplice
+			Nel caso dell'if, c'è un valore booleano che conduce a due strade:
+
+				let x = 5;
+
+				if x == 5 {
+				    println!("x vale cinque!");
 				}
 
-				panic! è una macro, come lo è println!() che abbiamo già visto. Diversamente da println!(), panic!() manda in crash il thread corrente, stampando il messaggio ricevuto come argomento. Dato che questa funzione provocherà un crash, non restituirà mai il controllo al chiamante, e quindi ha il tipo ‘!’, che si legge ‘diverge’
+			Se cambiamo il valore di x a qualcos'altro, questa riga non verrebbe stampata. Più specificamente, se l'espressione dopo l'if vale true, allora il blocco viene eseguito; se vale false, no.
+			Se si vuole che accada qualcosa caso false, si usa una clausola else:
+
+				let x = 5;
+
+				if x == 5 {
+				    println!("x vale cinque!");
+				} else {
+				    println!("x non vale cinque :(");
+				}
+
+			ELSEIF
+				If c'è più di un caso, si usa un else if:
+
+				let x = 5;
+
+				if x == 5 {
+				    println!("x vale cinque!");
+				} else if x == 6 {
+				    println!("x vale sei!");
+				} else {
+				    println!("x non vale né cinque né sei :(");
+				}
+
+				Ciò funziona perché l'if è un'espressione. Il valore di tale espressione è il valore dell'ultima espressione della diramazione scelta. Un if senza un else ha sempre il valore ().
+
+	CICLI
+		LOOP 						4.6.1
+			Il costrutto @loop ("ciclo") è la forma più semplice di ciclo disponibile in Rust. Usando la parola-chiave loop, Rust fornisce un modo di ciclare indefinitamente finché si raggiunge qualche istruzione di terminazione. Il @ciclo @infinito di Rust è fatto così:
+				//Loop è il costrutto adatto per i cicli infinti
+				loop {
+				    println!("Cicla per sempre!");
+				}
+
+		WHILE						4.6.2
+			Rust ha anche un @ciclo @while ("fintanto che"). È fatto così:
+
+				let mut x = 5; // mut x: i32
+				let mut fatto = false; // mut fatto: bool
+
+				while !fatto {
+				    x += x - 3;
+
+				    println!("{}", x);
+
+				    if x % 5 == 0 {
+				        fatto = true;
+				    }
+				}
+
+			I cicli while sono la scelta appropriata quando non si è sicuri di quante volte si dovrà ciclare.
+
+			Se serve un ciclo infinito, si può essere tentati di scrivere:
+
+				while true {Run
+				Tuttavia, il costrutto loop è molto più adatto per gestire questo caso:
+
+				loop {
 
 
-			Se si aggiunge una funzione main che chiama diverge() e la si esegue, si otterrà un output simile a questo:
-				thread ‘main’ panicked at ‘Questa funzione non restituisce mai il controllo al chiamante!’, main.rs:2
+			L'analisi del flusso di costrutto di Rust tratta questo costrutto diversamente da un while true, dato che sappiamo che ciclerà per sempre. In generale, più informazione possiamo dare al compilatore, meglio può fare con la sicurezza e la generazione del codice, e perciò si dovrebbe sempre preferire loop quando si intende ciclare indefinitamente.
 
-			Una funzione divergente può essere usata dove ci si aspetta un'espressione di qualunque tipo:
+		FOR 						4.6.3
+			Il ciclo for viene usato per ciclare un particolare numero di volte. Però i cicli for di Rust funzionano un po' diversamente dagli altri linguaggi di sistema. Il ciclo for di Rust non somiglia al ciclo for del linguaggio C:
+				//ciclo for in c
+				for (x = 0; x < 10; x++) {
+					    printf( "%d\n", x );
+					}
 
-					let x: i32 = diverge();
-					let x: String = diverge();
+			Invece, è fatto così:
+				//@ciclo@for_(in rut con 0..10 con posizioni 0 fino a 9 l'ultimo escluso)
+				
+				for x in 0..10 {
+				    println!("{}", x); // x: i32
+				}
 
-						
+				o, in termini più astratti,
+
+						for var in expression {
+						    code
+						}
+				L'espressione è un elemento che può essere convertito in un [iteratore] usando IntoIterator. L'iteratore rende una serie di elementi. Ogni elemento è un'iterazione del ciclo. Tale valore viene poi associato al nome var, che è valido solo nel corpo del ciclo. Una volta che il corpo è finito, il prossimo valore viene preso dall'iteratore, e si esegue un'altra iterazione. Quando non ci sono più valori, il ciclo for è finito.
+
+			POSIZIONI INIZIO E FINE: 
+				Nel nostro esempio, 0..10 è un'espressione che prende una posizione di inizio e una di fine, e dà un iteratore su quei valori. Tuttavia, il limite superiore è escluso, così che questo ciclo stamperà i numeri da 0 a 9, e non il 10.
+
+				Rust non ha il ciclo for in "stile C" di proposito. Controllare manualmente ogni elemento del ciclo è complicato e soggetto a errori, anche per sviluppatori esperti nel linguaggio C.
+
+
+			Enumerazione
+					@for@controllo@ciclo_(per tener traccia dei @cicli usare @enumerate)
+				Quando c'è bisogno di tener traccia di quante volte si ha già ciclato, si può usare la funzione .enumerate().
+
+				for (i, j) in (5..10).enumerate() { //for con enumerate per contare i cicli
+					    println!("i = {} e j = {}", i, j);
+					}
+					Emette:
+
+					i = 0 e j = 5
+					i = 1 e j = 6
+					i = 2 e j = 7
+					i = 3 e j = 8
+					i = 4 e j = 9
+					In questo caso si devono aggiungere le parentesi intorno al range.
+
+			Sugli @iteratori:
+
+
+				//for su due linee di una stringa
+				let linee = "ciao\nmondo".lines();
+
+					for (numerolinea, linea) in linee.enumerate() {
+					    println!("{}: {}", numerolinea, linea);
+					}
+					Emette:
+
+					0: ciao
+					1: mondo
+
+			Terminare precocemente l'iterazione
+					Diamo un'occhiata a quel ciclo while di prima:
+
+						let mut x = 5;
+						let mut fatto = false;
+
+						while !fatto {
+						    x += x - 3;
+
+						    println!("{}", x);
+
+						    if x % 5 == 0 {
+						        fatto = true;
+						    }
+						}
+
+					Abbiamo dovuto tenere apposta una variabile booleana, fatto, per sapere quando dovremmo uscire dal ciclo. Rust ha due parole-chiave per aiutarci a modificare le iterazioni: break ("interrompi") e continue ("continua").
+
+
+					In questo caso, possiamo scrivere il ciclo in un modo migliore usando break:
+
+						let mut x = 5;
+
+						loop {//ciclo @loop@infinito_(con interuzione con break)
+						    x += x - 3;
+
+						    println!("{}", x);
+
+						    if x % 5 == 0 { break; }
+						}
+
+					Adesso cicliamo per sempre usando loop e usiamo break per uscire precocemente. Anche eseguire un'istruzione return potrebbe servire a terminare il ciclo precocemente.
+
+					continue è simile, ma invece di terminare il ciclo, passa alla prossima iterazione. Questo codice stamperà solamente i numeri dispari:
+
+						for x in 0..10 {
+							//stampa solo i dispari
+						    if x % 2 == 0 { continue; }
+
+						    println!("{}", x);
+						}
+
+			Etichette dei cicli
+							@etichetta_(per i @cicli@esterni )
+
+					Si potrebbero anche incontrare situazioni in cui ci sono @cicli @annidati si vuole specificare a quale ciclo si riferisce una particolare istruzione @break o @continue. Come nella maggior parte degli altri linguaggi, di default an'istruzione break o continue si applicheranno al ciclo più @interno. Dove si volesse applicare break o continue a uno dei @cicli @esterni, si possono usare delle etichette. Il seguente codice stamperà solamente quando sia x che y sono dispari:
+
+						'esterno: for x in 0..10 {
+						    'interno: for y in 0..10 {
+						        if x % 2 == 0 { continue 'esterno; } // continua al ciclo su x
+						        if y % 2 == 0 { continue 'interno; } // continua al ciclo su y
+						        println!("x: {}, y: {}", x, y);
+						    }
+
+    VETTORI 4.7
+    	Definizione					4.7.1
+    			@vettori_(il @vettore è un @array@dinamico ed estensibile con il tipo @Vec<T>)
+
+    		Un ‘vettore’ è un @array @dinamico ossia ‘estendibile’, implementato dal tipo Vec<T> nella libreria standard. Il T significa che si possono avere vettori di ogni tipo (si veda il capitolo su [generici][generic] per avere maggiori informazioni). I VETTORI ALLOCANO SEMPRE I LORO DATI NELLO @HEAP. Possono essere creati con la macro vec!:
+    			let v = vec![1, 2, 3, 4, 5]; // v: Vec<i32> !=macro che usa [] ma anche ()
+
+    			(Si noti che diversamente dalla macro println! che abbiamo usato in passato, con la macro vec! usiamo le parentesi quadre []. Rust permette di usare entrambi i tipi di parentesi in entrambe le situazioni, questo uso è solo una convenzione.)
+
+			C'è una forma alternativa di vec! per ripetere un valore iniziale:
+				let v = vec![0; 10]; // dieci zeri
+
+			I vettori immagazzinano il loro contenuto sullo heap come array contigui di T. Ciò significa che devono essere capaci di sapere la dimensione di T in fase di compilazione (cioè, quanti byte servono per memorizzare un T?). La dimensione di alcuni oggetti non si può sapere in fase di compilazione. Per tali oggetti si dovrà immagazzinare un puntatore a quell'oggetto: fortunatamente, il tipo Box funziona perfettamente a questo scopo.
 
 
 
+
+
+		Accedere agli elementi		4.7.2
+			Per ottenere il valore a un particolare indice nel vettore, si usano le []:
+				let v = vec![1, 2, 3, 4, 5];
+
+				println!("Il terzo elemento di v è {}", v[2]);
+
+			Gli indici contano da 0, e perciò il terzo elemento è v[2].
+
+			È anche importante notare che si deve indicizzare con il tipo usize:
+
+				let v = vec![1, 2, 3, 4, 5];
+
+				let i: usize = 0;	//il vettore si deve indicizzare come tipo usize
+				let j: i32 = 0;		
+
+				// funziona
+				v[i];
+
+				// non funziona da errore non puoi indicizzarlo come i32 ma deve essere usize
+				v[j];
+
+
+
+		Accesso fuori dai limiti	4.7.3
+			Se si prova ad accedere un indice che non esiste:
+				let v = vec![1, 2, 3];
+				println!("L'elemento 7 è {}", v[7]);
+
+			allora il thread attuale andrà in [panico] con un messaggio come questo:
+				thread 'main' panicked at 'index out of bounds: the len is 3 but the index is 7'
+
+
+			Se si vuole gestire gli errori di accesso fuori dai limiti senza andare in panico, si possono usare metodi come get o get_mut, che restituiscono None quando gli viene dato un indice invalido:
+
+				let v = vec![1, 2, 3];
+					match v.get(7) {  //gestione fuori indice con il @match
+					    Some(x) => println!("Item 7 is {}", x),
+					    None    => println!("Spiacente, questo vettore è troppo corto.")
+					}
+		
+		Iterare 					4.7.4
+			Una volta che si ha un vettore, si può iterare sui suoi elementi usando for. Ce ne sono tre versioni:
+
+				let mut v = vec![1, 2, 3, 4, 5];
+
+					for i in &v {
+					    println!("Un riferimento a {}", i);
+					}
+
+					for i in &mut v {
+					    println!("Un riferimento mutabile a {}", i);
+					}
+
+					for i in v {
+					    println!("Prendi il possesso del vettore e del suo elemento {}", i);
+
+		    CON RIFERIMENTO & PUOI ITERARE PIU VOLTE IL VETTORE 
+		    	Nota: Non si può usare ancora il vettore dopo averlo iterato prendendone il possesso. Invece, si può iterare il vettore più volte se quando lo si itera se ne prende un riferimento. Per esempio, il seguente codice non compila.
+
+
+		    	let v = vec![1, 2, 3, 4, 5];
+
+					//I° ITERAZIONE con presa in possesso
+					for i in v {
+					    println!("Prendi possesso del vettore e del suo elemento {}", i);
+					}
+
+					//ERRORE = la II° iterazione con presa di posse non compila occorre il riferimento &
+					for i in v {
+					    println!("Prendi possesso del vettore e del suo elemento {}", i);
+					}
+				
+				Mentre il seguente funziona perfettamente:
+
+					let v = vec![1, 2, 3, 4, 5];
+
+					//I iterazione con riferimento
+					for i in &v {
+					    println!("Questo è un riferimento a {}", i);
+					}
+
+					//II iterazione con riferimento
+					for i in &v {
+					    println!("Questo è un riferimento a {}", i);
+					}
+
+
+		
 
 
 
