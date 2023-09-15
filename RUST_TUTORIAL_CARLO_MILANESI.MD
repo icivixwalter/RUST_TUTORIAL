@@ -1070,14 +1070,81 @@ RUST_TUTORIAL_CARLO_MILANESI
 					    println!("Questo è un riferimento a {}", i);
 					}
 
+	POSSESSO 4.8
+		Note
+			Questa è la prima delle tre sezioni che presentano il sistema di possesso di Rust. Questa è una delle caratteristiche più distintive e avvincenti di Rust, con la quale gli sviluppatori Rust dovrebbero diventare familiari. Il possesso è il modo in cui Rust raggiunge il suo maggior obiettivo, la sicurezza di accesso alla memoria. Ci sono alcuni concetti distinti, ognuno descritto in una sezione distinta:
 
+			il possesso, che è la sezione attuale
+			i prestiti, e le caratteristiche a loro associate, i ‘riferimenti’
+			i tempi di vita, un avanzato concetto di prestito
+			Queste tre sezioni sono correlate, e seguono un ordine. Bisognerà leggerli tutti e tre per capire pienamente il sistema di possesso.
+
+		
+		Meta						4.8.1
+			Rust ha un'attenzione particolare sulla sicurezza e sulla velocità. Raggiunge questi obiettivi tramite molte ‘ASTRAZIONI A COSTO ZERO’, il che significa che in Rust, le astrazioni costano il meno possibile al fine di farle funzionare. Il sistema di possesso è un esempio primario di astrazione a costo zero. Tutta l'analisi di cui parleremo in questa guida viene fatta in fase di compilazione. Non si paga nessun costo in fase di esecuzione per queste funzionalità.
+			Il costo sono i tempi di apprendimento in quanto si combatte con il verificatore di possesso perché il modello mentale del programmatore di come il possesso dovrebbe funzionare non combacia con le regole effettivamente implementate da Rust ma col tempo si migliora.
+
+
+		Possesso					4.8.2
+			I legami di variabili hanno una proprietà in Rust: ‘possiedono’ quello a cui sono legati. Ciò significa che quando un legame esce di ambito, Rust libererà le risorse legate. Per esempio:
+
+				fn foo() {
+				    let v = vec![1, 2, 3];  //vettore che viene messo sull'heap gli elementi + nello stack il vettore
+
+				}
+
+			Quando v viene nell'ambito, 
+				viene creato un nuovo vettore sullo STACK, 
+				e alloca spazio sullo HEAP per i suoi elementi. 
+			Quando v esce di ambito alla fine di foo(), Rust ripulirà ogni cosa correlata al vettore, anche la memoria allocata sullo heap. Questo avviene deterministicamente alla fine dell'ambito.
+
+		Semantica di spostamento	4.8.3
+			Però qui c'è qualche 
+				altra sottigliezza: 
+					RUST ASSICURA CHE CI SIA ESATTAMENTE UN LEGAME A OGNI DATA RISORSA. Per esempio, se abbiamo un vettore, possiamo assegnarlo a un altro legame:
+
+						let v = vec![1, 2, 3];
+						let v2 = v;  //vettore v assegnato a v2 ma v perde il legame
+					
+					Ma, se dopo proviamo a usare v, otteniamo un errore:
+					L'errore si presenta così:
+						let v = vec![1, 2, 3];
+							let v2 = v;   //il legame v viene assegnato a v2
+							println!("v[0] vale: {}", v[0]);  //ma v perde il legame
+
+						error: use of moved value: `v`
+						println!("v[0] vale: {}", v[0]);
+
+			ANCHE LA FUNZIONE PERDE IL LEGAME DELL'ARGOMENTO
+				Una cosa simile accade se definiamo una funzione che prende possesso dell'argomento, e proviamo a usare qualcosa dopo che l'abbiamo passato come argomento:
+					//la funnzione prende il possesso dell'argomento
+					fn prendi(v: Vec<i32>) {
+
+					    // ciò che accade qui dentro non è importante.
+					}
+
+					let v = vec![1, 2, 3]; //Legame v che viene passato alla funzione 
+											prendi
+					prendi(v);  //passo il legame alla funzione
+
+					println!("v[0] vale: {}", v[0]); //legame perso con la fine della
+					 								funzione.
+
+				Stesso errore: ‘use of moved value’. Quando si trasferisce il possesso di un oggetto da un legame a un altro, si dice che l'oggetto a cui si fa riferimento è stato ‘spostato’. Qui non ci vuole qualche sorta di annotazione speciale, è il normale comportamento di Rust.
+
+
+		I dettagli					4.8.4
+			TODO: @da@finire
+			si trova qui:
+			https://carlomilanesi.github.io/linguaggio-rust/getting-started.html
+
+
+		I tipi Copy					4.8.5
+		Oltre al possesso			4.8.6
 		
 
 
 
-TODO: @da@finire
-			si trova qui:
-			https://carlomilanesi.github.io/linguaggio-rust/getting-started.html
 
 
 INDICE_COMANDI_CARGO+RUST

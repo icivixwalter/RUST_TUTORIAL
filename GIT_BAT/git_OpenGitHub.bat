@@ -5,6 +5,13 @@ start https://github.com/icivixwalter
 
 goto git_remote
 
+	per veder git usa ls -a
+	
+	per copiare la directory nel terminale fare cosi
+		pwd | copia 
+		 	ed hai la copia directory
+
+
 	vedi qui :
 		https://docs.github.com/en/get-started/getting-started-with-git/managing-remote-repositories
 
