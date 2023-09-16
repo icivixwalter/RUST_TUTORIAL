@@ -1,0 +1,1 @@
+/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/PROGETTI_RUST/prestito_valori/target/debug/prestito_valori: /home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/PROGETTI_RUST/prestito_valori/src/main.rs
