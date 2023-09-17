@@ -21,6 +21,24 @@ S
 
 NUOVI COMANDI DI RUST
 
+E
+	ELENCO ERRORI DI RUST
+		Prestiti di variabile
+			1)  cannot borrow `v` as mutable because it is also borrowed as immutable
+    			v.push(34);
+
+    			 non può prendere in prestito 'v' come mutevole perché è anche preso in prestito come immutabile v.push(34);
+
+    			note: previous borrow of `v` occurs here; the immutable borrow prevents
+					subsequent moves or mutable borrows of `v` until the borrow ends
+					for i in &v {
+					          ^
+
+	          	Nota: qui si verifica il precedente prestito di 'V'; Il prestito immutabile impedisce
+					Mosse successive o prestiti mutevoli di 'V' fino alla fine del prestito
+					per i in &v {
+					          ^
+
 P
 	parse
 			@convertire@stringa_(per @convertire una stringa in un numero utilizzare parse)
