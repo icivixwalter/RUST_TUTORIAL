@@ -4,6 +4,9 @@
 		{	
 			// in lunux /home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/
 			"path": ".",
-		}
+		},
+		{
+			"path": "/home/valter/CASA/CARTELLACONDIVISA/PASSAGGIO_DATI"
+		},
 	],
 }

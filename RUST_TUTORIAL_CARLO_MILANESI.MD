@@ -313,7 +313,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 							let y = "Posso anche essere legato a un testo!"; // y adesso è di un altro tipo
 
 
-	FUNZIONI 4.3
+	FUNZIONI 4.2
 		MAIN
 					@funzioni_(nelle funzioni i @parametri devono essere dichiarati )
 
@@ -820,14 +820,14 @@ RUST_TUTORIAL_CARLO_MILANESI
 				Ciò funziona perché l'if è un'espressione. Il valore di tale espressione è il valore dell'ultima espressione della diramazione scelta. Un if senza un else ha sempre il valore ().
 
 	CICLI
-		LOOP 						4.6.1
+		LOOP 								4.6.1
 			Il costrutto @loop ("ciclo") è la forma più semplice di ciclo disponibile in Rust. Usando la parola-chiave loop, Rust fornisce un modo di ciclare indefinitamente finché si raggiunge qualche istruzione di terminazione. Il @ciclo @infinito di Rust è fatto così:
 				//Loop è il costrutto adatto per i cicli infinti
 				loop {
 				    println!("Cicla per sempre!");
 				}
 
-		WHILE						4.6.2
+		WHILE								4.6.2
 			Rust ha anche un @ciclo @while ("fintanto che"). È fatto così:
 
 				let mut x = 5; // mut x: i32
@@ -855,7 +855,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 			L'analisi del flusso di costrutto di Rust tratta questo costrutto diversamente da un while true, dato che sappiamo che ciclerà per sempre. In generale, più informazione possiamo dare al compilatore, meglio può fare con la sicurezza e la generazione del codice, e perciò si dovrebbe sempre preferire loop quando si intende ciclare indefinitamente.
 
-		FOR 						4.6.3
+		FOR 								4.6.3
 			Il ciclo for viene usato per ciclare un particolare numero di volte. Però i cicli for di Rust funzionano un po' diversamente dagli altri linguaggi di sistema. Il ciclo for di Rust non somiglia al ciclo for del linguaggio C:
 				//ciclo for in c
 				for (x = 0; x < 10; x++) {
@@ -967,7 +967,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 						    }
 
     VETTORI 4.7
-    	Definizione					4.7.1
+    	Definizione							4.7.1
     			@vettori_(il @vettore è un @array@dinamico ed estensibile con il tipo @Vec<T>)
 
     		Un ‘vettore’ è un @array @dinamico ossia ‘estendibile’, implementato dal tipo Vec<T> nella libreria standard. Il T significa che si possono avere vettori di ogni tipo (si veda il capitolo su [generici][generic] per avere maggiori informazioni). I VETTORI ALLOCANO SEMPRE I LORO DATI NELLO @HEAP. Possono essere creati con la macro vec!:
@@ -980,11 +980,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 			I vettori immagazzinano il loro contenuto sullo heap come array contigui di T. Ciò significa che devono essere capaci di sapere la dimensione di T in fase di compilazione (cioè, quanti byte servono per memorizzare un T?). La dimensione di alcuni oggetti non si può sapere in fase di compilazione. Per tali oggetti si dovrà immagazzinare un puntatore a quell'oggetto: fortunatamente, il tipo Box funziona perfettamente a questo scopo.
 
-
-
-
-
-		Accedere agli elementi		4.7.2
+		Accedere agli elementi				4.7.2
 			Per ottenere il valore a un particolare indice nel vettore, si usano le []:
 				let v = vec![1, 2, 3, 4, 5];
 
@@ -1005,9 +1001,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 				// non funziona da errore non puoi indicizzarlo come i32 ma deve essere usize
 				v[j];
 
-
-
-		Accesso fuori dai limiti	4.7.3
+		Accesso fuori dai limiti			4.7.3
 			Se si prova ad accedere un indice che non esiste:
 				let v = vec![1, 2, 3];
 				println!("L'elemento 7 è {}", v[7]);
@@ -1024,7 +1018,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 					    None    => println!("Spiacente, questo vettore è troppo corto.")
 					}
 		
-		Iterare 					4.7.4
+		Iterare 							4.7.4
 			Una volta che si ha un vettore, si può iterare sui suoi elementi usando for. Ce ne sono tre versioni:
 
 				let mut v = vec![1, 2, 3, 4, 5];
@@ -1080,12 +1074,12 @@ RUST_TUTORIAL_CARLO_MILANESI
 			Queste tre sezioni sono correlate, e seguono un ordine. Bisognerà leggerli tutti e tre per capire pienamente il sistema di possesso.
 
 		
-		Meta						4.8.1
+		Meta								4.8.1
 			Rust ha un'attenzione particolare sulla sicurezza e sulla velocità. Raggiunge questi obiettivi tramite molte ‘ASTRAZIONI A COSTO ZERO’, il che significa che in Rust, le astrazioni costano il meno possibile al fine di farle funzionare. Il sistema di possesso è un esempio primario di astrazione a costo zero. Tutta l'analisi di cui parleremo in questa guida viene fatta in fase di compilazione. Non si paga nessun costo in fase di esecuzione per queste funzionalità.
 			Il costo sono i tempi di apprendimento in quanto si combatte con il verificatore di possesso perché il modello mentale del programmatore di come il possesso dovrebbe funzionare non combacia con le regole effettivamente implementate da Rust ma col tempo si migliora.
 
 
-		Possesso					4.8.2
+		Possesso							4.8.2
 			I legami di variabili hanno una proprietà in Rust: ‘possiedono’ quello a cui sono legati. Ciò significa che quando un legame esce di ambito, Rust libererà le risorse legate. Per esempio:
 
 				fn foo() {
@@ -1098,7 +1092,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 				e alloca spazio sullo HEAP per i suoi elementi. 
 			Quando v esce di ambito alla fine di foo(), Rust ripulirà ogni cosa correlata al vettore, anche la memoria allocata sullo heap. Questo avviene deterministicamente alla fine dell'ambito.
 
-		Semantica di spostamento	4.8.3
+		Semantica di spostamento			4.8.3
 			Però qui c'è qualche 
 				altra sottigliezza: 
 					RUST ASSICURA CHE CI SIA ESATTAMENTE UN LEGAME A OGNI DATA RISORSA. Per esempio, se abbiamo un vettore, possiamo assegnarlo a un altro legame:
@@ -1133,18 +1127,302 @@ RUST_TUTORIAL_CARLO_MILANESI
 				Stesso errore: ‘use of moved value’. Quando si trasferisce il possesso di un oggetto da un legame a un altro, si dice che l'oggetto a cui si fa riferimento è stato ‘spostato’. Qui non ci vuole qualche sorta di annotazione speciale, è il normale comportamento di Rust.
 
 
-		I dettagli					4.8.4
-			TODO: @da@finire
-			si trova qui:
-			https://carlomilanesi.github.io/linguaggio-rust/getting-started.html
+		I dettagli							4.8.4
+			Dopo lo spostamento dell'oggetto il legame non puo essere piu utilizzato. 
+			Quando scriviamo del codice come questo:
+
+				let x = 10;  //x = oggetto x va nello stack mentre per 10; il riferimento del valore 10 nell'heap
+
+			Rust alloca sullo stack della memoria per un intero i32, copia i bit che rappresentano il valore 10 alla memoria allocata, e lega il nome della variabile x a questa regione di memoria per poterna riferire in seguito.
+
+			Adesso consideriamo il seguente frammento di codice:
+				//l'oggetto let v = memorizzato nello statck
+				let v = vec![1, 2, 3];  // per i valori [1, 2, 3]; vie copiato il 
+										   riferimento nell'heap al primo numero
+				let mut v2 = v;
+
+			Ma in aggiunta a ciò, alloca anche della memoria sullo heap per i dati effettivi ([1, 2, 3]). 
+			Rust copia l'indirizzo di questa allocazione sullo heap al puntatore interno, che fa parte dell'oggetto vettore posto sullo stack (chiamiamolo "puntatore ai dati").
+
+			VETTORE NELLO STACK - DATI NELL'HEAP = Vale la pena evidenziare (anche al rischio di affermare l'ovvio) che 
+				l'oggetto vettore e i suoi dati 
+			vivono in regioni di memoria separate, invece di essere un'unica allocazione di memoria contigua (a causa di ragioni che non approfondiremo in questo momento). Queste due parti del vettore (quella sullo stack e quella sullo heap) devono accordarsi l'un l'altra in ogni momento riguardo a cose come la lunghezza, la capacità, ecc.
+
+			Quando si sposta v in v2, Rust effettivamente fa una copia bit-a-bit dell'oggetto vettore v nell'allocazione sullo stack rappresentata da v2. Questa copia superficiale non crea una copia dell'allocazione sullo heap contenente i dati effettivi. Il che significa che ci sarebbero due puntatori al contenuto del vettore entrambi che puntano alla stessa allocazione di memoria sullo heap. Se si potesse accedere sia a v che a v2 nello stesso tempo, si violerebbe la garanzia di sicurezza di Rust, introducendo un'accesso concorrente ai dati.
+
+		I tipi Copy							4.8.5
+			I tipi primativi tipo bool, i32 ecc utilizzano copy e quindi quando 
+			assegni u i32 con 
+				let v1=1;
+				let v2=v1;
+				println!("v vale: {}", v); //i32 non ha puntatori ai dati ma utilizza
+											Copy e quindi si fa una copia integrale dei dati.
+		Oltre al possesso					4.8.6
+			al posto della restituzione attivo il prestito
+
+	RIFERIMENTI E PRESTITI 4.9
+	
+		Borrowing (@PRESTITO)				4.9.1 
+			Prendere in prestito
+				Alla fine della sezione sul possesso, avevamo una brutta funzione che si presentava così:
+
+					fn foo(v1: Vec<i32>, v2: Vec<i32>) -> (Vec<i32>, Vec<i32>, i32) {
+					    // fa' qualcosa con v1 e con v2
+
+					    // restituisci il possesso di v1 e v2, e restituisci anche
+					    // il risultato della nostra funzione
+					    (v1, v2, 42)
+					}
+
+					let v1 = vec![1, 2, 3];
+					let v2 = vec![1, 2, 3];
+					let (v1, v2, risposta) = foo(v1, v2);
 
 
-		I tipi Copy					4.8.5
-		Oltre al possesso			4.8.6
-		
+				Però questo non è tipico di Rust, dato che non sfrutta i prestiti. Ecco il primo passo:
+
+						fn foo(v1: &Vec<i32>, v2: &Vec<i32>) -> i32 {
+						    // fa' qualcosa con v1 e con v2
+
+						    // restituisci la risposta
+						    42
+						}
+
+						let v1 = vec![1, 2, 3];
+						let v2 = vec![1, 2, 3];
+
+						let risposta = foo(&v1, &v2);
+
+				Un esempio più concreto:
+
+					fn main() {
+						//vedi il codice qui: @esempio_(@prestito valori)
+					    // Non importa se non si capisce cosa fa `fold`, quello che importa
+					    // qui è che un riferimento immutabile viene preso in prestito.
+					    fn somma_vec(v: &Vec<i32>) -> i32 {
+					        return v.iter().fold(0, |a, &b| a + b);
+					    }
+					    // Prendi in prestito due vettori e sommane gli elementi.
+					    // Questo tipo di prestito non permette che gli oggetti siano mutati.
+					    fn foo(v1: &Vec<i32>, v2: &Vec<i32>) -> i32 {
+					        // fa' qualcosa con v1 e con v2
+					        let s1 = somma_vec(v1); //s1 e s2 non possono essere mutati
+					        let s2 = somma_vec(v2);
+					        // restituisci la risposta senza modifiche
+					        s1 + s2
+					    }
+
+					    let v1 = vec![1, 2, 3];
+					    let v2 = vec![4, 5, 6];
+
+					    let risposta = foo(&v1, &v2);
+					    println!("{}", risposta);
+					}
+
+					Invece di prendere dei Vec<i32> come argomenti, prendiamo dei riferimenti: &Vec<i32>. 
+					E invece di passare v1 e v2 direttamente, passiamo &v1 e &v2. 
+
+					Il tipo &T viene chiamato ‘riferimento’, e invece di possedere la risorsa, ne prende in prestito il possesso. 
+
+					Un legame che prende in prestito qualche oggetto non dealloca quella risorsa quando esce dall'ambito. Ciò significa che dopo la chiamata a foo(), possiamo usare ancora i nostri legami originali.
+
+					ATTENZIONE RIFERIMENTI IMMUTABILI
+						I riferimenti sono immutabile, come i legami. Ciò significa che dentro foo(), i due vettori non possono affatto essere modificati:
+
+							fn foo(v: &Vec<i32>) {
+							     v.push(5);  //SE MODIFICHI IL VETTORE ERRORE PERCHE IL
+							     			//PRESTITO E' IMMUTABILE
+							}
+
+							let v = vec![];
+
+							foo(&v);
+							ci darà questo errore:
+
+							error: cannot borrow immutable borrowed content `*v` as mutable
+							v.push(5);
+							^
+							Aggiungere un valore (chiamando push) muterebbe il vettore, e quindi non ci viene permesso.
+
+		i riferimenti &mut 					4.9.2
+				@come@modificare_(la risorsa presa in prestito)
+			C'è un altro tipo di riferimenti: &mut T. Un ‘riferimento mutabile’ permette di mutare la risorsa che viene presa in prestito. Per esempio:
+				let mut x = 5;    //x legame mut
+					{
+					    let y = &mut x; //y= riferimento mutabile a x perche &mut x
+					    				//preso in prestito da x e così puo essere incrementato
+					    // *y = asterico prima di y per accesso al riferimento sia  se
+					    //      mutabile o non è mutabile
+					    *y += 1;	//incrementi perchè marcato con &mut ..
+					}
+					println!("{}", x);  //stampa 6
+
+			Abbiamo creato y come riferimento mutabile a x, e poi abbiamo incrementato l'oggetto a cui y punta. Si noterà che abbiamo dovuto marcare anche x come mut. Se non l'avessimo fatto, non avremmo potuto prendere in prestito mutabile un valore immutabile.
+
+			PERCHE' * = ACCESSO AL RIFERIMENTO MUTABILE O NON MUTABILE
+				Si noterà anche che abbiamo aggiunto un asterisco (*) prima di y, rendendolo *y. Questo è necessario perché y è un riferimento. SI deve usare un asterisco per accedere al contenuto di un riferimento, che sia mutabile o immutabile.
+
+		le regole		 					4.9.2
+			Ecco le regole per prendere a prestito in Rust:
+				AMBITO DEL PRESTITO <= A QUELLO DEL POSSESSORE = Primo, ogni prestito deve durare per un ambito non più esteso di quello del possessore.
+					@prestito_(in Rust deve rimanere nell'ambito per cui è valito)
+
+				Secondo, si può avere uno o l'altro dei due seguenti generi di prestiti, ma non entrambi allo stesso tempo:
+						@riferimenti_@immutabili_o_@mutabili_(@&T= immutabile; @&mut T =  @mutabile )
+				A) uno o più riferimenti non mutabili (&T) a un oggetto,
+				B) esattamente un riferimento mutabile (&mut T) a un oggetto.
+
+				CORSA AI DATI =  C'è una ‘@corsa @ai @dati’ @data@race quando due o più puntatori accedono alla medesima posizione di memoria nello stesso tempo, e per almeno uno di essi tale accesso è in scrittura, e tali accessi non sono sincronizzati.
+
+				TANTI RIFERIMENTI MUTABILE SOLO UNO MUTABILE ALLA VOLTA = Per quanto riguarda i riferimenti immutabili, se ne possono avere quanti se ne vogliono, dato che nessuno di essi sta scrivendo. Però, dato possiamo avere solamente un riferimenti mutabili per volta, è impossibile avere una corsa ai dati. Questa tecnica consente a RUST IN FASE DI COMPILAZIONE DI PREVENIRE LE CORSE AI DATI: otterremmo degli errori se violiamo le regole.
+				Tenendo questo a mente, consideriamo ancora il nostro esempio.
 
 
 
+
+
+		Pensare secondo gli ambiti			4.9.3
+			
+			//il prestito mutabile valido e parte da x e finisce alla graffa finale,
+			// l'ambita parte da --> { .... e finisce con ---> }
+			fn main() {
+					'//prestito mutabile parte qui'
+				    let mut x = 5;		//&mut T = riferimento MUTABILE di x
+				    let y = &mut x;     //&mut T = faccio il prestito mutabile di x
+				    					// a y
+
+				    *y += 1;			//prendo il riferimento con *Y = puntatore e lo
+				    					// incremento
+				    					//fino qui il prestito è mutabile e x non è piu
+				    					// possessore
+
+				    println!("{}", x);	//da errore il prestito è sempre nell'ambito di y
+				    					//fino nell'ambito delle graffe e quindi mutabile e non è tornato a x come immutabile
+
+				} //prestito mutabile valido fino a fine programma 
+
+					Questo codice ci dà questo errore:
+
+					error: cannot borrow `x` as immutable because it is also borrowed as mutable
+					Errore: Impossibile prendere in prestito 'X' come immutabile perché è anche preso in prestito come mutabile
+
+					    println!("{}", x);
+					                   ^
+
+                   Questo perché abbiamo violate le regole: abbiamo un &mut T (mutabile) che punta a x, e così non ci è permesso creare dei &T (immutabili) che puntino al medesimo oggetto. È l'uno o l'altro. L'annotazione suggerisce come pensare a questo problema:
+
+						note: previous borrow ends here
+						Nota: il prestito precedente termina qui
+						fn main() {
+
+						}
+						^
+
+					IL PRESTITO MUTABILE VIENE TENUTO PER TUTTO IL PROGRAMMA: In altre parole, il prestito mutabile viene tenuto per tutto il resto del programma. 
+
+					Ciò che vogliamo è che il prestito mutabile a y finisca, così che la risorsa possa essere restituita al possessore, x. 
+
+					Poi x può fornire un prestito immutabile a println!. 
+
+					In Rust, prendere a prestito è legato all'ambito per cui il prestito è valido. E il nostro ambito si presenta così:
+
+
+						fn main() {
+						    let mut x = 5;     //rende mutabile x
+
+						    let y = &mut x;    // -+ qui inizia il prestito mutabile di 
+						    						x 
+						                       //  |
+						    *y += 1;           //  |
+						                       //  |
+						    println!("{}", x); // -+ - qui prova a prendere a prestito 
+						    					     immutabile x
+						}                      // -+ qui finisce il prestito mutabile di 
+													 x
+						                       
+						 Gli ambiti sono in conflitto: non possiamo fare un &x mentre y è nell'ambito.
+
+						 Perciò quando aggiungiamo le graffe:
+
+							let mut x = 5;
+
+							{
+							    let y = &mut x; // -+ qui inizia il prestito mutabile
+							    *y += 1;        //  |
+							}                   // -+ ... e qui finisce
+
+							println!("{}", x);  // <- qui prova a prendere a prestito immutabile x
+							Non c'è problema. Il nostro prestito mutabile esce di ambito prima che venga creato quello immutabile. Perciò l'ambito è la chiave per vedere quanto dura un prestito.
+
+
+
+
+		Difetti prevenuti dai prestiti		4.9.4
+		Invalidazione degli iteratori		4.9.4
+		Uso dopo il rilascio				4.9.4
+
+
+TODO: @da@finire			si trova qui:
+					https://carlomilanesi.github.io/linguaggio-rust/getting-started.html
+
+ TEMPO DI VITA											4.10.
+ 	XXBorrowing (@PRESTITO)						4.10.1 	
+ IMMUTABILITA											4.11.	
+ 	XXBorrowing (@PRESTITO)						4.11.1 	
+ STRUTTURE 												4.12.	
+ 	XXBorrowing (@PRESTITO)						4.12.1 	
+ ENUMERAZIONI											4.13.	
+ 	XXBorrowing (@PRESTITO)						4.13.1 	
+ MATCH													4.14.	
+ PATTERN												4.15.	
+ SINTASSI DEI METODI									4.16.	
+ STRINGHE												4.17.	
+ GENERICITÀ												4.18.	
+ TRATTI													4.19.	
+ DROP													4.20.	
+ IF LET 												4.21.	
+ OGGETTI-TRATTI											4.22.	
+ CHIUSURE												4.23.	
+ SINTASSI UNIVERSALE DI CHIAMATA DI FUNZIONE			4.24.	
+ CRATE E MODULI											4.25.	
+ CONST E STATIC											4.26.	
+ ATTRIBUTI												4.27.	
+ ALIAS TRAMITE `TYPE`									4.28.	
+ FORZATURA DI TIPO										4.29.	
+ TIPI ASSOCIATI											4.30.	
+ TIPI NON DIMENSIONATI									4.31.	
+ OPERATORI E SOVRACCARICAMENTO							4.32.	
+ COERCIZIONE DEREF										4.33.	
+ LE MACRO												4.34.	
+ PUNTATORI GREZZI										4.35.	
+ `UNSAFE`												4.36.	
+ RUST EFFICACE											5.0  	
+ LO STACK E LO HEAP										5.1.	
+ COLLAUDO												5.2.	
+ COMPILAZIONE CONDIZIONALE								5.3.	
+ DOCUMENTAZIONE											5.4.	
+ ITERATORI												5.5.	
+ CONCORRENZA											5.6.	
+ GESTIONE DEGLI ERRORI									5.7.	
+ SCEGLIERE LE GARANZIE									5.8.	
+ FFI													5.9.	
+ PRESTITO E ASREF										5.10.	
+ CANALI DI RILASCIO										5.11.	
+ USARE RUST SENZA LA LIBRERIA STANDARD					5.12.	
+ RUST NOTTURNO											6.0.0	
+ PLUGIN DEL COMPILATORE									6.1.	
+ ASSEMBLY IN-LINE										6.2.	
+ OMETTERE LA LIBRERIA STDANDARD							6.3.	
+ INTRINSECI												6.4.	
+ ELEMENTI "LANG"										6.5.	
+ LINK AVANZATO											6.6.	
+ COLLAUDI PRESTAZIONALI									6.7.	
+ SINTASSI DI BOX E RELATIVI PATTERN						6.8.	
+ PATTERN DI SLICE										6.9.	
+ COSTANTI ASSOCIATE										6.10. 	
+ ALLOCATORI PERSONALIZZATI								6.11. 	
+ GLOSSARIO												7.00	
+ INDICE ANALITICO DELLA SINTASSI						8.00   	
 
 
 INDICE_COMANDI_CARGO+RUST
