@@ -1265,10 +1265,15 @@ RUST_TUTORIAL_CARLO_MILANESI
 		le regole		 					4.9.2
 			Ecco le regole per prendere a prestito in Rust:
 				AMBITO DEL PRESTITO <= A QUELLO DEL POSSESSORE = Primo, ogni prestito deve durare per un ambito non più esteso di quello del possessore.
-					@prestito_(in Rust deve rimanere nell'ambito per cui è valito)
+					@prestito_(in Rust deve rimanere nell'ambito per cui è valido
+					e per fare un prestito occorre &T = prestito non mutabile)
+				
 
 				Secondo, si può avere uno o l'altro dei due seguenti generi di prestiti, ma non entrambi allo stesso tempo:
-						@riferimenti_@immutabili_o_@mutabili_(@&T= immutabile; @&mut T =  @mutabile )
+						@riferimenti_@immutabili_o_@mutabili_(per fare un prestito in rust occorre &T e se mutabile &mut T:
+							 @&T= prestito immutabile; 
+							 @&mut T =  prestito @mutabile )
+
 				A) uno o più riferimenti non mutabili (&T) a un oggetto,
 				B) esattamente un riferimento mutabile (&mut T) a un oggetto.
 
@@ -1342,6 +1347,8 @@ RUST_TUTORIAL_CARLO_MILANESI
 						                       
 						 Gli ambiti sono in conflitto: non possiamo fare un &x mentre y è nell'ambito.
 
+
+					 	AMBITO CHIAVE DEL PRESTITO
 						 Perciò quando aggiungiamo le graffe:
 
 							let mut x = 5;
@@ -1353,20 +1360,175 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 							println!("{}", x);  // <- qui prova a prendere a prestito immutabile x
 							Non c'è problema. Il nostro prestito mutabile esce di ambito prima che venga creato quello immutabile. Perciò l'ambito è la chiave per vedere quanto dura un prestito.
+							vedi --->  @esempio@di_(area scope di y)
 
 
 
 
 		Difetti prevenuti dai prestiti		4.9.4
-		Invalidazione degli iteratori		4.9.4
-		Uso dopo il rilascio				4.9.4
+					Perché ci sono queste regole restrittive? Beh, come abbiamo detto, queste regole prevengono le corse ai dati. Le corse ai dati che genere di difetti provocano? Ecconi alcuni.
+
+			Invalidazione degli iteratori		4.9.4.1
+				Un esempio è l'‘invalidazione degli iteratori’, che avviene quando si prova a mutare una collezione su cui si sta iterando. Il verificatore dei prestiti di Rust previene che accada:
+
+					let mut v = vec![1, 2, 3];
+
+						for i in &v {
+						    println!("{}", i);
+						}
+
+				Questo codice stampa i numeri da uno a tre. Mentre iteriamo lungo il vettore, ci vengono dati solamente dei riferimenti agli elementi. E v è esso stesso preso in prestito come immutabile, il che significa che non possiamo cambiarlo mentre stiamo iterando:
+
+				let mut v = vec![1, 2, 3];
+
+					for i in &v {
+					    println!("{}", i);  //fino qui &v = immutabile
+					    v.push(34);			//no push perchè È IMMUTABILE
+					}
+
+
+				cannot borrow `v` as mutable because it is also borrowed as immutable
+    			v.push(34);
+
+    			 non può prendere in prestito 'v' come mutevole perché è anche preso in prestito come immutabile v.push(34);
+
+    			note: previous borrow of `v` occurs here; the immutable borrow prevents
+					subsequent moves or mutable borrows of `v` until the borrow ends
+					for i in &v {
+					          ^
+
+	          	Nota: qui si verifica il precedente prestito di 'V'; Il prestito immutabile impedisce
+					Mosse successive o prestiti mutevoli di 'V' fino alla fine del prestito
+					per i in &v {
+					          ^
+
+	          	Non possiamo modificare v perché è preso in prestito dal ciclo.
+
+		Uso dopo il rilascio				4.9.4.2
+
+			RIFERIMENTO NON PIU LUNGI DELLA VITA DELL'OGGETTO DI RIFERIMENTO
+			I riferimenti non devono vivere più a lungo dell'oggetto a cui fanno riferimento. Rust verificherà gli ambiti dei riferimenti per assicurare che sia così.
+
+			Se Rust non verificasse questa proprietà, potremmo accidentalmente usare un oggetto che è diventato invalido. Per esempio:
+
+
+				let y: &i32;
+					{
+					    let x = 5;  //creo il legame con x
+					    y = &x;		//faccio un riferimento a x per assegnarlo a Y 
+					    			//che ha valore finche esiste x
+					}
+
+					//fuori dell'ambito di x e quindi y non è valido
+					println!("{}", y);
+			
+
+			Otteniamo questo errore:
+
+				error: `x` does not live long enough
+				    y = &x;
+				         ^
+				note: reference must be valid for the block suffix following statement 0 at
+				2:16...
+				let y: &i32;
+				{
+				    let x = 5;
+				    y = &x;
+				}
+
+				note: ...but borrowed value is only valid for the block suffix following
+				statement 0 at 4:18
+				    let x = 5;
+				    y = &x;
+				}
+
+			In altre parole, il valore di y è valido solamente per l'ambito dove x esiste. Non appena x se ne va, diventa invalido fare riferimento ad esso. Come tale, l'errore dice che il prestito ‘non vive abbastanza a lungo’ perché non è valido per la giusta quantità di tempo.
+
+			STESSO ERRORE Y VIVE PIU A LUNGO DI X PERCHE DICHIARATO PRIMA ES.
+				Il medesimo problema avviene quando il riferimento è dichiarato prima della variabile a cui si riferisce. Questo è devuto al fatto che le risorse entro lo stesso ambito vengono rilasciate nell'ordine inverso di quello con cui sono state acquisite:
+
+					let y: &i32;  	//Y creata prima di x 
+					let x = 5;		//x muore prima di y
+					y = &x;         
+
+					println!("{}", y); //da errore su y perche x è cessata prima e 
+										quindi viene usata il legame di x quando è già stata rilasciata e non esiste piu mentre Y vive piu a lungo
+
+				Otteniamo questo errore:
+
+					error: `x` does not live long enough
+					y = &x;
+					Errore: 'X' non vive abbastanza a lungo
+					y = &x;
+
+
+				Nell'esempio qui sopra, y è dichiarato prima di x, il che comporta che y vive (leggermente) più a lungo di x, il che non è consentito.
+
 
 
 TODO: @da@finire			si trova qui:
 					https://carlomilanesi.github.io/linguaggio-rust/getting-started.html
 
  TEMPO DI VITA											4.10.
- 	XXBorrowing (@PRESTITO)						4.10.1 	
+ 	Note
+ 			Questa è l'ultima delle tre sezioni che presentano il sistema di possesso di Rust. Qui si assume che siano già state lette le altre due:
+
+				Il possesso, il concetto chiave
+				I prestiti, e le loro caratteristiche associate, i ‘riferimenti’
+
+ 	I tempi di vita										4.10.1
+ 		@lifetime_(@tempo@di@vita il sistema di possesso di Rust che imposta il
+ 					momento in cui deve essere rilasciata la risorsa)
+
+
+ 		Prestare un riferimento a una risorsa posseduta da qualcun altro può essere complicato. Per esempio, immaginiamo questa sequenza di operazioni:
+
+ 			1 Acquisisco un riferimento a una risorsa di qualche tipo.
+			2 Ti presto un riferimento a tale risorsa.
+			3 Decido di aver finito di lavorare con quella risorsa, e quindi la
+			  rilascio, mentre tu hai ancora il tuo riferimento a tale risorsa.
+			4 Tu decidi di usare quella risorsa.
+
+					@puntatore@penzolante_(un riferimento ad un risorsa non valida)
+		Ahi, ahi! Il tuo riferimento sta puntando a una risorsa non più valida. Questo difetto si chiama ‘puntatore penzolante‘ o ‘utilizzo dopo il rilascio’.
+
+					@life@time_(tempo di vita del riferimento fino al rilascio della risorsa.)
+		Per correggerlo, dobbiamo assicurarci che il passo 4 non avvenga mai dopo il passo 3. Il sistema di possesso in Rust lo fa tramite un concetto chiamato "tempo di vita" ["lifetime"], che descrive l'ambito in cui un riferimento è valido. Nel nostro caso, o decidiamo che il tempo di vita vale solamente fino al passo 3, e in tal caso il passo 4 darà errore di compilazione, o decidiamo che il tempo di vita vale fino al passo 4, e in tal caso la risorsa dovrà essere rilasciata al passo 5.
+
+		RIFERIMENTI IMPLICITI O ESPLICITI
+		Quando abbiamo una funzione che prende un argomento per riferimento, possiamo essere impliciti o espliciti riguardo al tempo di vita di tale riferimento:
+			
+			// implicito
+				fn foo(x: &i32) {
+				}
+
+				// esplicito
+				fn bar<'a>(x: &'a i32) {
+				}
+		L''a si legge ‘il tempo di vita a’.
+		Tecnicamente, ogni riferimento ha qualche tempo di vita associato ad esso, ma il compilatore consente di eliderlo (cioè ometterlo, si veda la sezione ["@Elisione del tempo di vita"] [elisione del tempo di vita] più avanti) nei casi più tipici.
+		erò, prima di arrivarci, scomponiamo l'esempio esplicito:
+
+			fn bar<'a>(...) = angolari  <> dopo il nome della funzione per dichiarare i tempi di 
+										   vita personali
+
+
+		Precedentemente abbiamo parlato un po' della sintassi delle funzioni, ma non abbiamo discusso dei <> dopo il nome della funzione. Una funzione può avere dei ‘parametri generici’ fra le <>, dei quali i tempi di vita sono un tipo. Discuteremo altri tipi di generici più avanti nel libro, ma per adesso, focalizziamoci sull'aspetto dei tempi di vita.
+
+
+
+
+
+
+ 	Nelle struct										4.10.2 	
+ 	I blocchi impl										4.10.3 	
+ 	Tempi di vita multipli								4.10.4	
+ 	Pensare agli ambiti									4.10.5
+ 	static												4.10.5
+ 	Elisione del tempo di vita							4.10.6
+ 	Esempi												4.10.7
+ 	Esempi												4.10.7
+
  IMMUTABILITA											4.11.	
  	XXBorrowing (@PRESTITO)						4.11.1 	
  STRUTTURE 												4.12.	
