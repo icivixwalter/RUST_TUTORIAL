@@ -1,4 +1,4 @@
-    //@esempio@tempo_(di vita foo progetto main )
+    //@esempio@tempo_(main @progetto tempo di vita foo della @struttura o @struct)
     //TEMPI DI VITA ESPLICITI = riferimento a Foo con tempo di vita = a i32 che lo contiene e non superiore
     struct Foo<'a> {  //Foo<'a> = strutture con tempi di vita espliciti
             x: &'a i32,
