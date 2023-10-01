@@ -1587,23 +1587,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 	     	In questo esempio, x e y hanno diversi ambiti validi, ma il valore reso ha lo stesso tempo di vita di x.
 
-
-TODO: @da@finire			si trova qui:
-					https://carlomilanesi.github.io/linguaggio-rust/getting-started.html
-
-					@prova@rust_(per provare le procedure di rust utilizza questo @link)
-						https://play.rust-lang.org/?version=stable&mode=debug&edition=2021
-
-
-
-
-
- 		
-
-
- 	
-
-
  	Pensare agli ambiti									4.10.5
 
  		Un modo di pensare ai tempi di vita è visualizzare l'ambito per cui un riferimento rimane valido. Per esempio:
@@ -1647,7 +1630,7 @@ TODO: @da@finire			si trova qui:
 					        x = &f.x;             //  | | errore qui
 					    }                         // ---+ prima f e poi y escono dall'ambito
 					                              //  |
-					    println!("{}", x);        //  |  quin x non ha piu riferimento perche distrutta la x insieme a y
+					    println!("{}", x);        //  |  quindi x non ha piu riferimento perche distrutta la x insieme a y
 					}                             // -+ x esce dall'ambito
 
 
@@ -1657,14 +1640,222 @@ TODO: @da@finire			si trova qui:
 				I tempi di vita con nome sono un modo di dare un nome a questi ambiti. 
 				Dare un nome a qualcosa è il primo passo verso l'essere capaci di parlarne.
 
+	
+
 
  	static												4.10.5
- 	Elisione del tempo di vita							4.10.6
- 	Esempi												4.10.7
- 	Esempi												4.10.7
+ 			@static_(tempo di vita dell'intero programma)
+ 		Il tempo di vita chiamato ‘static’ è un tempo di vita speciale. Segnala che qualcosa ha il tempo di vita dell'intero programma. La maggior parte dei programmatori Rust si imbattono per la prima volta in 'static quando trattano le stringhe:
+ 			
+ 			//stringa static che viene salvata alla fine del file binario e vale per tutto il programma
+ 			let x: &'static str = "Ciao, mondo.";
 
- IMMUTABILITA											4.11.	
- 	XXBorrowing (@PRESTITO)						4.11.1 	
+		Le lettere della stringa sono di tipo &'static str perché il riferimento è sempre vivo: vengono depositati nel segmento dati del file binario finale. Un altro esempio sono i globali:
+
+			//variabile globale, i32 inserita nel segmento dati del file binario
+			static FOO: i32 = 5;
+			let x: &'static i32 = &FOO;
+
+		Questo aggiunge un i32 al segmento dati del file binario, e x è un riferimento a esso.
+
+ 	Elisione del tempo di vita							4.10.6
+
+ 		INFERENZA LOCALE SOLO NEI CORPI DELLE FUNZIONI - NESSUNA INFERENZA NELLE FIRME -
+ 			Rust supporta una potente inferenza di tipo locale nei corpi delle funzioni ma non nelle firme dei loro elementi. È vietato consentire di ragionare sui tipi a seconda della sola firma degli elementi. 
+ 			Però, per ragioni di comodità, un algoritmo di INFERENZA SECONDARIA molto ristretto chiamato “ELISIONE DEL TEMPO DI VITA” si applica quando si giudicano i tempi di vita. 
+
+ 			L'elisione dei tempi di vita viene considerata solamente per inferire i parametri del tempo di vita usando tre regole facilmente memorizzabili e non ambigue. 
+ 			
+ 				Ciò significa che 
+ 					l'elisione del tempo di vita agisce da abbreviazione per scrivere una firma di un elemento, 
+				mentre non nasconde i tipi effettivamente coinvolti, come avverrebbe se fosse applicata una una completa inferenza locale. 	
+		
+		ELISIONE DI TEMPO DI VITA DI IMPUT E DI OUTPUT
+			Quando si parla dell'elisione del tempo di vita, usiamo i termini tempo di vita di input e tempo di vita di output. Un tempo di vita di input è un tempo di vita associato a un argomento di una funzione, mentre un tempo di vita di output è un tempo di vita associato a un valore reso da una funzione. Per esempio, questa funzione ha un tempo di vita di input:
+				//TEMPO DI VITA DI INPUT
+				fn foo<'a>(bar: &'a str)
+
+				Quest'altra ha un tempo di vita di output:
+
+				//attenzione () = non c'è parametro
+				fn foo<'a>() -> &'a str   //restituzione del'outuput
+
+
+				E questa ha un tempo di vita in entrambe le posizioni:
+
+				fn foo<'a>(bar: &'a str) -> &'a str  //tempo di vita di imput e di output
+
+
+				Ecco le tre regole: (?? non chiare??)
+
+					Ogni tempo di vita eliso tra gli argomenti di una funzione diventa un un distinto parametro tempo di vita.
+
+					Se c'è esattamente un tempo di vita di input, eliso o no, quel tempo di vita è assegnato a tutti i tempi di vita elisi nei valori resi di quella funzione.
+
+					Se ci sono più tempo di vita di input, ma uno di essi è 
+						&self o 
+						&mut self, 
+					il tempo di vita di self viene assegnato a tutti i tempi di vita di output elisi.
+
+					Altrimenti, è un errore elidere un tempo di vita di output.
+
+ 	Esempi												4.10.7
+ 		Ecco alcuni esempi di funzioni con tempi di vita elisi. Abbiamo accoppiato ogni esempio di un tempo di vita eliso con la sua forma espansa.
+ 			fn stampa(s: &str); // eliso
+			fn stampa<'a>(s: &'a str); // espanso
+
+				//lvl: u32 = non ha tempo di vita
+			fn debug(lvl: u32, s: &str); // eliso
+			fn debug<'a>(lvl: u32, s: &'a str); // espanso
+
+		Nell'esempio precedente, lvl non ha bisogno di un tempo di vita, perché non è un riferimento (&). 
+
+		Solamente oggetti riferiti a riferimenti (come uno struct che contiene un riferimento) hanno bisogno di tempi di vita.
+				//@molto@difficili_(non si comprendono ??? @tempi@di@vita @incomprensibili)
+
+				fn substr(s: &str, until: u32) -> &str; // eliso
+				fn substr<'a>(s: &'a str, until: u32) -> &'a str; // espanso
+
+				fn get_str() -> &str; // ILLEGALE, nessun input
+
+				fn frob(s: &str, t: &str) -> &str; // ILLEGALE, due input
+				// espanso: il tempo di vita di output è ambiguo
+				fn frob<'a, 'b>(s: &'a str, t: &'b str) -> &str;
+
+				fn get_mut(&mut self) -> &mut T; // eliso
+				fn get_mut<'a>(&'a mut self) -> &'a mut T; // espanso
+
+				fn argomenti<T: ToCStr>(&mut self, args: &[T]) -> &mut Command; // eliso
+				fn argomenti<'a, 'b, T: ToCStr>(&'a mut self, args: &'b [T])
+				-> &'a mut Command; // espanso
+
+				fn new(buf: &mut [u8]) -> BufWriter; // eliso
+				fn new<'a>(buf: &'a mut [u8]) -> BufWriter<'a>; // espanso
+
+ IMMUTABILITA											4.11.
+ 	NON DI DEFAULT
+	 	La mutabilità, ossia la capacità di cambiare qualcosa, funziona in Rust un po' diversamente che in altri linguaggi. Il primo aspetto della mutabilità in Rust è il fatto di non esserci per default:
+	 		let x = 5;
+			x = 6; // errore!
+		Si può introdurre la mutabilità con la parola-chiave mut:
+			let mut x = 5;
+			x = 6; // non c'è problema!
+
+			Questo è un legame di variabile mutabile. Quando un legame è mutabile, significa che si può cambiare ciò a cui quel legame punta. Perciò nell'esempio sopra, non è tanto che il valore alla posizione x cambia, quanto che il legame passa dal puntare un i32 al puntarne un altro.
+
+			
+			Si può anche creare un riferimento ad esso, usando &x, ma se si vuole usare il riferimento per cambiarlo, ci vorrà un riferimento mutabile:
+				let mut x = 5;
+				let y = &mut x;  //y legame immutabile di default che non si lega ad altro valore ma
+								 //viene utilizzato y per legare x (o riferimento a x mutevole)
+
+				y è un legame immutabile a un riferimento mutabile, il che significa che non si può legare 'y' a qualcos'altro (y = &mut z), ma y può essere usato per legare x a qualcos'altro (*y = 5). Una distinzione sottile.
+
+		Naturalmente, se servono entrambi:
+			let mut x = 5;
+			let mut y = &mut x;
+
+			Adesso y può essere legato a un altro valore, e inoltre il valore che sta referenziando può essere cambiato.
+
+		È importante notare che mut fa parte di un pattern, e perciò si possono fare cose come questa:
+
+			let (mut x, y) = (5, 6);
+
+			fn foo(mut x: i32) {
+
+		Si noti che qui la x è mutabile, mentre la y non lo è.
+
+ 	
+ 	Mutabilità interiore contro mutabilità esteriore						4.11.1 	
+ 		MUTABILITA ESTERIORE
+	 		Però, quando diciamo che qualcosa è ‘immutabile’ in Rust, non intendiamo che è impossibile cambiarla: ci stiamo riferendo alla sua ‘immutabilità esteriore’. Si consideri, per esempio, 
+	 		Arc<T>:
+	 			use std::sync::Arc;  //OGGETTO Arc<T>
+				let x = Arc::new(5); //X legame immutabile
+				let y = x.clone();
+
+			Quando chiamiamo clone(), l'oggetto di tipo Arc<T> deve aggiornare il conteggio dei riferimenti. Però qui non abbiamo usato nessun mut, x è un legame immutabile, e non abbiamo preso il valore &mut 5 né altri valori. E allora?
+
+			Per capirlo, dobbiamo tornare al nucleo della filosofia guida di Rust, che è la sicurezza di memoria, e al meccanismo col quale Rust la garantisce, che è il sistema di [possesso][possesso], e più specificamente, il [prestito][prestito]:
+
+				Si possono avere l'uno o l'altro di questi due tipi di prestiti, ma non entrambi allo stesso tempo:
+
+					uno o più riferimenti immutabili (&T) a una risorsa,
+					esattamente un riferimento mutabile (&mut T).
+
+			Perciò, questa è la vera definizione di ‘immutabilità’: è sicuro che ci siano due puntatori a questo oggetto? Nel caso di Arc<T>, sì: la mutazione è contenuta interamente dentro la struttura stessa. Non si presenta all'utente. Per questa ragione, passa un &T a clone(). Se gli avesse passato un &mut T, però, sarebbe un errore.
+
+		MUTABILITA INTERIORE
+			Altri tipi, come quelli nel modulo std::cell, sono nella situazione opposta: mutabilità interiore. Per esempio:
+				use std::cell::RefCell;
+
+				let x = RefCell::new(42);  //RefCel pasa dei riferimenti &mut
+
+				let y = x.borrow_mut();    //lo passa al suo metodo borrow_mut
+
+
+			RefCell passa dei riferimenti &mut a ciò che c'è al suo interno usando il metodo borrow_mut(). Non è pericoloso? Che succede se facciamo:
+
+				use std::cell::RefCell;
+
+				let x = RefCell::new(42);
+
+				let y = x.borrow_mut();
+				let z = x.borrow_mut();
+
+			Di fatto questo andrà in panico, in fase di esecuzione. Questo è quello che fa RefCell: forza le regole di prestito di Rust in fase di esecuzione, e va in panic! se sono violate. Questo ci consente di aggirare un altro aspetto delle regole di mutabilità di Rust. Prima parliamone.
+
+
+	Mutabilità interiore contro mutabilità esteriore						4.11.2
+	Mutabilità a livello di campo											4.11.3
+		La mutabilità è una proprietà o di un prestito (&mut) o di un legame (let mut). Ciò significa che, per esempio, non si può avere una struct con alcuni campi mutabili e altri immutabili:
+
+		struct Punto {
+		    x: i32,			//questo non è mutabile 
+		    mut y: i32, // non si può  -- solo questo è mutabile --
+		}
+
+
+		La mutabilità di una struct sta nel suo legame:
+
+			struct Punto {
+			    x: i32,
+			    y: i32,
+			}
+			
+			let mut a = Punto { x: 5, y: 6 };
+
+			a.x = 10;   //immutabile
+
+			let b = Punto { x: 5, y: 6};
+
+			b.x = 10; // errore: non si può assegnare al campo immutabile `b.x`
+
+
+		Però, usando Cell<T>, si può emulare la mutabilità a livello di campo:
+
+
+				use std::cell::Cell;
+
+				struct Punto {
+				    x: i32,
+				    y: Cell<i32>,
+				}
+
+				let punto = Punto { x: 5, y: Cell::new(6) };
+
+				punto.y.set(7);
+
+				println!("y: {:?}", punto.y);
+				Questo stamperà y: Cell { value: 7 }. Abbiamo aggiornato y con successo.
+
+
+TODO: @da@finire			si trova qui:
+					https://carlomilanesi.github.io/linguaggio-rust/getting-started.html
+
+					@prova@rust_(per provare le procedure di rust utilizza questo @link)
+						https://play.rust-lang.org/?version=stable&mode=debug&edition=2021
+
  STRUTTURE 												4.12.	
  	XXBorrowing (@PRESTITO)						4.12.1 	
  ENUMERAZIONI											4.13.	
