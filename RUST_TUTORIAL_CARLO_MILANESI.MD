@@ -1282,10 +1282,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 				TANTI RIFERIMENTI MUTABILE SOLO UNO MUTABILE ALLA VOLTA = Per quanto riguarda i riferimenti immutabili, se ne possono avere quanti se ne vogliono, dato che nessuno di essi sta scrivendo. Però, dato possiamo avere solamente un riferimenti mutabili per volta, è impossibile avere una corsa ai dati. Questa tecnica consente a RUST IN FASE DI COMPILAZIONE DI PREVENIRE LE CORSE AI DATI: otterremmo degli errori se violiamo le regole.
 				Tenendo questo a mente, consideriamo ancora il nostro esempio.
 
-
-
-
-
 		Pensare secondo gli ambiti			4.9.3
 			
 			//il prestito mutabile valido e parte da x e finisce alla graffa finale,
@@ -1362,9 +1358,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 							Non c'è problema. Il nostro prestito mutabile esce di ambito prima che venga creato quello immutabile. Perciò l'ambito è la chiave per vedere quanto dura un prestito.
 							vedi --->  @esempio@di_(area scope di y)
 
-
-
-
 		Difetti prevenuti dai prestiti		4.9.4
 					Perché ci sono queste regole restrittive? Beh, come abbiamo detto, queste regole prevengono le corse ai dati. Le corse ai dati che genere di difetti provocano? Ecconi alcuni.
 
@@ -1404,7 +1397,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 	          	Non possiamo modificare v perché è preso in prestito dal ciclo.
 
-		Uso dopo il rilascio				4.9.4.2
+		Uso dopo il rilascio				4.9.5
 
 			RIFERIMENTO NON PIU LUNGI DELLA VITA DELL'OGGETTO DI RIFERIMENTO
 			I riferimenti non devono vivere più a lungo dell'oggetto a cui fanno riferimento. Rust verificherà gli ambiti dei riferimenti per assicurare che sia così.
@@ -1464,66 +1457,207 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 				Nell'esempio qui sopra, y è dichiarato prima di x, il che comporta che y vive (leggermente) più a lungo di x, il che non è consentito.
 
+ 	TEMPO DI VITA						4.10.
+ 		Note
+ 			Questa è l'ultima delle tre sezioni che presentano il sistema di possesso di Rust. Qui si assume che siano già state lette le altre due:
+
+				Il possesso, il concetto chiave
+				I prestiti, e le loro caratteristiche associate, i ‘riferimenti’
+ 		I tempi di vita					4.10.1
+ 				@lifetime_(@tempo@di@vita il sistema di possesso di Rust che imposta il
+ 					momento in cui deve essere rilasciata la risorsa)
+
+
+	 		Prestare un riferimento a una risorsa posseduta da qualcun altro può essere complicato. Per esempio, immaginiamo questa sequenza di operazioni:
+
+	 			1 Acquisisco un riferimento a una risorsa di qualche tipo.
+				2 Ti presto un riferimento a tale risorsa.
+				3 Decido di aver finito di lavorare con quella risorsa, e quindi la
+				  rilascio, mentre tu hai ancora il tuo riferimento a tale risorsa.
+				4 Tu decidi di usare quella risorsa.
+
+						@puntatore@penzolante_(un riferimento ad un risorsa non valida)
+			Ahi, ahi! Il tuo riferimento sta puntando a una risorsa non più valida. Questo difetto si chiama ‘puntatore penzolante‘ o ‘utilizzo dopo il rilascio’.
+
+						@life@time_(tempo di vita del riferimento fino al rilascio della risorsa.)
+			Per correggerlo, dobbiamo assicurarci che il passo 4 non avvenga mai dopo il passo 3. Il sistema di possesso in Rust lo fa tramite un concetto chiamato "tempo di vita" ["lifetime"], che descrive l'ambito in cui un riferimento è valido. Nel nostro caso, o decidiamo che il tempo di vita vale solamente fino al passo 3, e in tal caso il passo 4 darà errore di compilazione, o decidiamo che il tempo di vita vale fino al passo 4, e in tal caso la risorsa dovrà essere rilasciata al passo 5.
+
+			RIFERIMENTI IMPLICITI O ESPLICITI
+			Quando abbiamo una funzione che prende un argomento per riferimento, possiamo essere impliciti o espliciti riguardo al tempo di vita di tale riferimento:
+				
+				// implicito
+					fn foo(x: &i32) {
+					}
+
+					// esplicito : bar ha un solo tempo di vita <'a>
+					fn bar<'a>(x: &'a i32) {  //
+					}
+			L'a si legge ‘il tempo di vita a’.
+			Tecnicamente, ogni riferimento ha qualche tempo di vita associato ad esso, ma il compilatore consente di eliderlo (cioè ometterlo, si veda la sezione ["@Elisione del tempo di vita"] [elisione del tempo di vita] più avanti) nei casi più tipici.
+			erò, prima di arrivarci, scomponiamo l'esempio esplicito:
+
+				fn bar<'a>(...) = angolari  <> dopo il nome della funzione per dichiarare i tempi di 
+											   vita personali
+
+
+			Precedentemente abbiamo parlato un po' della sintassi delle funzioni, ma non abbiamo discusso dei <> dopo il nome della funzione. Una funzione può avere dei ‘parametri generici’ fra le <>, dei quali i tempi di vita sono un tipo. Discuteremo altri tipi di generici più avanti nel libro, ma per adesso, focalizziamoci sull'aspetto dei tempi di vita.
+
+			Usiamo le <> per dichiarare i nostri tempi di vita. Questo dice che bar ha un solo tempo di vita, 'a. Se avessimo dei parametri riferimento, si presenterebbe così:
+
+				fn bar<'a, 'b>(...)
+
+			Poi nel nostro elenco di argomenti, usiamo i tempi di vita che abbiamo nominato:
+
+				...(x: &'a i32)  
+
+			Se avessimo voluto un riferimento &mut, avremmo scritto:
+
+				...(x: &'a mut i32)  //riferimento mutabile i  32 con tempo di vita di a
+
+			Confrontando &mut i32 con &'a mut i32, si nota che 
+				l'unica differenza è che il tempo di vita 'a si è intrufolato fra il & il mut i32. 
+
+			La clausola &mut i32 va letta come 
+				‘un riferimento mutabile a un i32’, mentre 
+				la clausola &'a mut i32 va letta come ‘un riferimento mutabile a un i32 con tempo di vita 'a’.
+ 		Nelle struct					4.10.2
+ 				Note
+ 					creo un programma per l'esempio tempo_di_vita_struct vedi
+ 					esempio:
+ 					 	@esempio@tempo_(di vita foo @NELLA @STRUCT o @struttura)
+
+ 			C'è bisogno dei tempi di vita espliciti anche quando si lavora come le struct che contengono riferimenti:
+
+
+ 				//TEMPI DI VITA ESPLICITI = riferimento a Foo con tempo di vita = a i32 che lo contiene e non superiore
+ 				struct Foo<'a> {  //Foo<'a> = strutture con tempi di vita espliciti
+					    x: &'a i32,
+					}
+
+					fn main() {
+					    let y = &5; // questo è lo stesso che `let _y = 5; let y = &_y;`
+					    let f = Foo { x: y };   //chiami foo e passi x:Y ossia il valore di Y a x
+					    //f
+					    println!("{}", f.x);
+					}
+
+
+					Come si vede, anche le struct possono avere tempi di vita. In modo simile alle funzioni, truct Foo<'a> { = dichiara un tempo di vita, e x: &'a i32, lo usa. 
+
+					Allora perché qui ci serve un tempo di vita? Ci serve per assicurare che ogni : riferimento a un Foo non possa sopravvivere al 
+					riferimento a un i32 che contiene.
+		I blocchi impl					4.10.3
+ 			Implementiamo un metodo su Foo:
+ 					@tempi@di@vita_(nella struct e nella implementazione che deve esser ripetuto 
+ 						due volte il tempo di vita)
+
+ 			//01 la struttura Foo con tempo di vita
+ 			struct Foo<'a> {
+    			x: &'a i32,
+				}
+			//02 implementi foo ma con doppia ripetizione del tempo di vita,
+			//impl<'a> 	= definisce il tempo di vita
+			//Foo<'a> 	= utilizza il tempo di vita
+				impl<'a> Foo<'a> {
+				    fn x(&self) -> &'a i32 { self.x }
+				}
+
+				fn main() {
+				    let y = &5; // questo è lo stesso che `let _y = 5; let y = &_y;`
+				    let f = Foo { x: y };
+				    println!("x is: {}", f.x());
+				}
+
+
+			Come si vede, dobbiamo dichiarare un tempo di vita per Foo nella riga di impl. 'a viene ripetuto, come per le funzioni: impl<'a> definisce un tempo di vita 'a, e Foo<'a> lo usa.
+		Tempi di vita multipli			4.10.4
+	 		Se si hanno riferimenti multipli, si può usare lo stesso tempo di vita più volte:
+
+	 			//tempi di vita uguali tra x e y
+	 			fn x_o_y<'a>(x: &'a str, 
+	 						 y: &'a str) -> &'a str {
+
+		 	Questo dice che sia x che y sono vivi per lo stesso ambito, e che anche il valore reso è vivo per lo stesso ambito. 
+
+		 	Se si voless che x e y avessero tempi di vita diversi, si possono usare più parametri di tempo di vita:
+
+		 		//TEMPO DI VITA DIVERSI ma con con valore reso uguale a quello di x
+		 		fn x_o_y<'a, 'b>(x: &'a str,  //ritorna il risultato con il tempo di vita di x   
+		 		                 y: &'b str) -> &'a str { ...
+
+	     	In questo esempio, x e y hanno diversi ambiti validi, ma il valore reso ha lo stesso tempo di vita di x.
 
 
 TODO: @da@finire			si trova qui:
 					https://carlomilanesi.github.io/linguaggio-rust/getting-started.html
 
- TEMPO DI VITA											4.10.
- 	Note
- 			Questa è l'ultima delle tre sezioni che presentano il sistema di possesso di Rust. Qui si assume che siano già state lette le altre due:
-
-				Il possesso, il concetto chiave
-				I prestiti, e le loro caratteristiche associate, i ‘riferimenti’
-
- 	I tempi di vita										4.10.1
- 		@lifetime_(@tempo@di@vita il sistema di possesso di Rust che imposta il
- 					momento in cui deve essere rilasciata la risorsa)
-
-
- 		Prestare un riferimento a una risorsa posseduta da qualcun altro può essere complicato. Per esempio, immaginiamo questa sequenza di operazioni:
-
- 			1 Acquisisco un riferimento a una risorsa di qualche tipo.
-			2 Ti presto un riferimento a tale risorsa.
-			3 Decido di aver finito di lavorare con quella risorsa, e quindi la
-			  rilascio, mentre tu hai ancora il tuo riferimento a tale risorsa.
-			4 Tu decidi di usare quella risorsa.
-
-					@puntatore@penzolante_(un riferimento ad un risorsa non valida)
-		Ahi, ahi! Il tuo riferimento sta puntando a una risorsa non più valida. Questo difetto si chiama ‘puntatore penzolante‘ o ‘utilizzo dopo il rilascio’.
-
-					@life@time_(tempo di vita del riferimento fino al rilascio della risorsa.)
-		Per correggerlo, dobbiamo assicurarci che il passo 4 non avvenga mai dopo il passo 3. Il sistema di possesso in Rust lo fa tramite un concetto chiamato "tempo di vita" ["lifetime"], che descrive l'ambito in cui un riferimento è valido. Nel nostro caso, o decidiamo che il tempo di vita vale solamente fino al passo 3, e in tal caso il passo 4 darà errore di compilazione, o decidiamo che il tempo di vita vale fino al passo 4, e in tal caso la risorsa dovrà essere rilasciata al passo 5.
-
-		RIFERIMENTI IMPLICITI O ESPLICITI
-		Quando abbiamo una funzione che prende un argomento per riferimento, possiamo essere impliciti o espliciti riguardo al tempo di vita di tale riferimento:
-			
-			// implicito
-				fn foo(x: &i32) {
-				}
-
-				// esplicito
-				fn bar<'a>(x: &'a i32) {
-				}
-		L''a si legge ‘il tempo di vita a’.
-		Tecnicamente, ogni riferimento ha qualche tempo di vita associato ad esso, ma il compilatore consente di eliderlo (cioè ometterlo, si veda la sezione ["@Elisione del tempo di vita"] [elisione del tempo di vita] più avanti) nei casi più tipici.
-		erò, prima di arrivarci, scomponiamo l'esempio esplicito:
-
-			fn bar<'a>(...) = angolari  <> dopo il nome della funzione per dichiarare i tempi di 
-										   vita personali
-
-
-		Precedentemente abbiamo parlato un po' della sintassi delle funzioni, ma non abbiamo discusso dei <> dopo il nome della funzione. Una funzione può avere dei ‘parametri generici’ fra le <>, dei quali i tempi di vita sono un tipo. Discuteremo altri tipi di generici più avanti nel libro, ma per adesso, focalizziamoci sull'aspetto dei tempi di vita.
+					@prova@rust_(per provare le procedure di rust utilizza questo @link)
+						https://play.rust-lang.org/?version=stable&mode=debug&edition=2021
 
 
 
 
 
+ 		
 
- 	Nelle struct										4.10.2 	
- 	I blocchi impl										4.10.3 	
- 	Tempi di vita multipli								4.10.4	
+
+ 	
+
+
  	Pensare agli ambiti									4.10.5
+
+ 		Un modo di pensare ai tempi di vita è visualizzare l'ambito per cui un riferimento rimane valido. Per esempio:
+				 	fn main() {
+				    let y = &5;    			// -+ y entra nell'ambito
+				                   			//  |
+				    // scrivi coidice       //  |
+				                            //  |
+				}                  			// -+ y esce dall'ambito (RAPPRESENTATAO DALLA GRAFFE)
+
+
+		Aggiungendo il nostro Foo:
+
+				//aggiunto il Foo con ambito di vita della x
+				struct Foo<'a> {
+				    x: &'a i32,
+				}
+
+				fn main() {
+				    let y = &5;           // -+ y entra nell'ambito y=riferimento a 5
+				    let f = Foo { x: y }; // -+ f entra nell'ambito - chiama foo e gli passa y
+				    // roba               //  |
+				                          //  |
+				}                         // -+ prima f e poi y escono dall'ambito
+										  //alla fine delle graffe sia y che f ossia x hanno lo stesso
+										  //tempo di vita e quindi vengono distrutte in modo uguale	
+
+
+			   Il nostro f vive entro l'ambito di y, perciò tutto funziona. E non fosse così? Questo codice non funziona:
+
+					struct Foo<'a> {
+					    x: &'a i32,
+					}
+
+					fn main() {
+					    let x;                    // -+ x entra nell'ambito ma fuori le graffe
+					                              //  |
+					    {                         //  |
+					        let y = &5;           // ---+ y entra nell'ambito piu piccolo le graffe interne
+					        let f = Foo { x: y }; // ---+ f entra nell'ambito
+					        x = &f.x;             //  | | errore qui
+					    }                         // ---+ prima f e poi y escono dall'ambito
+					                              //  |
+					    println!("{}", x);        //  |  quin x non ha piu riferimento perche distrutta la x insieme a y
+					}                             // -+ x esce dall'ambito
+
+
+				Come si vede, gli ambiti di f e y sono più piccoli dell'ambito di x. 
+				Ma quando facciamo x = &f.x, rendiamo x un riferimento a qualcosa che sta per uscire dal suo ambito.
+
+				I tempi di vita con nome sono un modo di dare un nome a questi ambiti. 
+				Dare un nome a qualcosa è il primo passo verso l'essere capaci di parlarne.
+
+
  	static												4.10.5
  	Elisione del tempo di vita							4.10.6
  	Esempi												4.10.7
