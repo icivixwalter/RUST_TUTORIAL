@@ -2287,9 +2287,160 @@ TODO: @da@finire			si trova qui:
 
 
 
- 	Pattern multipli									4.15.1	
+ 	Pattern multipli									4.15.1
+ 		Nota
+ 			Possiamo far combaciare più pattern usando |:
+ 				let x = 1;
+
+					match x {
+						//due pattern 1 | 2
+					    1 | 2 => println!("uno o due"), //pattern multiplo con |
+					    3 => println!("tre"),
+					    _ => println!("qualunque cosa"),
+					}
+					Questo stampa uno o due.
+
+
  	Destrutturazione									4.15.2	
- 	Ignorare i legami									4.15.3	
+ 		Nota
+ 			Se si ha un tipo di dati composito, come una struct, lo si può destrutturare 
+ 			dentro un pattern:
+ 				
+ 				struct Punto {
+					    x: i32,
+					    y: i32,
+					}
+
+					let origine = Punto { x: 0, y: 0 };   //nome base x e y
+
+					match origine {
+						//qua destrutturi in x,y??
+					    Punto { x, y } => println!("({},{})", x, y),
+					}
+
+
+			Possiamo usare : per dare un altro nome a un valore.
+
+				struct Punto {  //struttura
+				    x: i32,
+				    y: i32,
+				}
+
+				let origine = Punto { x: 0, y: 0 };   //nome base x,y
+
+				match origine {
+					//qui dai altro nome, x a x1 e y a y1
+				    Punto { x: x1, y: y1 } => println!("({},{})", x1, y1),
+				}
+
+			Se ci interessano solamente alcuni valori, non dobbiamo dare dei nomi a tutti:
+
+				struct Punto {
+				    x: i32,
+				    y: i32,
+				}
+
+				let origine = Punto { x: 0, y: 0 };
+
+				match origine {
+					//forse qui solo la x??
+				    Punto { x, .. } => println!("x is {}", x),
+				}
+
+				
+				Questo stampa x è 0.
+
+
+
+				si può fare questo genere di match su qualunque membro, non solamente il primo:
+
+					struct Punto {
+					    x: i32,
+					    y: i32,
+					}
+
+					let origine = Punto { x: 0, y: 0 };
+
+					match origine {
+					    Punto { y, .. } => println!("y is {}", y),
+					}
+					Questo stampa y è 0.
+
+					Questo comportamento ‘destrutturante’ funziona su qualunque tipo di dati composito, come le ennuple o le enum.
+
+
+
+ 	Ignorare i legami									4.15.3
+ 		Note
+ 			Si può usare _ in un pattern per non tener conto del tipo e del valore. Per esempio, ecco un match con un Result<T, E>:
+
+
+
+ 			match qualche_valore {
+				    Ok(valore) => println!("preso un valore: {}", valore),
+				    Err(_) => println!("è avvenuto un errore"),
+				}
+
+			Nel primo braccio, leghiamo il valore dentro la variante Ok a valore. 
+			Ma nel braccio Err, usiamo _ per non tener conto dello specifico errore, e stampiamo un messaggio d'errore generico.
+
+			COME IGNORARE UN ELEMENTO
+				_ è valido in qualunque pattern che crea un legame. Ciò può essere utile per ignorare parti di una struttura più grande:
+
+				fn coordinate() -> (i32, i32, i32) {
+					    // genera e restituisci una terna
+					}
+
+					let (x, _, z) = coordinate();
+
+				Qui, leghiamo il primo e l'ultimo elemento dell'ennupla a x e a z, ma ignoriamo l'elemento di mezzo.
+
+
+				Vale la pena notare che usando _ il valore combaciante non viene affatto legato, il che comporta che tale valore non viene spostato:
+
+				let ennupla: (u32, String) = (5, String::from("cinque"));
+
+				// Qui, ennupla viene spostata, perché l'oggetto String è stato spostato:
+				let (x, _s) = ennupla;
+
+				// La prossima riga darebbe "error: use of partially moved value: `ennupla`"
+				// println!("L'ennupla è: {:?}", ennupla);
+
+				// Però,
+
+
+
+				let ennupla = (5, String::from("five"));
+
+				// Qui, ennupla _non_ vien spostata, dato che l'oggetto String non è
+				// mai stato spostato, e l'oggetto u32 è Copy:
+				let (x, _) = ennupla;
+
+				// Ciò comporta che questo funziona:
+				println!("L'ennupla è: {:?}", ennupla);
+
+
+				Ciò comporta anche che ogni variabile temporanea verrà distrutta alla fine dell'istruzione:
+
+				// Qui, la String creata verrà distrutta immediatamente, dato che non è legata:
+				let _ = String::from("  hello  ").trim();
+
+
+
+				Si può usare anche .. in un pattern per ignorare più valori:
+
+				enum EnnuplaOpzionale {
+				    Valore(i32, i32, i32),
+				    Mancante,
+				}
+
+				let x = EnnuplaOpzionale::Valore(5, -2, 3);
+
+				match x {
+				    EnnuplaOpzionale::Valore(..) => println!("Ho un'ennupla!"),
+				    EnnuplaOpzionale::Mancante => println!("Non ho tale fortuna."),
+				}
+				Questo stampa Ho un'ennupla!.
  	ref e ref mut										4.15.4	
  	Gamme												4.15.5	
  	Legami												4.15.6	

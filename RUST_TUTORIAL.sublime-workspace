@@ -12,12 +12,12 @@
 	"buffers":
 	[
 		{
-			"file": "RUST_TUTORIAL_COMPLETO.MD",
+			"file": "RUST_TUTORIAL_CARLO_MILANESI.MD",
 			"settings":
 			{
-				"buffer_size": 1241,
+				"buffer_size": 106555,
 				"encoding": "UTF-8",
-				"line_ending": "Windows"
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -85,8 +85,8 @@
 	],
 	"file_history":
 	[
-		"/media/valter/TOSHIBA EXT/CASA/PROGRAMMI/FIRE_FOX/bookmarks_CASA_Mozzilla.json",
 		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_CARLO_MILANESI.MD",
+		"/media/valter/TOSHIBA EXT/CASA/PROGRAMMI/FIRE_FOX/bookmarks_CASA_Mozzilla.json",
 		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/TUTORIAL_FREE_CODE_CAMP.MD",
 		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/PROGETTI_RUST/tempo_di_vita_struct/src/main.rs",
 		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/README.MD",
@@ -212,12 +212,12 @@
 			[
 				{
 					"buffer": 0,
-					"file": "RUST_TUTORIAL_COMPLETO.MD",
+					"file": "RUST_TUTORIAL_CARLO_MILANESI.MD",
 					"selected": true,
 					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 1241,
+						"buffer_size": 106555,
 						"regions":
 						{
 						},
@@ -232,7 +232,7 @@
 						{
 							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
 							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
