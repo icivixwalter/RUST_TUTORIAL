@@ -1850,18 +1850,453 @@ RUST_TUTORIAL_CARLO_MILANESI
 				Questo stamperà y: Cell { value: 7 }. Abbiamo aggiornato y con successo.
 
 
+
+ STRUTTURE 												4.12.
+ 		COMBINA DATI COMPLESSI IN UN SINGOLO DATO
+		 	Le struct sono un modo di creare tipi di dati più complessi. Per esempio, se stessimo facendo calcoli che coinvolgono coordinate nello spazio 2D, cioè nel piano cartesiano ci servirebbero sia un valore x che un valore y:
+		 		let origine_x = 0;
+				let origine_y = 0;
+			Una struct ci permette di combinare questi due oggetti in UN SINGOLO TIPO DI DATI UNIFICATO, i cui campi sono etichettati x e y:
+
+					struct Punto { //STRUTTURA CHE COMBINA 2 DATI IN UN SINGOLO TIPO Punto
+					    x: i32,
+					    y: i32,
+					}
+
+
+					fn main() {
+					    let origine = Punto { x: 0, y: 0 }; // origine: Punto
+
+					    println!("L'origine è in ({}, {})", origine.x, origine.y);
+					}
+		PAROLA CHIAVE STRUCT
+				
+				@struct@convenzione_(la convenzione nel dichiarare la struct è Camel Case o stile @Pascal)
+
+			Qui ci sono molte cose, analizziamole. Una struct si dichiara con la parola-chiave struct, e poi con un nome. Per convenzione, le struct hanno la MAIUSCOLIZZAZIONE DEL PASCAL: 	
+				PuntoNelloSpazio, 
+			non Punto_Nello_Spazio, né punto_nello_spazio.
+
+
+			LET = Possiamo creare un'istanza della nostra struct usando let, come al solito, ma per impostare ogni campo usiamo una sintassi con lo stile chiave: valore. L'ordine non dev'essere il medesimo della dichiarazione originale.
+
+			ACCESSO AI CAMPI = Infine, siccome i campi hanno un nome, possiamo accedervi tramite la notazione a punto: origine.x
+
+
+			VALORI IMMUTABILI DI DEFAULT = I valori nelle struct sono immutabili di default, come gli altri legami in Rust. Si deve usare mut per renderli mutabili:
+
+				//struttura con con stile pascal
+				struct Punto { //valori immutabili  NON SI PUO' USARE MUT nella struttura solo &
+					    x: i32,
+					    y: i32,
+					}
+
+					fn main() {
+						//vengono resi mutabili i valori della struct con let mut punto
+					    let mut punto = Punto { x: 0, y: 0 };
+
+					    //accesso ai campi con origine.campo
+					    punto.x = 5;
+
+					    println!("Il punto è in ({}, {})", punto.x, punto.y);
+					}
+						Questo stamperà Il punto è in (5, 0).
+
+
+			NO MUTABILITA DEI CAMPI DELLA STRUCT = Rust non supporta la mutabilità dei campi a livello del linguaggio, quindi non si può scrivere qualcosa così:
+
+					struct Point {
+					    mut x: i32,  //ERRORE non si puo rendere mutabile un campo della struct
+					    y: i32,
+					}
+
+
+			MUTABILITA SOLO DEGLI OGGETTI IN MODO TEMPORANEO = La mutabilità è una proprietà del legame, non della struttura stessa. Chi fosse abituato all mutabilità a livello di campo, lo può trovare strano dapprima, ma semplifica parecchio le cose. Consente perfino di rendere temporaneamente mutabili degli oggetti:
+
+					//@Struttura_(@struct con @campi @immutabili di default)
+					struct Punto {
+					    x: i32,
+					    y: i32,
+					}
+
+					fn main() {
+						
+						//@struct@mut_(viene reso @mutabile l'oggetto della struttura)
+					    let mut punto = Punto { x: 0, y: 0 };
+
+					    punto.x = 5; //qui assegni perchè è mutabile
+
+					    let punto = punto; // con il nuovo let adesso è immutabile
+
+					    punto.y = 6; // questo provoca un errore non puo' essere modificato
+					}
+
+			STRUTTURA CON PUNTATORI = Però una struttura può contenere dei puntatori &mut, che consentono di applicare qualche tipo di mutazione:
+
+
+				//STRUTTURA
+				struct Punto {
+					    x: i32,
+					    y: i32,
+					}
+
+					//STRUTTURA CON PUNTATORI CON &mut
+					struct RifPunto<'a> {
+					    x: &'a mut i32,   //puntatori con &mut
+					    y: &'a mut i32,
+					}
+
+					fn main() {
+					    let mut punto = Punto { x: 0, y: 0 };  //assegno a variabile mutabile
+
+					    {
+					        //ASSEGNO a r i riferimenti mutabili di punto.x e punto.y
+					        let r = RifPunto { x: &mut punto.x, y: &mut punto.y };
+
+					        *r.x = 5; //assegno al campo r.x, r.y i valori
+					        *r.y = 6;
+					    }
+
+			
+
+					    assert_eq!(5, punto.x);
+					    
+					    		//stampo dopo assert x
+					    		println!("stampo dopo il codice assert_eq!(5, punto.x) il valore di x che è = {:?}", punto.x);
+					    assert_eq!(6, punto.y);
+
+					    		//stampo dopo assert y
+					            println!("stampo dopo il codice assert_eq!(5, punto.y) il valore di y che è = {:?}", punto.y);
+			
+					}
+
+	Strutture ennuple									4.12.1 
+		IBRIDO TRA ENNUPLA E UNA STRUCT
+			Rust ha un altro tipo di dati che è come un ibrido fra una ennupla e una struct, e si chiama ‘struttura ennupla’. Le strutture ennuple hanno un nome, ma i loro campi no. Sono dichiarate con la parola-chiave struct, e poi con un nome seguito da un'ennupla:
+
+				struct Colore(i32, i32, i32);
+				struct Punto(i32, i32, i32);
+
+				let nero = Colore(0, 0, 0);
+				let origine = Punto(0, 0, 0);
+
+
+			Qui, nero e origine non sono dello stesso tipo, anche se contengono campi degli stessi tipi.
+
+			Si può accedere ai membri di una struttura ennupla tramite la notazione a punto o il let destrutturante, proprio come le normali ennuple:
+
+				let nero_r = nero.0;
+				let Punto(_, origine_y, origine_z) = origine;
+
+
+
+			I pattern come Punto(_, origine_y, origine_z) sono usati anche nelle espressioni match.
+
+		UTILITA DELLA STRUTTURA ENNUPLA CON UN SOLO ELEMENTO
+			Un caso in cui una struttura ennupla è molto utile è quando ha un solo elemento. Questo viene chiamato il pattern ‘newtype’, perché consente di creare un nuovo tipo che è distinto da quello del suo valore contenuto ed esprime anche un suo significato semantico:
+
+				//STRUTTURA ENNUPLA CON 1 ELEMENTO PATTERN newtype
+				struct Pollici(i32);				//tipo pollici	
+
+					let lunghezza = Pollici(10);   //assegno a lunghezza pollici 10 e creo un nuovo tipo
+												   //lunghezza	diverso da pollici
+
+					let Pollici(lunghezza_intera) = lunghezza;   //assegno a pollici lunghezza
+					println!("la lunghezza è {} pollici", lunghezza_intera);  //posso stampare lunghezza
+
+			Come sopra, si può estrarre il tipo intero interno tramite un let destrutturante. In questo caso, il 
+				let Pollici(lunghezza_intera) 
+			assegna 10 a lunghezza_intera. 
+
+			Avremmo potuto usare la notazione a punto per fare la stessa cosa:
+				let lunghezza_intera = lunghezza.0;
+
+
+		ALTERNATIVA AD UNA ENNUPLA USARE UNA STRUCT
+			È sempre possibile usare una struct invece di una struttura ennupla, e può essere più chiara. Avremmo potuto scrivere Colore e Punto anche così:
+
+				//Creo una struttura al posto di una ennupla = struct Pollici(i32);
+				struct Colore {
+				    rosso: i32,
+				    blu: i32,
+				    verde: i32,
+				}
+
+				//nella struttura ci sono nomi effettivi non le posizioni come la ennupla
+				//e puoi utilizzare la notazione a punto es. Punto.x
+				struct Punto {
+				    x: i32,
+				    y: i32,
+				    z: i32,
+				}
+
+			I buoni nomi sono importanti, e mentre si può fare riferimento ai valori in una struttura ennupla anche con la notazione a punto, una struct ci dà dei nomi effettivi piuttosto che delle posizioni.
+	Struct simili a unità 								4.12.2
+		Note
+			Si può anche definire una struct senza nessun membro:
+
+				//STRUTTURE SENZA MEMBRO CON GRAFFE O SENZA 
+				struct Elettrone {} // si usano le graffe vuote...
+				struct Protone;     // ...o solo un punto-e-virgola
+
+				// che la struct sia stata dichiarata con le graffe oppure no,
+				// si deve fare lo stesso quando se ne istanzia una
+				let x = Elettrone {};
+				let y = Protone;
+
+
+				Una tale struct è chiamata ‘simile a unità’ perché somiglia alla ennupla vuota, (), che talvolta è chiamata ‘unità’. Come una struttura ennupla, definisce un nuovo tipo.
+
+				Questo tipo è usato raramente da solo (sebbene talvolta può servire come tipo marcatore), ma in combinazione con altre caratteristiche, può diventare utile. Per esempio, una libreria può chiedere di creare una struttura che implementi un certo tratto per gestire eventi. Se non si hanno dati da mettere nella struttura, si può creare struct simile a unità.
+
+
+
+ 		
+ ENUMERAZIONI											4.13.
+		Note
+				 @enumerazioni_(puo essere chiamata @tipo @somma e quindi un tipo @chiave @valore e puo
+				 				contenere valori diversi)
+
+			Una enumerazione in Rust è un tipo, dichiarato usando la parola-chiave enum, che rappresenta un dato che ha un valore scelto in un elenco di varianti. Ogni variante dell'enumerazione può avere dei dati associati ad essa. Per esempio:
+				
+				//enum con dati associati o no  puo contenere dati non definiti, i32 o String
+				enum Message {
+
+					//solo chiave
+				    Abbandona,						//variante senza dati (sono simili a strutture senza
+				    								// unita)
+				    //chiave e valore				
+				    CambiaColore(i32, i32, i32),	//variante con i dati senza nome
+				    Muovi { x: i32, y: i32 },		//variante con i dati con nome
+				    Scrivi(String),
+				}
+
+			La sintassi per definire le varianti somiglia alle sintassi usate per definire le strutture: si possono avere 
+				varianti senza dati (come le strutture simili a unità), 
+				varianti con dati con nome, e 
+				varianti con dati senza nome (come le strutture ennupla). 
+			
+			Diversamente dalle definizioni di strutture distinte, però, un enum è un singolo tipo. 
+			Un valore di un'enumerazione può corrispondere a una qualunque delle sue varianti. 
+
+			Per questa ragione, un'enumerazione è talvolta chiamata un 
+				‘tipo somma’: l'insieme dei possibili valori dell'enumerazione è la somma degli insiemi dei possibili valori di ogni variante.
+
+		SINTASSI ::
+			Usiamo la sintassi :: per usare il nome di ogni variante: il loro nome può essere usato solo se qualificato dal nome dell'enum stesso. Ciò consente di avere le seguenti dichiarazioni di x e y:
+				let x: Messaggio = Messaggio::Mossa { x: 3, y: 4 };
+
+					enum TurnoGiocoDaTavolo {
+						//etichetta dei dati Mossa e Passo
+					    Mossa { quadrati: i32 },	//VARIANTE CON DATI E NOME
+					    Passo,						//VARIANTE SOLO NOME SENZA DATI
+					}
+
+
+					let y: TurnoGiocoDaTavolo = TurnoGiocoDaTavolo::Mossa { quadrato: 1 };
+
+
+					Entrambe le varianti si chiamano Mossa, ma dato che sono qualificate dal nome dell'enumerazione, possono essere usate entrambe senza creare ambiguità.??
+
+
+			VALORE ENUM COSA CONTIENE
+					@unione@etichettata(significato delle varianti enum)_@tagged @union
+
+				Un valore di un tipo enum contiene 
+					l'informazione su quale variante è, 
+					oltre a ogni dato associato a quella variante. 
+
+				Questo fatto è talvolta indicato come ‘unione etichettata’ ["tagged union"], dato che i 
+					dati comprendono un'’etichetta’ ["tag"], che indica qual'è il tipo. 
+
+				Il compilatore usa questa informazione per garantire che si acceda in modo sicuro ai dati dell'enumerazione. 
+
+				Per esempio, non si può semplicemente provare a destrutturare un valore come se fosse una delle possibile varianti:
+
+					fn elabora_cambio_colore(mess: Messaggio) {
+						    let Messaggio::CambiaColore(r, g, b) = mess; // errore di compilazione
+						}
+
+
+
+				COME SUPERI LA LIMITAZIONE DELLA MANCANZA DI SUPPORTO DELLE OPERAZIONI: Non supportare queste operazioni può sembrare piuttosto limitativo, ma è una limitazione che possiamo superare. 
+				Ci sono due modi: o 
+					implementando l'uguaglianza noi stessi, 
+						o 
+					eseguendo un pattern matching delle varianti con espressioni match, come vedremo nella prossima sezione. 
+
+				Non abbiamo ancora visto abbastanza Rust per implementare l'uguaglianza, ma lo vedremo nella sezione sui [tratti][tratti]. ??
+
+
+ 	Costruttori come funzioni							4.13.1
+ 		Note
+
+			Un costruttore di un enum può anche essere usato come una funzione. Per esempio:
+
+				let m = Messaggio::Scrivi("Ciao, mondo".to_string());
+
+			è lo stesso che
+				//costruisco la funzione con restituzione 
+				fn foo(x: String) -> Messaggio 
+					{
+					    Messaggio::Scrivi(x)
+					}
+
+				//assegno a x la stringa e chiamo la funzione
+				let x = foo("Ciao, mondo".to_string());
+
+
+
+			Questo non ci è immediatamente utile, ma quando arriveremo alle chiusure, parleremo di come 	passare le funzioni come argomenti ad altre funzioni. 
+
+			Per esempio, 
+				con gli iteratori, 
+
+			possiamo fare questo per convertire un vettore di String in un vettore di Messaggio::Scrivi:
+
+					//vettore di string convertito in vettore di messaggio
+
+					let v = vec!["Ciao".to_string(), "Mondo".to_string()];   //vettore di stringhe
+
+					//conversione vettore di stringhe in vettore di messaggio
+					let v1: Vec<Messaggio> = v.into_iter().map(Messaggio::Scrivi).collect();
+
+ MATCH													4.14.	
+ 		Note
+ 			Spesso, un semplice if/else non basta, perché ci sono più di due opzioni possibili. Inoltre, le condizioni possono diventare parecchio complesse. Rust ha una parola-chiave, match ("combacia"), che consente di sostituire dei complicati raggruppamenti di if/else con qualcosa di più potente. Ecco qua:
+
+ 				let x = 5;
+
+					match x {
+						//braccio valore espressione
+					    1 => println!("uno"),
+					    2 => println!("due"),
+					    3 => println!("tre"),
+					    4 => println!("quattro"),
+					    5 => println!("cinque"),
+					      => println!("qualcos'altro"),
+					      _  //qui il compilatore inferisce come i32					}
+
+			match prende un'espressione ed esegue una diramazione in base al suo valore. Ogni ‘braccio’ della diramazione ha la forma valore => espressione. 
+
+			Quando il valore combacia, l'espressione di quel braccio viene valutata. Viene chiamata match a causa del concetto di ‘pattern matching’, di cui match è un'implementazione. C'è un separate section on patterns che tratta di tutti i pattern che sono ammessi qui.
+
+			Uno dei molti vantaggi di match è che impone la ‘verifica di esaustività’. Per esempio, se si toglie l'ultimo braccio, quello con il carattere _, il compilatore darà l'errore:
+					error: non-exhaustive patterns: `_` not covered
+
+			INFERIMENTO DI X = Rust ci dice che abbiamo dimenticato qualche valore. Il compilatore inferisce dall'x che può avere qualunque valore a 32 bit, da -2.147.483.648 a 2.147.483.647. Il carattere _ agisce da 'prendi-tutto', e prenderà tutti i possibili valori che non sono specificati in un braccio dello stesso match. Come si vede nell'esempio precedente, al match vengono forniti bracci per gli interi da 1 a 5, se x vale 6 o qualunque altro valore, viene preso dal caso _.
+
+			ESPRESSIONE SU LATO DESTRO = Il costrutto match è anche un'espressione, il che significa che lo si può usare al lato destro di un'istruzione let o direttamente dove è ammessa una espressione:
+
+				let x = 5;
+					//Lato destro di =; e gli interi vengono convertiti in stringhe 
+					let numero = match x {
+					    1 => "uno",
+					    2 => "due",
+					    3 => "tre",
+					    4 => "quattro",
+					    5 => "cinque",
+					    _ => "qualcos'altro",
+					};
+
+
+					Talvolta è un modo carino di convertire qualcosa da un tipo a un altro; in questo esempio gli interi vengono convertiti in String.
+
+
+ 	
+	Combaciare le enumerazioni							4.14.1
+ 			Un altro impiego importante della parola-chiave match sta nell'elaborare le possibili varianti di un'enumerazione:
+
+ 				enum Messaggio {
+				    Abbandona,
+				    CambiaColore(i32, i32, i32),
+				    Sposta { x: i32, y: i32 },
+				    Scrivi(String),
+				}
+
+				fn abbandona() { /* ... */ }
+				fn cambia_colore(r: i32, g: i32, b: i32) { /* ... */ }
+				fn sposta_cursore(x: i32, y: i32) { /* ... */ }
+
+				fn elabora_messaggio(msg: Messaggio) {
+				    match msg {
+				        Messaggio::Abbandona => abbandona(),
+				        Messaggio::CambiaColore(r, g, b) => cambia_colorw(r, g, b),
+				        Messaggio::Sposta { x: x, y: y } => sposta_cursore(x, y),
+				        Messaggio::Scrivi(s) => println!("{}", s),
+				    };
+				}
+
+
+					Ancora, il compilatore Rust verifica l'esaustività, e richiede di avere un braccio combaciante per ogni variante dell'enum. Se ne manca qualcuno, darà un errore di compilazione, a meno che si usi il braccio _.
+
+					Diversamente dai precedenti utilizzi di match, questo caso non è sostituibile da un semplice uso del costrutto if. Si può però usare il costrutto if let, che può essere visto come una forma abbreviata di match.
+
+ PATTERN												4.15.	
+ 		Note
+ 			I pattern sono molto comuni in Rust. 
+ 			Li usiamo nei 
+ 				legami di variabile, 
+ 				nelle espressioni match, 
+			e anche in altri posti. Facciamo una carrellata di tutte le cose che i pattern possono fare!
+			Un rapido ripasso: si può far combaciare direttamente con letterali, e il carattere _ agisce come caso ‘qualunque’:
+
+				let x = 1;
+
+				match x {
+				    1 => println!("uno"),
+				    2 => println!("due"),
+				    3 => println!("tre"),
+				    _ => println!("qualunque cosa"),
+				}
+
+				Questo stampa uno.
+
+			OSCURAMENTO
+				C'è un trabocchetto con i pattern: come ogni cosa che introduce un nuovo legame, anche i pattern possono introdurre l'oscuramento. Per esempio:
+
+						let x = 1;			//I° legame di x
+						let c = 'c';
+
+						match c {
+						x => println!("x: {} c: {}", x, c),  //II° legame di x che vale c
+						}
+
+						println!("x: {}", x)  //x esterna oscura la x interna al match stampa 1
+
+					Questo stampa:
+
+						x: c c: c
+						x: 1
+
+
+				In altre parole, x => combacia con il valore di c e introduce un nuovo legame avente nome x. 
+				Questo nuovo legame è ha come ambito il braccio di match e prende il valore di c. 
+
+				Si noti che il valore di x all'esterno dell'ambito di match è ininfluente sul valore x al suo interno. Siccome avevamo già un legame chiamato x, questo nuovo x lo oscura.
+
+
+
 TODO: @da@finire			si trova qui:
 					https://carlomilanesi.github.io/linguaggio-rust/getting-started.html
 
 					@prova@rust_(per provare le procedure di rust utilizza questo @link)
 						https://play.rust-lang.org/?version=stable&mode=debug&edition=2021
 
- STRUTTURE 												4.12.	
- 	XXBorrowing (@PRESTITO)						4.12.1 	
- ENUMERAZIONI											4.13.	
- 	XXBorrowing (@PRESTITO)						4.13.1 	
- MATCH													4.14.	
- PATTERN												4.15.	
+
+
+
+
+ 	Pattern multipli									4.15.1	
+ 	Destrutturazione									4.15.2	
+ 	Ignorare i legami									4.15.3	
+ 	ref e ref mut										4.15.4	
+ 	Gamme												4.15.5	
+ 	Legami												4.15.6	
+ 	Guardie												4.15.7	
+ 	Mescolare e abbinare								4.15.8	
+
+
  SINTASSI DEI METODI									4.16.	
  STRINGHE												4.17.	
  GENERICITÀ												4.18.	
