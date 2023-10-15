@@ -36,5 +36,5 @@ ECHO pausa di 5 secondi per il controllo
 
 //@comando@unico@linux_(questo è il comando unico per il salvataggio su git)
 //@salvataggio@unico_(con linux utilizzato il @codice@unico)
-ECHO - comando unico per linux : git status && git add . && git commit -m "aggiornamento" && git push
+ECHO - comando unico per linux : git status && git add . && git commit -m "aggiornamento" && git status && git push
 
