@@ -1,7 +1,7 @@
 TUTORIAL_FREE_CODE_CAMP
 	Nota
-		tuttorial in italiano molto chiara @da @finire
-			todo:@da@finire
+		tuttorial in italiano molto chiara devi finire ??
+			todo: devi finre il tutorial ??
 
 
 	TITOLO

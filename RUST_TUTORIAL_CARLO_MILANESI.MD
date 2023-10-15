@@ -2,7 +2,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 	Note
 		questo è un tutorial in italiano di carlo milanensi e 
 		si trova qui:
-			https://carlomilanesi.github.io/linguaggio-rust/getting-started.html
+			
 
 	CREARE_FILE_PROGETTO
 		rust è create per Tier o 3 livelli con diverse garanzie.
@@ -1849,8 +1849,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 				println!("y: {:?}", punto.y);
 				Questo stamperà y: Cell { value: 7 }. Abbiamo aggiornato y con successo.
 
-
-
  STRUTTURE 												4.12.
  		COMBINA DATI COMPLESSI IN UN SINGOLO DATO
 		 	Le struct sono un modo di creare tipi di dati più complessi. Per esempio, se stessimo facendo calcoli che coinvolgono coordinate nello spazio 2D, cioè nel piano cartesiano ci servirebbero sia un valore x che un valore y:
@@ -2048,9 +2046,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 				Una tale struct è chiamata ‘simile a unità’ perché somiglia alla ennupla vuota, (), che talvolta è chiamata ‘unità’. Come una struttura ennupla, definisce un nuovo tipo.
 
 				Questo tipo è usato raramente da solo (sebbene talvolta può servire come tipo marcatore), ma in combinazione con altre caratteristiche, può diventare utile. Per esempio, una libreria può chiedere di creare una struttura che implementi un certo tratto per gestire eventi. Se non si hanno dati da mettere nella struttura, si può creare struct simile a unità.
-
-
-
  		
  ENUMERAZIONI											4.13.
 		Note
@@ -2232,8 +2227,8 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 					Diversamente dai precedenti utilizzi di match, questo caso non è sostituibile da un semplice uso del costrutto if. Si può però usare il costrutto if let, che può essere visto come una forma abbreviata di match.
 
- PATTERN												4.15.	
- 		Note
+ PATTERN												4.15.
+ 	Note
  			I @pattern sono molto comuni in Rust. 
  			Li usiamo nei 
  				legami di variabile, 
@@ -2279,9 +2274,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 				Si noti che il valore di x all'esterno dell'ambito di match è ininfluente sul valore x al suo interno. Siccome avevamo già un legame chiamato x, questo nuovo x lo oscura.
 
-
-
-
  	Pattern multipli									4.15.1
  		Nota
  			Possiamo far combaciare più pattern usando |:
@@ -2294,7 +2286,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 					    _ => println!("qualunque cosa"),
 					}
 					Questo stampa uno o due.
-
 
  	Destrutturazione									4.15.2	
  		Nota
@@ -2362,8 +2353,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 					Questo stampa y è 0.
 
 					Questo comportamento ‘destrutturante’ funziona su qualunque tipo di dati composito, come le ennuple o le enum.
-
-
 
  	Ignorare i legami									4.15.3
  		Note
@@ -2518,7 +2507,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 						//assegno a x ??
 						let x: Option<Persona> = Some(Persona { nome: Some(nome) });
 						match x {
-							//lego il nome ad a 	??? cosa fa Some  todo: spiegare meglio ?? @non@è@chiaro @da@studiare											
+							//lego il nome ad a 	??? cosa fa Some  todo: spiegare meglio ?? @non@è@chiaro @devi@studiare@meglio											
 						    Some(Persona { nome: ref a @ Some(_), .. }) => println!("{:?}", a),
 						    _ => {}
 						}
@@ -2534,7 +2523,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 						    e @ 1 ... 5 | e @ 8 ... 10 => println!("ho un elemento della gamma: {}", e),
 						    _ => println!("qualunque cosa"),
 						}
-
 
  	Guardie												4.15.7
  		
@@ -2580,8 +2568,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 					4 | (5 if y) => ...
 
-
-
  	Mescolare e abbinare								4.15.8
  		Urca! Ci sono molti modi diversi di far combaciare le cose, e tutti quanti possono essere mescolati e abbinati, a seconda di ciò che si sta facendo:
 
@@ -2594,10 +2580,45 @@ RUST_TUTORIAL_CARLO_MILANESI
 			I pattern sono molto potenti. Facciamone buon uso.
 
 
- SINTASSI DEI METODI									4.16.	
- STRINGHE												4.17.	
+ SINTASSI DEI METODI									4.16.
+ 	@fino@qui@da@fare@milanesi @da@finire
+ 		Vedi: https://carlomilanesi.github.io/linguaggio-rust/patterns.html
+	
+	Sintassi dei metodi									4.16.1
+	Chiamate di metodo									4.16.2
+	Concatenamento di chiamate di metodi				4.16.3
+	Funzioni associate									4.16.4
+	Il pattern del costruttore							4.16.5
+
+
+ STRINGHE												4.17.
+ 	Le stringhe											4.17.1
+ 	Indicizzazione										4.17.2
+ 	Affettatura ["slicing"]								4.17.3
+ 	Concatenazione										4.17.4
+
+
  GENERICITÀ												4.18.	
- TRATTI													4.19.	
+ 	I generici											4.18.1
+ 	Funzioni generiche									4.18.2
+ 	Struct generiche									4.18.3
+ 	Struct generiche									4.18.3
+
+ TRATTI													4.19.
+ 	Tratti ["trait"]									4.19.1
+ 	Legami del tratto sulle funzioni generiche			4.19.2
+ 	Regole per implementare i tratti					4.19.4
+ 	Legami di tratto multipli							4.19.5
+ 	La clausola Where									4.19.6
+ 	I metodi di default									4.19.7
+ 	Ereditarietà										4.19.8
+ 	Derivazione											4.19.9
+ 	Derivazione											4.19.9
+
+
+
+
+
  DROP													4.20.	
  IF LET 												4.21.	
  OGGETTI-TRATTI											4.22.	
