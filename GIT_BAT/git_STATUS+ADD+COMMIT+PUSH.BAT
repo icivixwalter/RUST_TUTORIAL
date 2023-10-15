@@ -34,6 +34,6 @@ ECHO
 ECHO pausa di 5 secondi per il controllo
 @TIMEOUT /T 5 /NOBREAK
 
-
+//@comando@unico@linux_(questo è il comando unico per il salvataggio su git)
 ECHO - comando unico per linux : git status && git add . && git commit -m "aggiornamento" && git push
 
