@@ -11,15 +11,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "RUST_TUTORIAL_CARLO_MILANESI.MD",
-			"settings":
-			{
-				"buffer_size": 106555,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -85,6 +76,8 @@
 	],
 	"file_history":
 	[
+		"/media/valter/TOSHIBA EXT/CASA/GE_CASA/2023_10_05_TIPO_FZ212PV_BOLLO_2023_263,95 GIA PAGA",
+		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/GIT_BAT/git_OpenGitHub.bat",
 		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_CARLO_MILANESI.MD",
 		"/media/valter/TOSHIBA EXT/CASA/PROGRAMMI/FIRE_FOX/bookmarks_CASA_Mozzilla.json",
 		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/TUTORIAL_FREE_CODE_CAMP.MD",
@@ -95,7 +88,6 @@
 		"/home/valter/CASA/CARTELLACONDIVISA/PASSAGGIO_DATI/PassaggioDati.txt",
 		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/PROGETTI_RUST/gioco_indovina/src/main.rs",
 		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/PROGETTI_RUST/prestito_valori/src/main.rs",
-		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/GIT_BAT/git_OpenGitHub.bat",
 		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/PROGETTI_RUST/hello_word_cargo/Cargo.toml",
 		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/PROGETTI_RUST/hello_word_cargo/src/main.rs",
 		"/home/valter/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/PROGETTI_RUST/hello_word_cargo/target/doc/settings.html",
@@ -210,38 +202,6 @@
 		{
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "RUST_TUTORIAL_CARLO_MILANESI.MD",
-					"selected": true,
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 106555,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"stack_multiselect": false,
-					"type": "text"
-				}
 			]
 		}
 	],

@@ -2234,7 +2234,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 
  PATTERN												4.15.	
  		Note
- 			I pattern sono molto comuni in Rust. 
+ 			I @pattern sono molto comuni in Rust. 
  			Li usiamo nei 
  				legami di variabile, 
  				nelle espressioni match, 
@@ -2247,12 +2247,16 @@ RUST_TUTORIAL_CARLO_MILANESI
 				    1 => println!("uno"),
 				    2 => println!("due"),
 				    3 => println!("tre"),
-				    _ => println!("qualunque cosa"),
+				     => println!("qualunque cosa"),
+				    _                        //_ = significa @caso @qualunque oppure @non@identificato
+				
 				}
+
 
 				Questo stampa uno.
 
 			OSCURAMENTO
+						@oscuramento_(esiste anche l'oscuramento tra i @pattern)
 				C'è un trabocchetto con i pattern: come ogni cosa che introduce un nuovo legame, anche i pattern possono introdurre l'oscuramento. Per esempio:
 
 						let x = 1;			//I° legame di x
@@ -2277,15 +2281,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 
 
-TODO: @da@finire			si trova qui:
-					https://carlomilanesi.github.io/linguaggio-rust/getting-started.html
-
-					@prova@rust_(per provare le procedure di rust utilizza questo @link)
-						https://play.rust-lang.org/?version=stable&mode=debug&edition=2021
-
-
-
-
 
  	Pattern multipli									4.15.1
  		Nota
@@ -2294,7 +2289,7 @@ TODO: @da@finire			si trova qui:
 
 					match x {
 						//due pattern 1 | 2
-					    1 | 2 => println!("uno o due"), //pattern multiplo con |
+					    1 | 2 => println!("uno o due"), //@pattern @multiplo con |
 					    3 => println!("tre"),
 					    _ => println!("qualunque cosa"),
 					}
@@ -2440,12 +2435,163 @@ TODO: @da@finire			si trova qui:
 				    EnnuplaOpzionale::Valore(..) => println!("Ho un'ennupla!"),
 				    EnnuplaOpzionale::Mancante => println!("Non ho tale fortuna."),
 				}
-				Questo stampa Ho un'ennupla!.
- 	ref e ref mut										4.15.4	
- 	Gamme												4.15.5	
- 	Legami												4.15.6	
- 	Guardie												4.15.7	
- 	Mescolare e abbinare								4.15.8	
+				Questo stampa Ho un'ennupla!
+
+ 	ref e ref mut										4.15.4
+
+ 			@riferimento_(con let crea un riferimento e mut @riferimento@mutabile)
+
+ 		Se si vuole ottenere un riferimento, si usi la parola-chiave ref:
+ 			let x = 5;
+
+				match x {
+					//ref = parola chiave per ottenere un @riferimento
+				    ref r => println!("Ho un riferimento a {}", r),
+				}
+
+			Questo stampa Ho un riferimento a 5.
+
+			Qui, la r dentro il match ha il tipo &i32. In altre parole, la parola-chiave ref crea un riferimento, da usare nel pattern. Se serve un @riferimento @mutabile, ref mut funzionerà allo stesso modo:
+
+				let mut x = 5;
+
+				match x {
+					//ref mut = riferimento mutabile
+				    ref mut mr => println!("Ho un riferimento mutabile a {}", mr),
+				}
+
+ 	Gamme												4.15.5
+ 			
+ 			@gamme_(@gamma di @valori es da 1 a 5 con 1 ...5)
+
+ 		Si può far combaciare una gamma di valori usando ...:
+
+ 		let x = 1;
+
+			match x {
+			    1 ... 5 => println!("da uno a cinque"),
+			    _ => println!("qualunque cosa"),
+			}
+
+		Questo stampa da uno a cinque.
+			@utilizzo@gamme_(la gamma di valore vengono usati per gli interi ed i chart)
+
+		Le gamme sono usate per lo più con gli interi e i char:
+
+			@esempio@gamma_(di @char)
+
+			let x = '💅';
+
+			match x {
+			    'a' ... 'j' => println!("lettera precoce"),
+			    'k' ... 'z' => println!("lettera tardiva"),
+			    _ => println!("qualcos'altro"),
+			}
+
+			Questo stampa qualcos'altro.
+
+ 	Legami												4.15.6
+ 		Si possono legare valori a nomi usando @:
+
+ 			@legami_(si possono legare i valori ai @nome con la chiocciola @)
+
+ 			let x = 1;
+
+				match x {
+					//lega @ al valore 1 
+				    e @ 1 ... 5 => println!("ho un elemento della gamma: {}", e),
+				    _ => println!("qualunque cosa"),
+				}
+
+				@operatore@chiocciola_(la@ puo essere utilizzata per le estrazioni complicate)
+
+			Questo stampa ho un elemento della gamma: 1. Questo operatore serve anche quando si vuole estrarre una parte di una struttura dati complicata:
+
+					#[derive(Debug)]
+						//creo la struttura persona
+						struct Persona {
+						    nome: Option<String>,
+						}
+
+						//assegno il valore di stringa a nome
+						let nome = "Steve".to_string();
+						//assegno a x ??
+						let x: Option<Persona> = Some(Persona { nome: Some(nome) });
+						match x {
+							//lego il nome ad a 	??? cosa fa Some  todo: spiegare meglio ?? @non@è@chiaro @da@studiare											
+						    Some(Persona { nome: ref a @ Some(_), .. }) => println!("{:?}", a),
+						    _ => {}
+						}
+
+						Questo stampa Some("Steve"): abbiamo legato il nome interno ad a.
+
+						Se si usa @ con |, bisogna assicurarsi che il nome sia legato in ogni parte del pattern:
+
+						let x = 5;
+
+						match x {
+							//utilizzo @| = @= 1 e |@ = 8 il nome è legato nel lato dx e sx del pattern
+						    e @ 1 ... 5 | e @ 8 ... 10 => println!("ho un elemento della gamma: {}", e),
+						    _ => println!("qualunque cosa"),
+						}
+
+
+ 	Guardie												4.15.7
+ 		
+ 			@if@nel@match_(la if applicata al match sia con pattern solo dx che dx e sx)
+
+ 		Si possono introdurre le ‘guardie di match’ usando if:
+ 			//CREO UN ENUM 
+ 			enum OptionalInt {
+			    Valore(i32),
+			    Mancante,
+			}
+			//assegno a x 5
+			let x = OptionalInt::Valore(5);
+
+
+
+			match x {
+			    //metto la if con il Pattern dx che valuta valore(i)= 5
+			    OptionalInt::Valore(i) if i > 5 => println!("Ho un int maggiore di cinque!"),
+			    OptionalInt::Valore(..) => println!("Ho un int!"),
+			    OptionalInt::Mancante => println!("Non ho tale fortuna."),
+			}
+
+				Questo stampa Ho un int!.......
+
+			Se si sta usando if con più pattern, la if si applica a entrambi i lati (dx e sx):
+
+			let x = 4;
+			let y = false;
+
+			match x {
+				//viene valutata l'espressione 4|5 e quindi stampa si
+				//la if si applica al pattern dx e a quello sx
+			    4 | 5 if y => println!("sì"),
+			    _ => println!("no"),
+			}
+
+				Questo stampa no, perché la if si applica a tutta l'espressione 4 | 5, e non solamente al 5. In altre parole, la precedenza di if si comporta così:
+
+					(4 | 5) if y => ...
+
+					non così:
+
+					4 | (5 if y) => ...
+
+
+
+ 	Mescolare e abbinare								4.15.8
+ 		Urca! Ci sono molti modi diversi di far combaciare le cose, e tutti quanti possono essere mescolati e abbinati, a seconda di ciò che si sta facendo:
+
+			//match con due @pattern @mescolati ed @abbinati  todo: ???spiegare meglio 
+ 			match x {
+ 				//pattern dx =x  e pattern sx = y		
+			    Foo { x: Some(ref nome), y: None } => ...
+			}	
+
+			I pattern sono molto potenti. Facciamone buon uso.
 
 
  SINTASSI DEI METODI									4.16.	
