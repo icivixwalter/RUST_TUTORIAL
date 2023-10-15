@@ -2583,12 +2583,309 @@ RUST_TUTORIAL_CARLO_MILANESI
  SINTASSI DEI METODI									4.16.
  	@fino@qui@da@fare@milanesi @da@finire
  		Vedi: https://carlomilanesi.github.io/linguaggio-rust/patterns.html
+ 		@rust_(@esegui @codice rust)
+ 			https://play.rust-lang.org/?version=stable&mode=debug&edition=2021
 	
 	Sintassi dei metodi									4.16.1
+		Le funzioni sono ottime, ma se si vuole chiamarne un po' su alcuni dati, può diventare scomodo. Si consideri questo codice:
+
+		//ORDINE DI CHIAMATA E INVERSO, prima 1) foo, 2) bar, 3) baz
+		baz(bar(foo(x)));
+
+			Normalmente leggiamo questo codice da sinistra a destra, e quindi diciamo ‘baz di bar di foo di x’. Ma questo non è l'ordine con cui le funzioni verrebbero chiamate; l'ordine di chiamata è invece il contrario: ‘applica a x prima foo, poi bar, e poi baz’. Non sarebbe carino se potessimo scrivere il seguente codice?
+
+		x.foo().bar().baz();
+			Fortunatamente, come si potrebbe immaginare, si può! Rust fornisce la capacità di usare questa ‘sintassi di chiamata di metodo’ tramite la parola-chiave impl.
+
 	Chiamate di metodo									4.16.2
+		Ecco come funziona:
+
+			//creo una truttura e sua implementazione di cerchio
+			//======================================================================//
+					
+				//STRUTTURA CERCHIO
+				struct Cerchio {
+				    x: f64,
+				    y: f64,
+				    raggio: f64,
+				}
+
+				//blocco impl con il metodo area
+				impl Cerchio {
+					//metodo area; con 1 argomento speciale con &self = riferimento immutabile
+				    fn area(&self) -> f64 {    //CON &SELF = Prendi a prestito regola base al posto del possesso
+				    	//calcolo del cerchio con la libreria std f64 const pi = raggio x raggio
+				        std::f64::consts::PI * (self.raggio * self.raggio)
+				    }
+				}
+			//======================================================================//
+
+			//chiamo il cerchio con main
+			fn main() {
+					//assegno a c
+				    let c = Cerchio { x: 0.0, y: 0.0, raggio: 2.0 };
+				    println!("\n eseguo il calcolo Cerchio passando c con i 3 parametri x, y, raggio : {}", c.area());
+				}
+
+
+				Questo stamperà 12.566371.
+
+
+				Abbiamo definito una struct che rappresenta un cerchio. Poi abbiamo scritto un blocco impl, e al suo interno abbiamo definito un metodo, area
+
+				I metodi prendono un primo argomento speciale, di cui ci sono tre varianti: 
+						self, 		= valore stack
+						&self, e 	= riferimento (NON MUTABILE)
+						&mut self  	= riferimento MUTABILE
+
+				 Si può pensare a questo primo argomento come se fosse il foo in foo.bar(). 
+
+				 Le tre varianti corrispondono ai tre tipi di cose che foo potrebbe essere: 
+				 	self se è un valore sullo stack, 
+				 	&self se è un riferimento, e 
+				 	&mut self se è un riferimento mutabile. 
+
+			 	Siccome abbiamo preso l'argomento &self da area, possiamo usarlo come qualunque altro argomento. 
+			 	Siccome sappiamo che tale argomento è di tipo Cerchio, possiamo accedere al suo membro raggio come faremmo con qualunque altra struct.
+
+
+			 	USARE &SELF COME REGOLA: 
+				 	Di regola dovremmo usare &self, dato che dovremmo preferire prendere a prestito rispetto a prendere il possesso, e pure dovremmo preferire prendere un riferimenti immutabili rispetto a qulli mutabili. Ecco un esempio di tutte e tre le varianti:
+
+
+				 		struct Cerchio {
+							    x: f64,
+							    y: f64,
+							    raggio: f64,
+							}
+
+							impl Cerchio {
+							    fn riferimento(&self) {  //&self = prendi a prestito ed è un riferimento 
+							       println!("presa di sé per riferimento!");
+							    }
+
+							    fn riferimento_mutabile(&mut self) {  //&mut self = prendi a mutabile (è prestito o posesso ??)
+							       println!("presa di sé per riferimento mutabile!");
+							    }
+
+						    fn prendi_possesso(self) {  //self nello stack e poi finisce con l'ambito delle {}
+							}
+
+
+						Si possono usare tanti blocchi impl quanti se ne vuole. L'esempio precedente poteva anche essere scritto così:
+
+							//esempio di implementazione con 3 blocchi
+							struct Cerchio {
+							    x: f64,
+							    y: f64,
+							    raggio: f64,
+							}
+							//blocco cerchio con &self
+							impl Cerchio {
+							    fn riferimento(&self) {
+							       println!("presa di sé per riferimento!");
+							    }
+							}
+
+							//blocco cerchio con  &mut self = nella memoria heap ed è mutabile
+							impl Cerchio {
+							    fn riferimento_mutabile(&mut self) {  
+							       println!("presa di sé per riferimento mutabile!");
+							    }
+							}
+
+							//blocco cerchio con  solocon self = nello stack
+							impl Cerchio {
+							    fn prendi_possesso(self) {
+							       println!("presa di possesso di sé!");
+							    }
+							}
+
 	Concatenamento di chiamate di metodi				4.16.3
+		Perciò, adesso sappiamo come chiamare un metodo, come foo.bar(). 
+		E che dire del nostro esempio originale, x.foo().bar().baz()? 
+		Questo è chiamato ‘concatenamento di metodi’. Vediamo un esempio:
+			
+			//CONCATENAMENTO DI CHIAMATE DI METODI
+			 	//=====================================================================================//
+
+					//faccio la struttura cerchio
+						#[derive(Debug)]        //macro di debug per evitare errori
+						#[allow(dead_code)]   //elimina il warning sul codice non usato
+						struct Cerchio {
+						    x: f64,
+						    y: f64,
+						    raggio: f64,
+						}
+
+						//implemento il cerchio con una funzione new (3 parametri x, y,raggio) --> restituisce Cerchio
+						impl Cerchio {
+						    fn new(x: f64, y: f64, raggio: f64) -> Cerchio {
+						        Cerchio {
+						            x: x,           //assegna valore 1 parametro
+						            y: y,           //assegna valore 2 parametro
+						            raggio: raggio, //assegna valore 3 parametro
+						        }
+						    }
+						}
+
+						fn main() {
+						    //chiamo il metodo o la funzione statica con Cerchio::new che prende un argomento self (immutabile)
+						    let c = Cerchio::new(0.0, 0.0, 2.0);
+						    println!("ESEMPIO di concatenamento di metodi, area = {:?}", c);
+						}
+
+			 	//=====================================================================================//
+
+
+			 	Verifica il tipo del valore restituito:
+			 	//posso inserire un'altra funzione chiamata grow ...
+				fn grow(&self, increment: f64) -> Cerchio {
+				Diciamo che stiamo restituendo un Cerchio. Con questo metodo, possiamo far crescere un nuovo Cerchio a qualunque dimensione.
+
+
+
+
 	Funzioni associate									4.16.4
+		
+			@metodi@di@classe_(sono funzione associate in una struct dette @funzioni@statiche )
+		Si possono anche definire funzioni associate che non prendono un argomento self. 
+		Ecco un pattern molto comune nel codice Rust:
+
+			//faccio la struttura cerchio
+			struct Cerchio {
+				    x: f64,
+				    y: f64,
+				    raggio: f64,
+				}
+
+				//implemento il cerchio con una funzione new (3 parametri x, y,raggio) --> restituisce Cerchio
+				impl Cerchio {
+				    fn new(x: f64, y: f64, raggio: f64) -> Cerchio {
+				        Cerchio {
+				            x: x,				//assegna valore 1 parametro
+				            y: y,				//assegna valore 2 parametro
+				            raggio: raggio,		//assegna valore 3 parametro
+				        }
+				    }
+				}
+
+				fn main() {
+							//chiamo il metodo o la funzione statica con Cerchio::new che prende un argomento self (immutabile)
+				    let c = Cerchio::new(0.0, 0.0, 2.0);
+				}
+
+				Questa ‘funzione associata’ ci costruisce un nuovo Cerchio. 
+
+				Si noti che le funzioni associate vengono chiamate usando la sintassi Struct::function(), invece che con la sintassi ref.method(). 
+						@funzioni@statiche_(sono le funzione associate dette metodi di classe o @funzioni@associate)
+
+				In alcuni altri linguaggi, le funzioni associate sono chiamate ‘funzioni membro statiche’ o ‘metodi statici’ o ‘metodi di classe’.
+
+
 	Il pattern del costruttore							4.16.5
+			Diciamo che vogliamo che i nostri utenti possano creare delle istanze di Cerchio, 
+			ma permetteremo loro di impostare solamente le proprietà a cui sono interessati. 
+
+			Se non specificati, gli attributi x e y varranno 0.0, e l'attributo raggio varrà 1.0. 
+
+			Rust non ha il sovraccaricamento dei metodi, né gli argomenti con nome, né un numero variabile di argomenti. 
+
+			Invece si impiega il pattern del costruttore. Si presenta così:
+
+
+			//COME FARE UN COSTRUTTORE IN RUST
+			 	//=====================================================================================//
+
+
+					//struttura
+					struct Cerchio {
+						    x: f64,
+						    y: f64,
+						    raggio: f64,
+						}
+
+
+						//implementazione
+						impl Cerchio {
+							//calcolo AREA cerchio
+						    fn area(&self) -> f64 {
+						        std::f64::consts::PI * (self.raggio * self.raggio)
+						    }
+						}
+
+						//costruttore di cerchi con 3 parametri x,y,raggio
+						struct CostruttoreDiCerchi {
+						    x: f64,
+						    y: f64,
+						    raggio: f64,
+						}
+
+						//CREO I METODI nel costruttore che permette di costruire il cerchio finale con la funzione finalizza
+						impl CostruttoreDiCerchi {
+						    fn new() -> CostruttoreDiCerchi {
+						        CostruttoreDiCerchi { x: 0.0, y: 0.0, raggio: 1.0, }
+						    }
+
+						    // coordinata x 
+						    fn x(&mut self, coordinata: f64) -> &mut CostruttoreDiCerchi {
+						        self.x = coordinata;
+						        self
+						    }
+
+						    // coordinata y
+
+						    fn y(&mut self, coordinata: f64) -> &mut CostruttoreDiCerchi {
+						        self.y = coordinata;
+						        self
+						    }
+
+						    // I metodo il raggio
+						    fn raggio(&mut self, raggio: f64) -> &mut CostruttoreDiCerchi {
+						        self.raggio = raggio;
+						        self
+						    }
+
+						    // II metodo finalizza
+						    fn finalizza(&self) -> Cerchio {
+						    	println!("\n 
+						    mi trovo nel METODO FINALIZZA e chiamo la classe cerchio 
+						    passando i valori di   x: {},  	\n
+						    passando i valori di   y: {} e 	\n
+						    passando il valore del raggio {}  \n", self.x, self.y, self.raggio);
+
+						        Cerchio { x: self.x, y: self.y, raggio: self.raggio }  //chiamo cerchio passando 3 paramtri
+						    }
+						}
+
+						fn main() {
+							//Chiamo il costruttore dell'istanza di cerchi con new
+						    let c = CostruttoreDiCerchi::new()		
+						        .x(1.0)				//passo la coordinata x
+						        .y(2.0)				//passo la coordinata y
+						        .raggio(2.0)		//passo i valori del raggio
+						        .finalizza();		//costruisco il cerchio
+
+						    println!("
+						    calcolo area: {}", c.area());     //CHIAMO il metodo area per il calcolo del cerchio raggio x raggio
+						    println!("
+						    valore di  x: {}", c.x);
+						    println!("  
+						    valore di  y: {}", c.y);
+						    }
+
+ 					//=====================================================================================//
+
+ 		    STRUTTURA COSTRUTTUROI CERCHI			
+ 			Ciò che abbiamo fatto qui è creare un'altra struct, CostruttoreDiCerchi. 
+
+ 					Su di essa abbiamo definito i nostri metodi di costruttore. 
+
+ 					Abbiamo anche definito il nostro metodo area() su Cerchio. 
+ 					Inoltre abbiamo creato un altro metodo su CostruttoreDiCerchi: 
+ 						finalizza(). 
+					Questo metodo crea il nostro Cerchio finale dal costruttore. Adesso, abbiamo usato il sistema dei tipi per imporre le nostre intenzioni: possiamo usare i metodi su CostruttoreDiCerchi per vincolare la costruzione di istanze di Cerchio in qualunque modo desideriamo.
+
 
 
  STRINGHE												4.17.
