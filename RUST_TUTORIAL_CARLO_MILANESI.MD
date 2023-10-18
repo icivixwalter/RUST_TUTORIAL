@@ -2581,10 +2581,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 
  SINTASSI DEI METODI									4.16.
- 	@fino@qui@da@fare@milanesi @da@finire
- 		Vedi: https://carlomilanesi.github.io/linguaggio-rust/patterns.html
- 		@rust_(@esegui @codice rust)
- 			https://play.rust-lang.org/?version=stable&mode=debug&edition=2021
+ 	
 	
 	Sintassi dei metodi									4.16.1
 		Le funzioni sono ottime, ma se si vuole chiamarne un po' su alcuni dati, può diventare scomodo. Si consideri questo codice:
@@ -2876,7 +2873,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 
  					//=====================================================================================//
 
- 		    STRUTTURA COSTRUTTUROI CERCHI			
+ 		    STRUTTURA COSTRUTTORI CERCHI			
  			Ciò che abbiamo fatto qui è creare un'altra struct, CostruttoreDiCerchi. 
 
  					Su di essa abbiamo definito i nostri metodi di costruttore. 
@@ -2887,10 +2884,84 @@ RUST_TUTORIAL_CARLO_MILANESI
 					Questo metodo crea il nostro Cerchio finale dal costruttore. Adesso, abbiamo usato il sistema dei tipi per imporre le nostre intenzioni: possiamo usare i metodi su CostruttoreDiCerchi per vincolare la costruzione di istanze di Cerchio in qualunque modo desideriamo.
 
 
+  STRINGHE												4.17.
+  	Le stringhe											4.17.1
+  		Le stringhe sono un concetto di cui è importante che ogni programmatore si impadronisca. Il sistema di gestione delle stringhe di Rust è un po' diverso da quello degli altri linguaggi, a causa del suo incentrarsi sulla programmazione di sistema. Ogni volta che c'è una struttura dati di dimensione variabile, le cose possono complicarsi, e le stringhe sono una struttura dati ridimensionabile. Detto questo, le stringhe di Rust funzionano diversamente anche da alcuni altri linguaggi di sistema, come il C.
 
- STRINGHE												4.17.
- 	Le stringhe											4.17.1
+		Scaviamo nei dettagli. Una ‘stringa’ è una sequenza di valori scalari Unicode codificati come flusso di byte UTF-8. Tutte le stringhe sono garantite essere una ecodifica valida di sequenze UTF-8. In aggiunta, diversamente da alcuni linguaggi di sistema, le stringhe non hanno un carattere terminatore e possono contenere il carattere NUL, rappresentato dal byte 0.
+
+		Rust ha due principali tipi di stringhe: 
+			&str 		= chiamate slice di stringa (a dimensione fissa ed una sequenza di byte UTF-8)
+				e 
+			String. 
+		Dapprima parliamo di &str. Queste sono chiamate ‘slice di stringa’. Una slice di stringa ha una dimensione fissa, e non può essere modificata. È un riferimento a una sequenza di byte UTF-8.
+
+			let saluto = "Ciao là."; // saluto: &'static str
+
+		"Ciao là." è un letterale di stringa il cui tipo è &'static str. 
+
+				@&str_(slice di stringa allocato staticamente nel programma compilato)
+
+		Un letterale di stringa è uno slice di stringa che è allocato staticamente, il che significa che è salvato dentro il nostro programma compilato, ed esiste per l'intera durata dell'esecuzione. Il legamo saluto è un riferimento a questa stringa staticamente allocata. Qualunque funzione che si aspetta una slice di stringa accetterà anche un letterale di stringa.
+
+
+		SI ESTENDO SU PIU RIGHE: I letterali di stringa possono estendersi su più righe. Ce ne sono due forme. La prima includerà i caratteri a-capo e gli spazi che li seguono:
+
+			I° 	FORMA
+				//qui si sono gli accapo e gli spazi
+				let s = "foo
+    				bar";
+
+				assert_eq!("foo\n    bar", s);
+
+			II° FORMA
+				La seconda, con un \, rimuove gli a-capo e gli spazi che li seguono:
+
+				// attenzione se metta la \ vengono rimossi gli spazi e gli accapo seguenti
+				let s = "foo\
+				    bar";
+
+				assert_eq!("foobar", s);
+
+				TIPO NON DIMENSIONATO : Si noti che normalmente non si può accedere direttamente a una str, ma solamente tramite un riferimento &str. Questo perché str è un tipo non dimensionato che richiede informazioni aggiuntive in fase di esecuzione per poter essere usata. Per avere maggiori informazioni, si veda il capitolo sui tipi non dimensionati.
+
+
+			Però Rust ha di più oltre alle &str. Una String è una stringa allocata sullo heap. Questa string è estendibile, ed è anche garantita essere UTF-8. Le String tipicamente sono create 
+			CONVERTENDO UNA SLICE DI STRINGA, USANDO IL METODO to_string.
+
+			Le String vengono forzate ad essere un &str usando un &:
+
+					//&str = Forzatura di String
+				fn prendi_slice(slice: &str) {
+				    println!("Preso: {}", slice);
+				}
+
+				fn main() {
+				    let s = "Ciao".to_string();
+				    prendi_slice(&s);
+				}
+
+			CONVERNSIONE CON &* = Questa forzatura non avviene per le funzioni che accettano uno dei tratti di &str invece di &str stessa. Per esempio, TcpStream::connect ha un argomento di tipo ToSocketAddrs. Una &str va bene, ma una String deve essere esplicitamente convertita usando &*.
+
+				use std::net::TcpStream;
+
+				TcpStream::connect("192.168.0.1:3000"); // argomento di tipo &str
+
+				let stringa_indirizzo = "192.168.0.1:3000".to_string();
+				TcpStream::connect(&*stringa_indirizzo); 
+
+			COSTO DELLA CONVERSIONE = Vedere una String come una &str costa poco, ma convertire la &str in una String comporta allocare della memoria. Non c'è ragione di farlo, a meno che sia necessario!
+
+
  	Indicizzazione										4.17.2
+
+ 		@fino@qui@da@fare@milanesi @da@finire
+ 		Vedi: https://carlomilanesi.github.io/linguaggio-rust/patterns.html
+ 		@rust_(@esegui @codice rust)
+ 			https://play.rust-lang.org/?version=stable&mode=debug&edition=2021
+
+
+
  	Affettatura ["slicing"]								4.17.3
  	Concatenazione										4.17.4
 
