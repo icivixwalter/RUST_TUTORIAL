@@ -94,10 +94,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 					 						--bin = opzione per creare direttamente un eseguibile e non
 					 						una libreria
 
-
-
-
-
 	GIOCO-INDOVINA
 		Impostazione
 			imposto il nuovo progetto nella directory con il comando
@@ -141,8 +137,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 									let y = 10;
 
 									println!("x e y: {} e {}", x, y);
-
-
 
 	GENERARE UN NUMERO SEGRETO 
 		crate rand
@@ -207,7 +201,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 				Viene creato un loop
 				ed inserito la gestione del panic
 
-	LEGAMI DI VARIABILE - 4.1
+	LEGAMI DI VARIABILE - 								4.1
 			
 			Per introdurre un legame, si usa la parola-chiave let, così:
 					let x = 5;
@@ -312,8 +306,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 							let y = 4;
 							let y = "Posso anche essere legato a un testo!"; // y adesso è di un altro tipo
 
-
-	FUNZIONI 4.2
+	FUNZIONI 											4.2
 		MAIN
 					@funzioni_(nelle funzioni i @parametri devono essere dichiarati )
 
@@ -525,7 +518,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 				Poi possiamo usare f per chiamare la funzione:
 					let sei = f(5);    //variabile che punta alla funzione f e la chiama 					e poi assegna il risultato a sei.
 
-	TIPI PRIMITIVI 4.3
+	TIPI PRIMITIVI 										4.3
 		Note
 				Il linguaggio Rust ha vari tipi che sono considerati ‘primitivi’. Ciò significa che fanno parte del linguaggio. Rust è strutturato in modo tale che la libreria standard fornisca anche vari altri tipi utili, costruiti basandosi su quelli primitivi, ma quelli che vedremo sono i più primitivi.
 
@@ -712,7 +705,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 					In questo caso, x è un ‘puntatore a funzione’ che punta a una funzione che prende un i32 e restituisce un i32.
 
-	COMMENTI 4.4
+	COMMENTI 											4.4
 		Note
 
 				@commenti_(come annotazione e come @documentazione)
@@ -780,7 +773,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 						crea la libreria html in target/doc ... con html
 					cargo doc --verbose = per visualizzarlo sul terminale
 
-	IF 4.6
+	IF 													4.5
 		Nota
 				@if_(la if e la @elseif )
 
@@ -819,7 +812,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 				Ciò funziona perché l'if è un'espressione. Il valore di tale espressione è il valore dell'ultima espressione della diramazione scelta. Un if senza un else ha sempre il valore ().
 
-	CICLI
+	CICLI 												4.6.0
 		LOOP 								4.6.1
 			Il costrutto @loop ("ciclo") è la forma più semplice di ciclo disponibile in Rust. Usando la parola-chiave loop, Rust fornisce un modo di ciclare indefinitamente finché si raggiunge qualche istruzione di terminazione. Il @ciclo @infinito di Rust è fatto così:
 				//Loop è il costrutto adatto per i cicli infinti
@@ -966,7 +959,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 						        println!("x: {}, y: {}", x, y);
 						    }
 
-    VETTORI 4.7
+    VETTORI 											4.7
     	Definizione							4.7.1
     			@vettori_(il @vettore è un @array@dinamico ed estensibile con il tipo @Vec<T>)
 
@@ -1064,7 +1057,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 					    println!("Questo è un riferimento a {}", i);
 					}
 
-	POSSESSO 4.8
+	POSSESSO 											4.8
 		Note
 			Questa è la prima delle tre sezioni che presentano il sistema di possesso di Rust. Questa è una delle caratteristiche più distintive e avvincenti di Rust, con la quale gli sviluppatori Rust dovrebbero diventare familiari. Il possesso è il modo in cui Rust raggiunge il suo maggior obiettivo, la sicurezza di accesso alla memoria. Ci sono alcuni concetti distinti, ognuno descritto in una sezione distinta:
 
@@ -1160,7 +1153,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 		Oltre al possesso					4.8.6
 			al posto della restituzione attivo il prestito
 
-	RIFERIMENTI E PRESTITI 4.9
+	RIFERIMENTI E PRESTITI 								4.9
 	
 		Borrowing (@PRESTITO)				4.9.1 
 			Prendere in prestito
@@ -1457,7 +1450,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 				Nell'esempio qui sopra, y è dichiarato prima di x, il che comporta che y vive (leggermente) più a lungo di x, il che non è consentito.
 
- 	TEMPO DI VITA						4.10.
+ 	TEMPO DI VITA										4.10.
  		Note
  			Questa è l'ultima delle tre sezioni che presentano il sistema di possesso di Rust. Qui si assume che siano già state lette le altre due:
 
@@ -1586,19 +1579,16 @@ RUST_TUTORIAL_CARLO_MILANESI
 		 		                 y: &'b str) -> &'a str { ...
 
 	     	In questo esempio, x e y hanno diversi ambiti validi, ma il valore reso ha lo stesso tempo di vita di x.
-
- 	Pensare agli ambiti									4.10.5
-
- 		Un modo di pensare ai tempi di vita è visualizzare l'ambito per cui un riferimento rimane valido. Per esempio:
+ 		Pensare agli ambiti				4.10.5
+ 			Un modo di pensare ai tempi di vita è visualizzare l'ambito per cui un riferimento rimane valido. Per esempio:
 				 	fn main() {
 				    let y = &5;    			// -+ y entra nell'ambito
 				                   			//  |
 				    // scrivi coidice       //  |
 				                            //  |
 				}                  			// -+ y esce dall'ambito (RAPPRESENTATAO DALLA GRAFFE)
-
-
-		Aggiungendo il nostro Foo:
+			
+			Aggiungendo il nostro Foo:
 
 				//aggiunto il Foo con ambito di vita della x
 				struct Foo<'a> {
@@ -1640,27 +1630,24 @@ RUST_TUTORIAL_CARLO_MILANESI
 				I tempi di vita con nome sono un modo di dare un nome a questi ambiti. 
 				Dare un nome a qualcosa è il primo passo verso l'essere capaci di parlarne.
 
-	
-
-
- 	static												4.10.5
+ 		static							4.10.5
  			@static_(tempo di vita dell'intero programma)
- 		Il tempo di vita chiamato ‘static’ è un tempo di vita speciale. Segnala che qualcosa ha il tempo di vita dell'intero programma. La maggior parte dei programmatori Rust si imbattono per la prima volta in 'static quando trattano le stringhe:
- 			
- 			//stringa static che viene salvata alla fine del file binario e vale per tutto il programma
- 			let x: &'static str = "Ciao, mondo.";
+	 		Il tempo di vita chiamato ‘static’ è un tempo di vita speciale. Segnala che qualcosa ha il tempo di vita dell'intero programma. La maggior parte dei programmatori Rust si imbattono per la prima volta in 'static quando trattano le stringhe:
+	 			
+	 			//stringa static che viene salvata alla fine del file binario e vale per tutto il programma
+	 			let x: &'static str = "Ciao, mondo.";
 
-		Le lettere della stringa sono di tipo &'static str perché il riferimento è sempre vivo: vengono depositati nel segmento dati del file binario finale. Un altro esempio sono i globali:
+			Le lettere della stringa sono di tipo &'static str perché il riferimento è sempre vivo: vengono depositati nel segmento dati del file binario finale. Un altro esempio sono i globali:
 
-			//variabile globale, i32 inserita nel segmento dati del file binario
-			static FOO: i32 = 5;
-			let x: &'static i32 = &FOO;
+				//variabile globale, i32 inserita nel segmento dati del file binario
+				static FOO: i32 = 5;
+				let x: &'static i32 = &FOO;
 
-		Questo aggiunge un i32 al segmento dati del file binario, e x è un riferimento a esso.
+			Questo aggiunge un i32 al segmento dati del file binario, e x è un riferimento a esso.
 
- 	Elisione del tempo di vita							4.10.6
+ 		Elisione del tempo di vita		4.10.6
 
- 		INFERENZA LOCALE SOLO NEI CORPI DELLE FUNZIONI - NESSUNA INFERENZA NELLE FIRME -
+ 			INFERENZA LOCALE SOLO NEI CORPI DELLE FUNZIONI - NESSUNA INFERENZA NELLE FIRME -
  			Rust supporta una potente inferenza di tipo locale nei corpi delle funzioni ma non nelle firme dei loro elementi. È vietato consentire di ragionare sui tipi a seconda della sola firma degli elementi. 
  			Però, per ragioni di comodità, un algoritmo di INFERENZA SECONDARIA molto ristretto chiamato “ELISIONE DEL TEMPO DI VITA” si applica quando si giudicano i tempi di vita. 
 
@@ -1670,7 +1657,7 @@ RUST_TUTORIAL_CARLO_MILANESI
  					l'elisione del tempo di vita agisce da abbreviazione per scrivere una firma di un elemento, 
 				mentre non nasconde i tipi effettivamente coinvolti, come avverrebbe se fosse applicata una una completa inferenza locale. 	
 		
-		ELISIONE DI TEMPO DI VITA DI IMPUT E DI OUTPUT
+			ELISIONE DI TEMPO DI VITA DI IMPUT E DI OUTPUT
 			Quando si parla dell'elisione del tempo di vita, usiamo i termini tempo di vita di input e tempo di vita di output. Un tempo di vita di input è un tempo di vita associato a un argomento di una funzione, mentre un tempo di vita di output è un tempo di vita associato a un valore reso da una funzione. Per esempio, questa funzione ha un tempo di vita di input:
 				//TEMPO DI VITA DI INPUT
 				fn foo<'a>(bar: &'a str)
@@ -1699,38 +1686,38 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 					Altrimenti, è un errore elidere un tempo di vita di output.
 
- 	Esempi												4.10.7
- 		Ecco alcuni esempi di funzioni con tempi di vita elisi. Abbiamo accoppiato ogni esempio di un tempo di vita eliso con la sua forma espansa.
- 			fn stampa(s: &str); // eliso
-			fn stampa<'a>(s: &'a str); // espanso
+ 		Esempi							4.10.7
+	 		Ecco alcuni esempi di funzioni con tempi di vita elisi. Abbiamo accoppiato ogni esempio di un tempo di vita eliso con la sua forma espansa.
+	 			fn stampa(s: &str); // eliso
+				fn stampa<'a>(s: &'a str); // espanso
 
-				//lvl: u32 = non ha tempo di vita
-			fn debug(lvl: u32, s: &str); // eliso
-			fn debug<'a>(lvl: u32, s: &'a str); // espanso
+					//lvl: u32 = non ha tempo di vita
+				fn debug(lvl: u32, s: &str); // eliso
+				fn debug<'a>(lvl: u32, s: &'a str); // espanso
 
-		Nell'esempio precedente, lvl non ha bisogno di un tempo di vita, perché non è un riferimento (&). 
+			Nell'esempio precedente, lvl non ha bisogno di un tempo di vita, perché non è un riferimento (&). 
 
-		Solamente oggetti riferiti a riferimenti (come uno struct che contiene un riferimento) hanno bisogno di tempi di vita.
-				//@molto@difficili_(non si comprendono ??? @tempi@di@vita @incomprensibili)
+			Solamente oggetti riferiti a riferimenti (come uno struct che contiene un riferimento) hanno bisogno di tempi di vita.
+					//@molto@difficili_(non si comprendono ??? @tempi@di@vita @incomprensibili)
 
-				fn substr(s: &str, until: u32) -> &str; // eliso
-				fn substr<'a>(s: &'a str, until: u32) -> &'a str; // espanso
+					fn substr(s: &str, until: u32) -> &str; // eliso
+					fn substr<'a>(s: &'a str, until: u32) -> &'a str; // espanso
 
-				fn get_str() -> &str; // ILLEGALE, nessun input
+					fn get_str() -> &str; // ILLEGALE, nessun input
 
-				fn frob(s: &str, t: &str) -> &str; // ILLEGALE, due input
-				// espanso: il tempo di vita di output è ambiguo
-				fn frob<'a, 'b>(s: &'a str, t: &'b str) -> &str;
+					fn frob(s: &str, t: &str) -> &str; // ILLEGALE, due input
+					// espanso: il tempo di vita di output è ambiguo
+					fn frob<'a, 'b>(s: &'a str, t: &'b str) -> &str;
 
-				fn get_mut(&mut self) -> &mut T; // eliso
-				fn get_mut<'a>(&'a mut self) -> &'a mut T; // espanso
+					fn get_mut(&mut self) -> &mut T; // eliso
+					fn get_mut<'a>(&'a mut self) -> &'a mut T; // espanso
 
-				fn argomenti<T: ToCStr>(&mut self, args: &[T]) -> &mut Command; // eliso
-				fn argomenti<'a, 'b, T: ToCStr>(&'a mut self, args: &'b [T])
-				-> &'a mut Command; // espanso
+					fn argomenti<T: ToCStr>(&mut self, args: &[T]) -> &mut Command; // eliso
+					fn argomenti<'a, 'b, T: ToCStr>(&'a mut self, args: &'b [T])
+					-> &'a mut Command; // espanso
 
-				fn new(buf: &mut [u8]) -> BufWriter; // eliso
-				fn new<'a>(buf: &'a mut [u8]) -> BufWriter<'a>; // espanso
+					fn new(buf: &mut [u8]) -> BufWriter; // eliso
+					fn new<'a>(buf: &'a mut [u8]) -> BufWriter<'a>; // espanso
 
  IMMUTABILITA											4.11.
  	NON DI DEFAULT
@@ -2156,7 +2143,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 					//conversione vettore di stringhe in vettore di messaggio
 					let v1: Vec<Messaggio> = v.into_iter().map(Messaggio::Scrivi).collect();
 
- MATCH													4.14.	
+ MATCH													4.14.
  		Note
  			Spesso, un semplice if/else non basta, perché ci sono più di due opzioni possibili. Inoltre, le condizioni possono diventare parecchio complesse. Rust ha una parola-chiave, match ("combacia"), che consente di sostituire dei complicati raggruppamenti di if/else con qualcosa di più potente. Ecco qua:
 
@@ -2579,7 +2566,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 			I pattern sono molto potenti. Facciamone buon uso.
 
-
  SINTASSI DEI METODI									4.16.
  	
 	
@@ -2889,11 +2875,13 @@ RUST_TUTORIAL_CARLO_MILANESI
   		Le stringhe sono un concetto di cui è importante che ogni programmatore si impadronisca. Il sistema di gestione delle stringhe di Rust è un po' diverso da quello degli altri linguaggi, a causa del suo incentrarsi sulla programmazione di sistema. Ogni volta che c'è una struttura dati di dimensione variabile, le cose possono complicarsi, e le stringhe sono una struttura dati ridimensionabile. Detto questo, le stringhe di Rust funzionano diversamente anche da alcuni altri linguaggi di sistema, come il C.
 
 		Scaviamo nei dettagli. Una ‘stringa’ è una sequenza di valori scalari Unicode codificati come flusso di byte UTF-8. Tutte le stringhe sono garantite essere una ecodifica valida di sequenze UTF-8. In aggiunta, diversamente da alcuni linguaggi di sistema, le stringhe non hanno un carattere terminatore e possono contenere il carattere NUL, rappresentato dal byte 0.
+			@stringa_(sequenza di valori scalari Unicode UTF-8 senza terminatore ma hanno @nul)
 
 		Rust ha due principali tipi di stringhe: 
 			&str 		= chiamate slice di stringa (a dimensione fissa ed una sequenza di byte UTF-8)
 				e 
-			String. 
+			String. 	= stringa variabile sull'Heap
+
 		Dapprima parliamo di &str. Queste sono chiamate ‘slice di stringa’. Una slice di stringa ha una dimensione fissa, e non può essere modificata. È un riferimento a una sequenza di byte UTF-8.
 
 			let saluto = "Ciao là."; // saluto: &'static str
@@ -2905,7 +2893,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 		Un letterale di stringa è uno slice di stringa che è allocato staticamente, il che significa che è salvato dentro il nostro programma compilato, ed esiste per l'intera durata dell'esecuzione. Il legamo saluto è un riferimento a questa stringa staticamente allocata. Qualunque funzione che si aspetta una slice di stringa accetterà anche un letterale di stringa.
 
 
-		SI ESTENDO SU PIU RIGHE: I letterali di stringa possono estendersi su più righe. Ce ne sono due forme. La prima includerà i caratteri a-capo e gli spazi che li seguono:
+		SI ESTENDONO SU PIU RIGHE: I letterali di stringa possono estendersi su più righe. Ce ne sono due forme. La prima includerà i caratteri a-capo e gli spazi che li seguono:
 
 			I° 	FORMA
 				//qui si sono gli accapo e gli spazi
@@ -2923,25 +2911,29 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 				assert_eq!("foobar", s);
 
-				TIPO NON DIMENSIONATO : Si noti che normalmente non si può accedere direttamente a una str, ma solamente tramite un riferimento &str. Questo perché str è un tipo non dimensionato che richiede informazioni aggiuntive in fase di esecuzione per poter essere usata. Per avere maggiori informazioni, si veda il capitolo sui tipi non dimensionati.
+			TIPO NON DIMENSIONATO : Si noti che normalmente non si può accedere direttamente a una str, ma solamente tramite un riferimento &str. Questo perché str è un tipo non dimensionato che richiede informazioni aggiuntive in fase di esecuzione per poter essere usata. Per avere maggiori informazioni, si veda il capitolo sui tipi non dimensionati.
 
-
-			Però Rust ha di più oltre alle &str. Una String è una stringa allocata sullo heap. Questa string è estendibile, ed è anche garantita essere UTF-8. Le String tipicamente sono create 
-			CONVERTENDO UNA SLICE DI STRINGA, USANDO IL METODO to_string.
+			STRING MEMORIZZATO SULL'HEAP ED E' ESTENSIBILE = Però Rust ha di più oltre alle &str. Una String è una stringa allocata sullo heap. Questa string è estendibile, ed è anche garantita essere UTF-8. 
+			
+			METODO to_String CONVERTE UNA SLICE DI STRING = Le String tipicamente sono create convertendo una slice di stringa, usando il metodo to_string.
+				@Metodo@to_String_(converte le slice di stringa da str a String)
 
 			Le String vengono forzate ad essere un &str usando un &:
 
-					//&str = Forzatura di String
+					//&str = Forzatura di String che viene riconvertita in str
 				fn prendi_slice(slice: &str) {
 				    println!("Preso: {}", slice);
 				}
 
 				fn main() {
-				    let s = "Ciao".to_string();
+				    let s = "Ciao".to_string();  //to_string converte una slice di stringa in String
 				    prendi_slice(&s);
 				}
 
-			CONVERNSIONE CON &* = Questa forzatura non avviene per le funzioni che accettano uno dei tratti di &str invece di &str stessa. Per esempio, TcpStream::connect ha un argomento di tipo ToSocketAddrs. Una &str va bene, ma una String deve essere esplicitamente convertita usando &*.
+			CONVERSIONE OBBLIGATORIA CON &* = Questa forzatura non avviene per le funzioni che accettano uno dei tratti di &str invece di &str stessa?. Per esempio, 
+				TcpStream::connect ha un argomento di tipo ToSocketAddrs. 
+
+				Una &str va bene, ma una String deve essere esplicitamente convertita usando &*.
 
 				use std::net::TcpStream;
 
@@ -2955,24 +2947,270 @@ RUST_TUTORIAL_CARLO_MILANESI
 
  	Indicizzazione										4.17.2
 
- 		@fino@qui@da@fare@milanesi @da@finire
- 		Vedi: https://carlomilanesi.github.io/linguaggio-rust/patterns.html
- 		@rust_(@esegui @codice rust)
- 			https://play.rust-lang.org/?version=stable&mode=debug&edition=2021
+ 			@indice@stringa_(vietato perchè costoso e la stringa puo essere anche punti)
+
+ 		NO INDICIZZAZIONE = Siccome le stringhe sono UTF-8 valide, non supportano l'indicizzazione:
+ 			let s = "ciao";
+			println!("La prima lettera di s è {}", s[0]); // ERRORE!!!		
+
+		Solitamente, l'accesso a un vettore con [] è molto veloce. Ma, siccome ogni carattere una stringa codificata in UTF-8 può occupare più byte, si deve percorrere la stringa per trovare l'ennesima lettera di una stringa. Questa è un'operazione significativamente più costosa, e non si vuole essere fuorvianti. 
+		Inoltre, il concetto di ‘lettera’ non è qualcosa di ben definito in Unicode. Possiamo scegliere di guardare una stringa come una sequenza di singoli byte, o come punti di codice ["codepoint"]:
+
+		let hachiko = "忠犬ハチ公";
+
+			for b in hachiko.as_bytes() {
+			    print!("{}, ", b);
+			}
+
+			println!("");
+
+			for c in hachiko.chars() {
+			    print!("{}, ", c);
+			}
+
+			println!("");
+
+			Questo stampa:
+
+			229, 191, 160, 231, 138, 172, 227, 131, 143, 227, 131, 129, 229, 133, 172,
+			忠, 犬, ハ, チ, 公,
+
+			
+			Si può ottenere qualcosa di simile a un indice in questo modo:
+
+			let dog = hachiko.chars().nth(1); // un po' come hachiko[1]
+			Questo evidenzia che dobbiamo percorrere la lista di char dall'inizio.
+
+
 
 
 
  	Affettatura ["slicing"]								4.17.3
+
+ 			@slicing_(come @affettare una stringa @offset in caratteri non in @byte)
+
+ 		Si può ottenere una slice di una stringa con la sintassi dell'affettatura:
+
+ 			fn main() {
+			    let dog = "hachiko";    	//stringa
+				let hachi = &dog[0..5];     //slicing stringa ma non andare fuori indice : NO 0...6 FUORI INDICE
+				print!("slicing di string è ammesso da 0..5= {}, ", hachi);
+
+				}
+
+		Ma si noti che questi sono offset in byte, non offset in caratteri. Perciò questo fallirà in fase di esecuzione:
+			@slicing@byte_(in byte non avviene lo slicing ma da errore)
+
+			//questi sono  byte non stringhe 
+			let dog = "忠犬ハチ公";
+			let hachi = &dog[0..2];			//slicing errore perche in byte
+
+		con questo errore:
+
+			thread 'main' panicked at 'index 0 and/or 2 in `忠犬ハチ公` do not lie on
+			character boundary'
+
  	Concatenazione										4.17.4
 
+ 		Avendo una String, si può concatenare una &str alla sua fine:
 
- GENERICITÀ												4.18.	
+ 			fn main() {
+				//esempio CON UNA STRING
+				let ciao = "Ciao ".to_string();   //la String che viene deferenziata in &string
+				let mondo = "mondo!";
+
+				//puoi concatenare le due string
+				let ciao_mondo = ciao + mondo;
+				print!("concateno ciao + mondo = {}, ", ciao_mondo);
+				}
+
+
+
+			Ma se avendo due String, serve un &:
+
+				fn main() {
+				    let ciao = "Ciao ".to_string();  //QUI ABBIAMO LA I° STRING 
+				let mondo = "mondo!".to_string();     //QUI ABBIAMO LA  II° STRING 
+
+				let ciao_mondo = ciao + &mondo;     //DEVI DEFERENZIARE LA STRING con &string
+				print!("concateno ciao + mondo  = {}, ", ciao_mondo);
+				}
+
+			Questo perché &String può essere automaticamente forzata in un &str. 
+			Questa caratteristica si chiama ‘forzatura Deref’.
+
+ GENERICITÀ												4.18.
  	I generici											4.18.1
+
+ 		POLIMORFISMO PARAMETRICO
+	 		Talvolta, quando si scrive una funzione o un tipo di dati, potremmo volere che funzioni per più tipi di argomenti. In Rust, lo possiamo fare usando i generici. Nella teoria dei tipi, i generici sono chiamati ‘polimorfismo parametrico’, che significa che sono tipi o funzioni che hanno più forme (in greco ‘poli’ significa ‘plurimo‘, e ‘morfo’ significa ‘forma‘) in base a un dato parametro (da cui ‘parametrico’).
+
+	 		Comunque, basta così con la teoria dei tipi, guardiamo del codice generico. La libreria standard di Rust fornisce un tipo, Option<T>, che è generico:
+
+	 			@Tipo@generico_(argomenti con @tipi@generici, @Option<T> quindu UN GENERICO CON UN SOLO TIPO)
+
+	 			//TIPO GENERICO SINGOLO
+	 			enum Option<T> {
+					    Some(T),
+					    None,
+					}
+
+			
+					@tipo@generico_(viene indicata con <T> il tipo generico @singolo)
+
+			La parte <T>, che abbiamo già visto alcune volte, indica che questo è un tipo di dati generico. Ogni volta che nel nostro codice usiamo questo enum, specifichiamo un tipo che sostituisce il parametro T ogni volta che compare nella dichiarazione generica. Ecco un esempio di uso di Option<T>, con un'annotazione di tipo aggiuntiva:
+
+
+				//SX E DX LE dichiarazioni combaciano in quanto sul lato sx Option<T> = è di tipo i32
+				//												sul lato sx Some = 5  indica che Some(T) è intero di tipo i32
+
+
+				let x: Option<i32> = Some(5);
+
+				Nella dichiarazione di tipo, diciamo Option<i32>. 
+				Si noti quanto simile appaia a Option<T>. 
+
+				Quindi, in questa particolare Option, T ha il valore di i32. Sul lato destro del legame, costruiamo un Some(T), dove l'oggetto di tipo T è 5. 
+
+				Dato che si tratta di un i32, i due lati combaciano, e Rust è contento. 
+
+				Se non combaciassero, otterremmo un errore:
+
+
+				//errore perche due tipi diversi di <T>
+				let x: Option<f64> = Some(5);
+
+				// error: mismatched types: expected `core::option::Option<f64>`,
+				// found `core::option::Option<_>` (expected f64 but found integral variable)
+
+
+
+				ATTENZIONE UGUAGLIANZA SOLO NEI DUE LATI MA OTPION DIVERSI
+
+
+				Ciò non significa che non si possono costruire degli Option<T> che tengono f64! Solamente i due lati dell'assegnamento devono avere lo stesso tipo:
+
+					//OTPION <T> diversi ma con lati uguali
+
+					let x: Option<i32> = Some(5);			//i32
+					let y: Option<f64> = Some(5.0f64);		//f64
+
+
+				Così va bene. Una sola definizione, utilizzi multipli.
+
+
+				GENERICI CON DUE TIPI
+
+					I generici non sono limitati ad essere parametrizzati da un solo tipo. Si consideri un altro tipo simile, fornito dalla liberia standard di Rust, Result<T, E>:
+
+						//TIPO GENERICO CON DUE TIPI 
+						enum Result<T, E> {
+									    Ok(T),
+									    Err(E),
+									}
+
+
+					Questo tipo è generico relativamente a due tipi: T ed E. Tra l'altro, le lettere maiuscole possono essere qualunque lettera si gradisca. Si sarebbe potuto definire Result<T, E> come:
+
+							//TIPO GENERICO DOPPIO
+							enum Result<A, Z> {
+							    Ok(A),
+							    Err(Z),
+							}
+
+					se si avesse voluto. 
+
+					Per convenzione il primo parametro generico dovrebbe essere T, per ‘tipo’, e si dovrebbe usare E per ‘errore’. Però a Rust non importa.
+
+						@TIPI@GENERICI@DOPPI_(come il Result per con due tipi T,E per restituire un errore in caso di fallimento dell'elaborazione)
+
+					Il tipo Result<T, E> è pensato per essere usato come risultato di un'elaborazione, dando la possibilità di rendere un errore nel caso non si riuscisse a completare correttamente l'elaborazione.
+
  	Funzioni generiche									4.18.2
- 	Struct generiche									4.18.3
- 	Struct generiche									4.18.3
+ 		
+ 			@funzione@generica@un@tipo_(funzione con UN TIPO T)
+
+ 		Si possono scrivere funzioni che prendono tipi generici, usando una sintassi simile:
+
+ 			
+ 			//@funzione@generica
+ 			fn prende_qualunque_cosa<T>(x: T) {
+ 			   // fai qualcosa con x
+				}
+
+				La sintassi ha due parti: 
+					la <T> dice “questa funzione è generica rispetto a un tipo, T”, e la 
+					x: T dice “x è di tipo T.”
+
+
+			@funzione@generica@DUE@STESSO@tipo_(funzione con DUE TIPO T O PIU ARGOMENTI)
+
+				Più argomenti possono essere dello stesso tipo generico:
+
+					//TIPO DI CON DUE PARAMETRI OGGETTI DELLO STESSO TIPO X,Y
+					fn prende_due_oggetti_del_medesimo_tipo<T>(x: T, y: T) {
+   						 // ...
+							}
+
+
+
+				Si può anche scrivere una versione che prende più tipi:
+					
+					@funzione@generica@DUE@tipI_(funzione con DUE @TIPO@T)
+
+					@funzione@generica@DUE@OGGETTI@DIVERSI_(funzione con @DUE@OGGETTI@DIVERSI DI TIPO T,U)
+
+				//DUE OGGETTI CON TIPO DIVERSO T,U
+				fn prende_due_oggetti<T, U>(x: T, 
+					                        y: U) {
+						    // ...
+						}
+
+	Struct generiche									4.18.3
+
+			@TIPI@GENERICI@struct_(I TIPI GENERICI SI APPLICANO  @campi della struct )
+
+				Si può usare un tipo generico anche per i campi di una struct:
+
+					@definizione@struttura@generica_(definita con parametro di tipo <T>)
+
+					//NELLA DEFINIZIONE DELLA STRUTTURA GENERICA il parametro è di tipo T con due campi di tipo T
+
+					struct Punto<T> {
+					    x: T,
+					    y: T,
+					}
+
+					// un tipo T = intero + secondo tipo T = virgola mobile
+					let origine_intera = Punto { x: 0, y: 0 };
+					let origine_a_virgola_mobile = Punto { x: 0.0, y: 0.0 };
+
+
+				IMPLEMENTAZIONE DELLA STRUTTURA GENERICA
+				Quando si vuole aggiungere un'implementazione per una struct generica, si dichiara il parametro di tipo subito dopo la impl:
+
+				//Implementazione tipo T + parametro di tipo T (Punto <T>)
+				impl<T> Punto<T> {
+					    fn swap(&mut self) {
+					        std::mem::swap(&mut self.x, &mut self.y);
+					    }
+					}
+
+
+				Finora abbiamo visto dei generici che prendono assolutamente qualunque tipo. 
+
+				Questi servono in molti casi: 
+					abbiamo già visto Option<T>, 
+					e poi incontreremo i tipi contenitore universali, come Vec<T>. 
+
+				D'altra parte, spesso si vuole rinunciare a quella flessibilità per avere un maggior poter espressivo. Si legga la sezione sui legami di tratto per vedere come e perché.
 
  TRATTI													4.19.
+ 		@fino@qui@da@fare@milanesi @da@finire
+ 		Vedi: https://carlomilanesi.github.io/linguaggio-rust/patterns.html
+ 		@rust_(@esegui @codice rust)
+ 			https://play.rust-lang.org/?version=stable&mode=debug&edition=2021
+ 	
  	Tratti ["trait"]									4.19.1
  	Legami del tratto sulle funzioni generiche			4.19.2
  	Regole per implementare i tratti					4.19.4
@@ -2982,10 +3220,6 @@ RUST_TUTORIAL_CARLO_MILANESI
  	Ereditarietà										4.19.8
  	Derivazione											4.19.9
  	Derivazione											4.19.9
-
-
-
-
 
  DROP													4.20.	
  IF LET 												4.21.	
