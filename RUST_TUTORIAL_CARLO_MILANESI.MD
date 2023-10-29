@@ -3206,14 +3206,193 @@ RUST_TUTORIAL_CARLO_MILANESI
 				D'altra parte, spesso si vuole rinunciare a quella flessibilità per avere un maggior poter espressivo. Si legga la sezione sui legami di tratto per vedere come e perché.
 
  TRATTI													4.19.
+ 	Tratti ["trait"]									4.19.1
+ 		trait
+ 			Un tratto è una caratteristica del linguaggio che dice al compilatore Rust quali funzionalità un tipo deve fornire.
+ 					@tratto_(@trait= @classe@astratta o una @firma che permette di definire le funzionalita di un tipo)
+
+ 			Ricordiamo la parola-chiave impl, usata per chiamare una funzione con la sintassi dei metodi:
+
+ 				
+ 				//differenza tra la struttura implementata ed il tratto; questa è una struttura
+ 				//struttura
+ 				struct Cerchio {
+					    x: f64,
+					    y: f64,
+					    raggio: f64,
+					}
+
+					//implementa la struttura
+					//impl = parola chiave utilizzata per chiamare una funzione con sintassi dei metodi
+					//impl contiene il metodo non la firma
+					impl Cerchio {			//impl Item
+					    fn area(&self) -> f64 {
+					        std::f64::consts::PI * (self.raggio * self.raggio)
+					    }
+					}
+
+
+				//qui abbiamo un tratto che si differenza dalla struttura perchè prima la firma dopo l'implemetazione
+
+				//struttura cerchio uguale
+					struct Cerchio {
+					    x: f64,
+					    y: f64,
+					    raggio: f64,
+					}
+
+
+			//firma del tratto ed implementazione
+			//---------------------------------------------------------------------------//
+				//prima la firma = blocco trait
+				trait HaArea {
+					    fn area(&self) -> f64;		//firma del tipo senza implementazione
+					}
+
+					//implementazione del tratto  = blocco impl 
+					impl HaArea for Cerchio {		//impl Trait for Iterm
+					    fn area(&self) -> f64 {
+					        std::f64::consts::PI * (self.raggio * self.raggio)
+					    }
+					}
+			//---------------------------------------------------------------------------//
+
+				Come si può vedere, 
+						il blocco trait appare molto simile al 
+						blocco impl, 
+				ma non contiene il corpo della funzione, solamente una firma di tipo. 
+
+				Quando si implementa un tratto, si usa la formula 
+					impl Trait for Item, 
+					invece della più semplice impl Item.
+
+
+
+
+
+
+
+
+ 	Legami del tratto sulle funzioni generiche			4.19.2
+ 		IMPORTANZA DEI TRATTI
+ 			I tratti sono utili perché consentono a un tipo di fare certe PROMESSE SUL SUO COMPORTAMENTO. 
+
+ 			Le funzioni generiche possono sfruttare questo (I TRAIT) per vincolare, o legare, i tipi che accettano. 
+
+ 			Si consideri questa funzione, che non compila:
+
+ 			 	//FUNZIONE GENERICA che utilizza una figura generica ma non c'è il tipo generico
+ 			 	fn stampa_area<T>(figura: T) {  //rust da errore perche non c'è il tipo generico
+					    println!("Questa figura ha un'area di {}", figura.area());
+					}
+
+			Siccome T può essere qualunque tipo, non possiamo essere sicuri che implementi il metodo area. Ma possiamo aggiungere un tratto legato al nostro T generico, assicurando che lo faccia:
+
+			
+			//tratto che definisce: il TIPO GENERICO = <T: HaArea>
+			//+ LA FIGURA GENERICA --> (figura: T)
+			fn stampa_area<T: HaArea>(figura: T) {
+				    println!("Questa figura ha un'area di {}", figura.area());
+				}
+
+
+				La sintassi <T: HaArea> significa 
+					“qualunque tipo che implementa il tratto HaArea.” 
+
+				Siccome i tratti definiscono delle firme di tipo di funzione, possiamo star sicuri che qualunque tipo che implementa HaArea avrà un metodo .area().
+
+
+			Ecco un esempio esteso di come funziona questa cosa:
+
+
+				//TRATTO
+				trait HaArea {
+    					fn area(&self) -> f64;
+					}
+
+
+				//Struttura ed implementazione del Cerchio		
+				//...........................................................................//	
+					struct Cerchio {
+					    x: f64,
+					    y: f64,
+					    raggio: f64,
+					}
+
+					impl HaArea for Cerchio {
+					    fn area(&self) -> f64 {
+					        std::f64::consts::PI * (self.raggio * self.raggio)
+					    }
+					}
+				//...........................................................................//	
+
+
+
+				//Struttura ed implementazione del Quadrato		
+				//...........................................................................//	
+					struct Quadrato {
+					    x: f64,
+					    y: f64,
+					    lato: f64,
+					}
+
+					impl HaArea for Quadrato {
+					    fn area(&self) -> f64 {
+					        self.lato * self.lato
+					    }
+					}
+				//...........................................................................//	
+				
+				//funzione stampa che puo usare DUE TIPI DIVERSI, stringo o f64 per la stampa
+				//...........................................................................//	
+
+					//funzione che permette di stapare tipi generici MA PER ORA CON GLI STESSI DATI
+					//f64 altrimenti da errore
+					fn stampa_area<T: HaArea>(figura: T) {
+						    println!("Questa figura ha un'area di {}", figura.area());
+						}
+				//...........................................................................//
+
+
+				fn main() {
+				    let c = Cerchio {
+				        x: 0.0f64,
+				        y: 0.0f64,
+				        raggio: 1.0f64,
+				    };
+
+				    let q = Quadrato {
+				        x: 0.0f64,
+				        y: 0.0f64,
+				        lato: 1.0f64,
+				    };
+
+				    stampa_area(c);
+				    stampa_area(q);
+				}	
+
+
+				Questo programma emette:
+
+				Questa figura ha un'area di 3.141593
+				Questa figura ha un'area di 1
+
+
+				Da come si vede, stampa_area adesso è generica, ma assicura anche che le abbiamo passato i tipi corretti (solo f64). Se le passiamo un tipo scorretto:
+
+				//parametro intero da errore
+				stampa_area(5);
+					Otteniamo un errore in fase di compilazione:
+
+					error: the trait bound `_ : HasArea` is not satisfied [E0277]
+
+
+ 	Regole per implementare i tratti					4.19.4
  		@fino@qui@da@fare@milanesi @da@finire
  		Vedi: https://carlomilanesi.github.io/linguaggio-rust/patterns.html
  		@rust_(@esegui @codice rust)
  			https://play.rust-lang.org/?version=stable&mode=debug&edition=2021
  	
- 	Tratti ["trait"]									4.19.1
- 	Legami del tratto sulle funzioni generiche			4.19.2
- 	Regole per implementare i tratti					4.19.4
  	Legami di tratto multipli							4.19.5
  	La clausola Where									4.19.6
  	I metodi di default									4.19.7
