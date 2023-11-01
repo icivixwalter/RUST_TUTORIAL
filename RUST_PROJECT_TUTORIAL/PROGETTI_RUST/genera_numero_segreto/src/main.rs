@@ -31,16 +31,16 @@ fn main() {
         //imposto la variabile con stringa + lego lo stream + conversione in u32
         //---------------------------------------------------------------//
         let mut _tentativo = String::new();
-
+        
+        let pasta=2;
+        
         io::stdin()
             .read_line(&mut _tentativo)
             .expect("Non si riesce a leggere la riga");
 
-        //utilizzo del metodo parse modifcato per evitare panic
+        //_tentativo utilizzo del metodo parse modifcato per evitare panic
         //let _tentativo: u32 = _tentativo.trim().parse().expect("Prego, digita un numero!");
         //let _tentativo: u32 = _tentativo.trim().parse().expect("Prego, digita un numero!");
-
-        //GESTIONE DEL PANIC E DELL'OK
 
         let _tentativo = match _tentativo.trim().parse::<u32>() {
             Ok(par_num) => par_num,
@@ -51,7 +51,7 @@ fn main() {
         println!("Hai digitato: {}", _tentativo);
         //---------------------------------------------------------------//
 
-        //fa il confronto con im metodo std::cmp ....
+        //fa il confronto con im metodto std::cmp ....
 
         //---------------------------------------------------------------//
         match _tentativo.cmp(&numero_segreto) {

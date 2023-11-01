@@ -3274,6 +3274,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 
  	Legami del tratto sulle funzioni generiche			4.19.2
+ 	
  		IMPORTANZA DEI TRATTI
  			I tratti sono utili perché consentono a un tipo di fare certe PROMESSE SUL SUO COMPORTAMENTO. 
 
@@ -3367,10 +3368,6 @@ RUST_TUTORIAL_CARLO_MILANESI
 				        lato: 1.0f64,
 				    };
 
-				    stampa_area(c);
-				    stampa_area(q);
-				}	
-
 
 				Questo programma emette:
 
@@ -3387,18 +3384,280 @@ RUST_TUTORIAL_CARLO_MILANESI
 					error: the trait bound `_ : HasArea` is not satisfied [E0277]
 
 
- 	Regole per implementare i tratti					4.19.4
- 		@fino@qui@da@fare@milanesi @da@finire
- 		Vedi: https://carlomilanesi.github.io/linguaggio-rust/patterns.html
- 		@rust_(@esegui @codice rust)
- 			https://play.rust-lang.org/?version=stable&mode=debug&edition=2021
  	
- 	Legami di tratto multipli							4.19.5
+ 		Finora, abbiamo aggiunto implementazioni di tratti solamente a delle struct, ma un tratto può essere implementato per qualunque tipo. 
+
+ 		Perciò tecnicamente, potremmo implementare HaArea anche per il tipo i32:
+
+ 			trait HaArea {
+				    fn area(&self) -> f64;
+				}
+
+				impl HaArea for i32 {
+				    fn area(&self) -> f64 {
+				        println!("questo è sciocco")
+				        *self as f64
+				    }
+				}
+
+				5.area();
+
+			È considerato stile scadente implementare dei metodi su tali tipi primitivi, anche se è possibile.
+
+			Questo può sembrare come il Far West, ma ci sono due restrizioni riguardo l'implementazione dei tratti che prevengono che la cosa ci sfugga di mano. 
+				La prima è che se il tratto non è definito nel nostro ambito, non si applica. 
+
+			Ecco un esempio: la libreria standard fornisce un tratto Write che aggiunge delle funzionalità ai File, per fare I/O su file. Di default, un File non avrà i suoi metodi:
+
+
+					//qui write da errore perche non è importata la libreria
+					let mut f = std::fs::File::open("foo.txt").expect("Fallita apertura di foo.txt");
+					let buf = b"qualcosa"; // stringa letterale di byte. buf: &[u8; 8					let risultato = f.write(buf);
+					Ecco l'errore:
+
+					error: type `std::fs::File` does not implement any method in scope named `write`
+					let result = f.write(buf);
+
+
+			Dapprima dobbiamo importare il tratto Write con use:
+
+				//qui funzione perche viene importata la libreria
+				use std::io::Write;
+
+					let mut f = std::fs::File::open("foo.txt").expect("Fallita apertura di foo.txt");
+					let buf = b"qualcosa"; // stringa letterale di byte. buf: &[u8; 8]
+					let risultato = f.write(buf);
+					Questo compilerà senza errori.
+
+
+			Ciò significa che anche se qualcuno fa qualcosa di male come implementare un tratto per i32, questo non ci toccherà, a meno che importiamo quel tratto.
+
+			C'è un'altra restrizione sull'implementare i tratti: o il tratto o il tipo per cui lo stiamo implementando, devono essere definiti da noi. 
+			O per meglio dire, almeno uno di essi deve essere definito nello stesso crate in cui si trova l'impl che stiamo scrivendo. Per saperne di più sul sistema dei moduli e dei pacchetti di Rust, si veda la sezione su crate e moduli.
+
+			Perciò, potremmo implementare il tratto HasArea per i32, dato che abbiamo definito HaArea nel nostro codice. 
+			Ma se provassimo a implementare ToString, un tratto fornito da Rust, per i32, non potremmo, perché né il tratto né il tipo sono definiti nel nostro crate.
+
+			Un'ultima cosa sui tratti: le funzioni generiche con un legame di tratto usano la ‘monomorfizzazione’ (dal greco "mono"="uno" e "morfo"="forma"), e quindi sono smistati staticamente. Che significa? Si guardi la sezione sugli oggetti-tratto per avere maggiori dettagli.
+
+
+
+
+
+
+
+
+
+
+
+   Regole per implementare i tratti				4.19.4
+   	
+	 		Finora, abbiamo aggiunto implementazioni di tratti solamente a delle struct, ma un tratto può essere implementato per qualunque tipo. 
+
+			Perciò tecnicamente, potremmo implementare HaArea anche per il tipo i32:
+
+				trait HaArea {
+				    fn area(&self) -> f64;
+				}
+
+				impl HaArea for i32 {
+				    fn area(&self) -> f64 {
+				        println!("questo è sciocco")
+				        *self as f64
+				    }
+				}
+
+				5.area();
+
+		È considerato stile scadente implementare dei metodi su tali tipi primitivi, anche se è possibile.
+
+		Questo può sembrare come il Far West, ma ci sono due restrizioni riguardo l'implementazione dei tratti che prevengono che la cosa ci sfugga di mano. 
+			La prima è che se il tratto non è definito nel nostro ambito, non si applica. 
+
+		Ecco un esempio: la libreria standard fornisce un tratto Write che aggiunge delle funzionalità ai File, per fare I/O su file. Di default, un File non avrà i suoi metodi:
+
+
+				//qui write da errore perche non è importata la libreria
+				let mut f = std::fs::File::open("foo.txt").expect("Fallita apertura di foo.txt");
+				let buf = b"qualcosa"; // stringa letterale di byte. buf: &[u8; 8					let risultato = f.write(buf);
+				Ecco l'errore:
+
+				error: type `std::fs::File` does not implement any method in scope named `write`
+				let result = f.write(buf);
+
+
+		Dapprima dobbiamo importare il tratto Write con use:
+
+			//qui funzione perche viene importata la libreria
+			use std::io::Write;
+
+				let mut f = std::fs::File::open("foo.txt").expect("Fallita apertura di foo.txt");
+				let buf = b"qualcosa"; // stringa letterale di byte. buf: &[u8; 8]
+				let risultato = f.write(buf);
+				Questo compilerà senza errori.
+
+
+		Ciò significa che anche se qualcuno fa qualcosa di male come implementare un tratto per i32, questo non ci toccherà, a meno che importiamo quel tratto.
+
+		C'è un'altra restrizione sull'implementare i tratti: o il tratto o il tipo per cui lo stiamo implementando, devono essere definiti da noi. 
+		O per meglio dire, almeno uno di essi deve essere definito nello stesso crate in cui si trova l'impl che stiamo scrivendo. Per saperne di più sul sistema dei moduli e dei pacchetti di Rust, si veda la sezione su crate e moduli.
+
+		Perciò, potremmo implementare il tratto HasArea per i32, dato che abbiamo definito HaArea nel nostro codice. 
+		Ma se provassimo a implementare ToString, un tratto fornito da Rust, per i32, non potremmo, perché né il tratto né il tipo sono definiti nel nostro crate.
+
+		Un'ultima cosa sui tratti: le funzioni generiche con un legame di tratto usano la ‘monomorfizzazione’ (dal greco "mono"="uno" e "morfo"="forma"), e quindi sono smistati staticamente. Che significa? Si guardi la sezione sugli oggetti-tratto per avere maggiori dettagli.
+
+
+ 	Legami di tratto multipli						4.19.5
+ 		Abbiamo visto che si può legare un parametro generico di tipo a un tratto:
+
+			fn foo<T: Clone>(x: T) {
+			    x.clone();
+			}
+
+
+		Se serve più di un legame, si può usare +:
+
+			use std::fmt::Debug;
+
+			//2 tratti 
+			fn foo<T: Clone + Debug>(x: T) {
+			    x.clone();
+			    println!("{:?}", x);
+			}
+		T adesso ha bisogno di essere sia Clone che Debug.
+
+
+
  	La clausola Where									4.19.6
- 	I metodi di default									4.19.7
+ 		Scrivere funzioni con solamente alcuni tipi generici e un piccolo numero di legami di tratto non è malaccio, ma man mano che il loro numero si accresce, la sintassi divenga sempre più goffa:
+
+ 			use std::fmt::Debug;
+ 			//nome funzione 		= foo
+ 			//lisata argomenti 	= <T: Clone, K: Clone + Debug>(x: T, y: K)
+				fn foo<T: Clone, K: Clone + Debug>(x: T, y: K) {
+				    x.clone();
+				    y.clone();
+				    println!("{:?}", y);
+				}
+
+
+			Rust ha una soluzione, e si chiama ‘clausola where’:
+
+				use std::fmt::Debug;
+
+						fn foo<T: Clone, K: Clone + Debug>(x: T, y: K) {
+						    x.clone();
+						    y.clone();
+						    println!("{:?}", y);
+						}
+
+						// uso la clausola where
+						fn bar<T, K>(x: T, y: K) where T: Clone, K: Clone + Debug {
+						    x.clone();
+						    y.clone();
+						    println!("{:?}", y);
+						}
+
+						fn main() {
+						    foo("Ciao", "mondo");
+						    bar("Ciao", "mondo");
+						}
+			Si devono solo omettere i vincoli quando si definiscono i propri parametri di tipo, e poi aggiungere where dopo l'elenco degli argomenti. Per liste più lunghe, si possono aggiungere spaziature:
+
+				use std::fmt::Debug;
+
+					fn bar<T, K>(x: T, y: K)
+					    where T: Clone,
+					          K: Clone + Debug {
+
+					    x.clone();
+					    y.clone();
+					    println!("{:?}", y);
+					}
+
+			Questa flessibilità può aumentare la chiarezza in situazioni complesse.
+
+			where è anche più potente della sintassi più semplice. Per esempio:
+
+				trait ConvertiIn<Output> {
+					    fn converti(&self) -> Output;
+					}
+
+					impl ConvertiIn<i64> for i32 {
+					    fn converti(&self) -> i64 { *self as i64 }
+					}
+
+					// si può chiamare con T == i32
+					fn normale<T: ConvertiIn<i64>>(x: &T) -> i64 {
+					    x.converti()
+					}
+
+					// si può chiamare con T == i64
+					fn inversa<T>(x: i32) -> T
+					        // sta usando ConvertiIn come se fosse "ConvertiIn<i64>"
+					        where i32: ConvertiIn<T> {
+					    x.converti()
+					}
+
+			Questo codice esibisce la caratteristica aggiuntiva delle clausole where: tali clausole consentono legami sul lato sinistro, non solamente dei parametri di tipo, ma anche dei tipi (in questo caso, il tipo i32). In questo esempio, i32 deve implementare ConvertiIn<T>. Invece di definire cos'è i32 (dato che è ovvio), qui la clausola where vincola T.
+
+
+
+
+
+ 	I metodi di default								4.19.7
+ 			
+ 			Un metodo di default può essere aggiunto a una definizione di tratto se è già noto come un implementatore tipico definirà un metodo. 
+
+ 			Per esempio, e_invalido() è definito come l'oppost di e_valido():
+
+ 					trait Foo {
+					    fn e_valido(&self) -> bool;
+
+					    fn e_invalido(&self) -> bool { !self.e_valido() }
+					}
+
+			Gli implementatori del tratto Foo devono implementare e_valido(), ma possono non implementare e_invalido(), dato che ha già un comportamento di default. Questo comportamento di default può sempre essere scavalcato, come in:
+
+					
+					struct UsaDefault;
+
+						impl Foo for UsaDefault {
+						    fn e_valido(&self) -> bool {
+						        println!("Chiamato UsaDefault.e_valido.");
+						        true
+						    }
+						}
+
+						struct ScavalcaDefault;
+
+						impl Foo for ScavalcaDefault {
+						    fn e_valido(&self) -> bool {
+						        println!("Chiamato ScavalcaDefault.e_valido.");
+						        true
+						    }
+
+						    fn e_invalido(&self) -> bool {
+						        println!("Chiamato ScavalcaDefault.e_invalido!");
+						        true // Scavalca il valore atteso di e_invalido()
+						    }
+						}
+
+						let default = UsaDefault;
+						assert!(!default.e_invalido()); // stampa "Chiamato UsaDefault.e_valido."
+
+						let scavalca = ScavalcaDefault;
+						assert!(scavalca.e_invalido()); // stampa "Chiamato ScavalcaDefault.e_invalido!"																				
+				Ereditarietà
+					Talvolta, implementare un tratto richiede implentare un altro tratto:
+
+
  	Ereditarietà										4.19.8
  	Derivazione											4.19.9
  	Derivazione											4.19.9
+
+
 
  DROP													4.20.	
  IF LET 												4.21.	
@@ -3417,7 +3676,9 @@ RUST_TUTORIAL_CARLO_MILANESI
  LE MACRO												4.34.	
  PUNTATORI GREZZI										4.35.	
  `UNSAFE`												4.36.	
- RUST EFFICACE											5.0  	
+ RU
+
+ ST EFFICACE											5.0  	
  LO STACK E LO HEAP										5.1.	
  COLLAUDO												5.2.	
  COMPILAZIONE CONDIZIONALE								5.3.	
