@@ -3649,19 +3649,203 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 						let scavalca = ScavalcaDefault;
 						assert!(scavalca.e_invalido()); // stampa "Chiamato ScavalcaDefault.e_invalido!"																				
-				Ereditarietà
-					Talvolta, implementare un tratto richiede implentare un altro tratto:
-
-
  	Ereditarietà										4.19.8
+
+		Ereditarietà
+			Talvolta, implementare un tratto richiede implentare un altro tratto:
+
+				trait Foo {
+				    fn foo(&self);
+				}
+
+				trait FooBar : Foo {  //FooBar implementa anche Foo = ereditarieta
+				    fn foobar(&self);
+				}
+
+
+		Gli implementatori di FooBar devono implementare anche Foo, così:
+
+			struct Baz;
+
+				impl Foo for Baz {
+				    fn foo(&self) { println!("foo"); }
+				}
+
+				impl FooBar for Baz {	//FooBar implementa solo Baz e non Foo per cui da errore
+				    fn foobar(&self) { println!("foobar"); }
+				}
+
+
+				Se tralasciamo di implementare Foo, Rust ce lo dirà:
+					error: the trait bound `main::Baz : main::Foo` is not satisfied [E0277]
+
+
+
  	Derivazione											4.19.9
- 	Derivazione											4.19.9
+
+ 		ATTRIBUTO per l'implementazione automadica dei tratti = Implementare ripetutamente i tratti come Debug e Default può diventare parecchio noioso. Per tale ragione, Rust fornisce un attributo che consente di far implementare automaticamente dei tratti a Rust:
+ 				#[derive(Debug)]
+					struct Foo;
+
+					fn main() {
+					    println!("{:?}", Foo);
+					}
+
+		DERIVAZIONE LIMITATA = Però, la derivazione è limitata a un certo insieme di tratti. Eccoli:
+				@derivazione@tratti_(@attributi per l'implementazione atomatica dei tratti)
+
+				Clone
+				Copy
+				Debug
+				Default
+				Eq
+				Hash
+				Ord
+				PartialEq
+				PartialOrd
+
+ DROP													4.20.
+ 	Distruzione ["Drop"]								4.20.1
+
+ 			@tratto_@Drop_(tratto di rust che svolge da distruttore utilizzato nelle struct)
+
+ 		Adesso che abbiamo parlato dei tratti, parliamo di un particolare tratto fornito dalla libreria standard di Rust, Drop, che letteralmente significa "lasciar cadere", ma qui va inteso nel senso di "distruggere". Il tratto Drop svolge la funzione che in altri linguaggi di programmazione è svolta dai "distruttori"; infatti fornisce un modo di eseguire del codice quando un oggetto esce dal suo ambito.
+
+ 			Per esempio:
+
+ 				struct DaDistruggere;
+
+					impl Drop for DaDistruggere {
+					    fn drop(&mut self) {
+					        println!("Distruzione!");
+					    }
+					}
+
+					fn main() {
+					    let x = DaDistruggere;
+					    
+					    // fai qualcosa
+
+					} // qui x esce di ambito e stampa "Distruzione!"
+
+
+			Quando x esce di ambito, alla fine della funzione main(), il metodo drop verrà eseguito. Tale metodo, che è l'unico di Drop, prende un riferimento mutabile a self.
+
+			Ecco fatto! La meccanica di Drop è molto semplice, ma ci sono alcune sottigliezze. Per esempio, i valori vengono distrutti nell'ordine opposto a quello in cui sono stati dichiarati. Ecco un altro esempio:
+
+				struct Esplosivo {
+					    energia: i32,
+					}
+
+					impl Drop for Esplosivo {
+					    fn drop(&mut self) {
+					        println!("BUM per {}!", self.energia);
+					    }
+					}
+
+					fn main() {
+					    let petardo = Esplosivo { energia: 1 };
+					    let granata = Esplosivo { energia: 100 };
+					    let bomba = Esplosivo { energia: 1000 };
+					}
+
+				Questo programma stamperà:
+
+					BUM per 1000!
+					BUM per 100!
+					BUM per 1! 	
+
+				La bomba esplode prima della granata, che esplode prima del petardo, perché sono stati dichiarati in quell'ordine invertito. Ultimo dentro, primo fuori.
+
+				Dunque a cosa serve il tratto Drop? In generale, Drop viene usato per distruggere le risorse associate a una struct. Per esempio, Arc<T> è un tipo che contiene un oggetto di tipo generico T e un conteggio di riferimenti. Quando viene chiamato il suo metodo drop, questo metodo decrementa il conteggio dei riferimenti, e se tale conteggio è diventato zero, dealloca l'oggetto contenuto.
 
 
 
- DROP													4.20.	
- IF LET 												4.21.	
+ IF LET 													4.21.
+
+ 	COSTRUTTO IF LET 									4.21.1
+		 	Il costrutto if let consente di combinare i costrutti if e let, per migliorare efficienza di certi tipi di pattern match.
+		 	Per esempio, diciamo che abbiamo un certo Option<T>. Vogliamo chiamare una funzione su di esso, ma solo se vale Some<T>, e non fare niente se vale None. Si potrebbe fare così:
+
+		 		//soluzione I non soddisfacente
+		 		match opzione {
+					    Some(x) => { foo(x) },	
+					    None => {},
+					}
+
+				Qui non è necessario usare un match, perché potremmo anche usare un if:
+
+		 			//soluzione II non soddisfacente
+					if opzione.is_some() {  //se some è valido utilizzo if
+					    foo(opzione.unwrap());
+
+
+			    Però nessuna delle due soluzioni è particolarmente soddisfacente. Invece si può usare un if let per fare la stessa cosa in un modo più carino:
+
+		 			//@if_(if che migliora l'efficienza di pattern le utilizzazione @some )
+			    	if let Some(x) = opzione {
+						    foo(x);
+						}
+
+					Se un pattern combacia con successo, lega tutte le parti appropriate del valore agli identificatori del pattern, e poi valuta l'espressione. Se il pattern non combacia, non succede niente.
+
+							esempio completo
+
+
+									fn main() {
+									    let opzione = Some(5);
+									fn foo(x: i32) { 
+									         println!("\n
+										     CHIAMATA FOO ATTIVA : esempio di if let che permette di utilizzare Option T 
+										     solo se Some T è valido. E' combaciato il pattern let Some (x) = opzione
+										     la funzione foo HA RICEVUTO X CHE VIENE STAMPATO = {}",x);
+									}
+									fn bar() { }
+									if let Some(x) = opzione {
+									     println!("\n\n
+									    Se combacia il pattern: let Some (x) = opzione
+									    allora viene chiamata la funzione foo (x)  = {}",x);
+									    foo(x);
+									} else {
+									    bar(); //se non combacia il pattern viene chiamata elese 
+									}
+									}							 	
+	while let											4.21.2
+		Similmente, il costrutto while let può essere usato quando si vuole ciclare condizionalmente fin tanto che un valore combacia con un certo pattern. Trasforma il seguente codice:
+
+			//esempio con il loop senza while let
+			fn main() {
+			    let mut v = vec![1, 3, 5, 7, 11];
+			loop {
+				 //devo usare match
+			    match v.pop() {
+			        Some(x) =>  println!("{}", x),
+			        None => break,
+			    }
+			}
+			}
+
+			nel seguente codice:
+
+					fn main() {
+					    let mut v = vec![1, 3, 5, 7, 11];
+
+					//qui uso while let e finche combacia il pattern Some(x) = v.pop() viene eseguito
+					while let Some(x) = v.pop() {
+					    println!("{}", x);
+					}
+					}
+
+
+
+
  OGGETTI-TRATTI											4.22.	
+
+ 		@da@finire@carlomilanesi
+ 			https://carlomilanesi.github.io/linguaggio-rust/traits.html
+
+
+
  CHIUSURE												4.23.	
  SINTASSI UNIVERSALE DI CHIAMATA DI FUNZIONE			4.24.	
  CRATE E MODULI											4.25.	
