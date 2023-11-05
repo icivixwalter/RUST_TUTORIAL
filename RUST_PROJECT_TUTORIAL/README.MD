@@ -1,7 +1,30 @@
 README
-
+		@comandi@rust_(e anche i @comandi@cargo)
 
 C
+	
+	Cargo
+		
+      cargo build
+      			@cargo@build_(per costruire una @release)
+      			
+         Costruzione per il rilascio
+         Quando il progetto è finalmente pronto per il rilascio, è possibile 
+         compilarlo con le ottimizzazioni. Questo comando creerà un oggetto 
+         eseguibile in target/release invece di target/debug. Le ottimizzazioni 
+         rendere il tuo codice Rust più veloce, ma attivarli allunga il tempo 
+         necessario per la compilazione del programma. Questo è il motivo per 
+         cui ci sono due diversi profili: uno per lo sviluppo, quando si 
+         desidera ricostruire rapidamente e spesso, e un altro per 
+         Costruire il programma finale che darai a un utente che non verrà 
+         ricompilato ripetutamente e che funzionerà il più velocemente possibile. 
+         Se stai effettuando il benchmarking del tuo tempo di esecuzione del codice, 
+         assicurarsi di eseguire ed eseguire il benchmark con L'eseguibile 
+         in Target/Release.cargo  
+
+             cargo build --release
+
+
 	COMMAND MODE
 		viene eliminato con esc+a
 
@@ -63,3 +86,8 @@ T
 	TIPI DI VALORI
 			@tipi@di@valori_(intero @32, )
 		u32 = intero senza segno a 32 bit
+
+W
+	WEB
+	    il tutorial su rust si trova qui:
+	        https://doc.rust-lang.org/book/ch01-03-hello-cargo.html
