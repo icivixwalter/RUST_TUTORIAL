@@ -27,7 +27,12 @@ git utilizzo username : icivixwalter@gmail
 			 
 			 
 
+nome del branch completo:
+	
+	https://github.com/icivixwalter/RUST_TUTORIAL.git
 
+	master
+	
 
 
 
