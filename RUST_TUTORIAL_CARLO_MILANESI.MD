@@ -2,7 +2,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 	Note
 		questo è un tutorial in italiano di carlo milanensi e 
 		si trova qui:
-			
+
 
 	CREARE_FILE_PROGETTO
 		rust è create per Tier o 3 livelli con diverse garanzie.
@@ -48,7 +48,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 		La compilazione con rust c = va bene per i programmi semplici altrimenti occorre usare cargo.
 
 		CARGO
-			È un sistema di buile e di gestore di pacchetti Rust  per i progetti ed esegue 3 cose:
+			È un sistema di builde e di gestore di pacchetti Rust  per i progetti ed esegue 3 cose:
 				- compila il codice;
 				- scarica le librerie;
 				- e costruisce le librerie;
@@ -79,8 +79,9 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 			Cargo viene utilizzato per grandi progetti, perchè  si iniziano ad usare i "crate"; questi, in altri linguaggi di programmazione, sono chiamati ‘librerie’ o ‘pacchetti’. 
 
-			Caon cargo per rilasciare il progetto finale occorre questo comando:
-				cargo build --release 
+			Con cargo per rilasciare il progetto finale occorre questo comando:
+				cargo build --release
+				 
 			con questa secondo profilo la compilazione è piu lenta ma viene ottimimizzata e velocizzato
 			il file finale .exe
 
@@ -812,7 +813,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 				Ciò funziona perché l'if è un'espressione. Il valore di tale espressione è il valore dell'ultima espressione della diramazione scelta. Un if senza un else ha sempre il valore ().
 
-	CICLI 												4.6.0
+	CICLI 												4.6.
 		LOOP 								4.6.1
 			Il costrutto @loop ("ciclo") è la forma più semplice di ciclo disponibile in Rust. Usando la parola-chiave loop, Rust fornisce un modo di ciclare indefinitamente finché si raggiunge qualche istruzione di terminazione. Il @ciclo @infinito di Rust è fatto così:
 				//Loop è il costrutto adatto per i cicli infinti
@@ -3759,9 +3760,7 @@ RUST_TUTORIAL_CARLO_MILANESI
 
 				Dunque a cosa serve il tratto Drop? In generale, Drop viene usato per distruggere le risorse associate a una struct. Per esempio, Arc<T> è un tipo che contiene un oggetto di tipo generico T e un conteggio di riferimenti. Quando viene chiamato il suo metodo drop, questo metodo decrementa il conteggio dei riferimenti, e se tale conteggio è diventato zero, dealloca l'oggetto contenuto.
 
-
-
- IF LET 													4.21.
+ IF LET 												4.21.
 
  	COSTRUTTO IF LET 									4.21.1
 		 	Il costrutto if let consente di combinare i costrutti if e let, per migliorare efficienza di certi tipi di pattern match.
@@ -3836,18 +3835,337 @@ RUST_TUTORIAL_CARLO_MILANESI
 					}
 					}
 
+ OGGETTI-TRATTI											4.22.
+ 				@come@individuare_(la @versione del programma con il @disbrigo o @dispatch)
+	 		Quando del codice coinvolge del polimorfismo, serve un meccanismo per determinare quale specifica versione viene effettivamente eseguita. Questo si chiama ‘dispatch’ (in italiano, "disbrigo"). Ci sono due forme principali di dispatch: il dispatch statico e il dispatch dinamico. Rust favorisce il dispatch statico, ma supporta anche il dispatch dinamico tramite un meccanismo chiamato ‘oggetti-tratto’ ["trait object"].
+ 	Premesse											4.22.1
+ 		Per il resto di questa sezione, ci serviranno un tratto e alcune implementazioni. Facciamone una semplice, Foo. Ha un metodo che ci si aspetta che restituisca una String.
+
+ 				trait Foo {
+					    fn metodo(&self) -> String;  //metodo che restituisce una
+					}
+
+
+		Implementeremo anche questo tratto per u8 e String:
+
+			impl Foo for u8 {
+				    fn metodo(&self) -> String { format!("u8: {}", *self) }
+				}
+
+				impl Foo for String {
+				    fn metodo(&self) -> String { format!("string: {}", *self) }
+				}
+
+
+ 	Dispatch statico									4.22.2
+ 		Possiamo usare questo tratto per eseguire un dispatch static con i legami dei tratti:
+
+ 			//RICAPITOLIAMO:
+
+ 			//01 = crea il tratto
+			trait Foo { fn metodo(&self) -> String; }
+
+				//02 = CREA due metodi uno per u8 e uno per una string
+				impl Foo for u8 { fn metodo(&self) -> String { format!("u8: {}", *self) } }
+				impl Foo for String { fn metodo(&self) -> String { format!("string: {}", *self) } }
+
+				//funzione per utilizzare il tratto
+				fn fai_qualcosa<T: Foo>(x: T) {
+				    x.metodo();
+				}
+
+				fn main() {
+					//qui assegno x e y e chiama la funzione fai_qualcosa <  >... CHE UTILIZZA IL TRATTO
+				    let x = 5u8;
+				    let y = "Hello".to_string();
+
+				    fai_qualcosa(x);
+				    fai_qualcosa(y);
+				}
+
+
+		Qui Rust usa la ‘@monomorfizzazione’ per eseguire il dispatch statico. Questo significa che Rust creerà una versione speciale di fai_qualcosa() sia per u8 che per String, e poi sostituirà i punti di chiamata con chiamate a queste funzioni specializzate. In altre parole, Rust genera qualcosa così:
+
+				//RUST CREA QUESTO
+					fn fai_qualcosa_u8(x: u8) {
+					    x.metodo();
+					}
+
+					fn fai_qualcosa_string(x: String) {
+					    x.metodo();
+					}
+
+					fn main() {
+					    let x = 5u8;
+					    let y = "Hello".to_string();
+
+					    fai_qualcosa_u8(x);
+					    fai_qualcosa_string(y);
+					}
+
+		VANTAGGI DEI DISPATCH STATICO = Questo ha un aspetto molto positivo: il dispatch statico consente che le chiamate di funzione siano espanse in linea, perché il chiamato è noto in fase di compilazione, e l'espansione in linea è la chiave per una buona ottimizzazione. Il dispatch statico è veloce, ma si paga: il gonfiore del codice ["‘code bloat’"], dovuto alle numerose copie della stessa funzione esistente nel binario, uno per ogni tipo.
+					@dispach@statico_(piu efficiente rispetto al dinamico)
+		COMBINAZIONE DISPACH STATICO + DISPACH DINAMICO - NO IL CONTRARIO = Però, il caso più tipico è quello che è più efficiente usare il dispatch statico, e si può sempre avere una piccola funzione chiamata con dispatch statico che esegue il dispatch dinamico, mentre non è possibile il contrario, ossia trasformate il dispatch dinamico in statico, il che significa che le chiamate statiche sono più flessibili. Per questo ragione, la libreria standard cerca di usare il dispatch statico il più possibile.
 
 
 
- OGGETTI-TRATTI											4.22.	
+		FUNZIONI ESPANSE 
+
+ 	Dispatch dinamico									4.22.3
+ 			
+ 			@trasformazione@tratto_(in oggetto tratto tramite @forzatura o @conversione)
+ 			
+ 			@oggetti@tratto_(@oggetto@tratto che immaganizzano valori di qualsiasi tipo noto solo in fase di esecuzione)
+
+ 			@ottenere@tratto_(il tratto puo essere ottenuto da un @puntatore@tipo)
+
+ 		Rust fornisce il DISPATCH DINAMICO tramite una caratteristica chiamata ‘oggetti-tratto’. Gli oggetti-tratto, come &Foo o Box<Foo>, sono valori normali che immagazzinano un valore di qualunque tipo che implementa il dato tratto, dove il preciso tipo può essere noto solo in fase di esecuzione.
+
+		COME SI PUO OTTENERE UN OGGETTO TRATTO - FORZATURA E CONVERSIONE DEGLL'OGGETTO TRATTO= Un oggetto-tratto può essere ottenuto da un puntatore a un tipo concreto che implementa il tratto, 
+			convertendolo (per es. &x as &Foo) o 
+			forzandolo (per es. usando &x come argomento a una funzione che prende un &Foo).
+
+				@tratto@forzato@tratto@convertito_(il tratto puo essere convertito o @forzato)
+
+		FORZATURE E CONVERSIONI ANCHE PER I PUNTATORI E BOX <T>
+			
+			Queste forzature e conversioni di oggetti-tratto funzionano anche per i :
+				
+				puntatori come &mut T convertito in &mut Foo, 
+					e per 
+				Box<T> convertito in Box<Foo>, 
+
+				e per il momento per nient'altro. Le forzature e le conversioni sono identiche.
+
+		CANCELLARE IL PUNTATORE  DEL TIPO = Questa operazione può essere vista come un ‘cancellare’ la conoscenza che il compilatore ha sullo specifico tipo del puntatore, e quindi talvolta si fa riferimento agli oggetti-tratto come a ’cancellazioni di tipo’.
+
+			Tornando all'esempio di prima, possiamo usare il medesimo tratto per eseguire un dispatch dinamico con gli oggetti-tratto, sia tramite la conversione:
+
+							//DISPATCH DINAMICO 
+							fn fai_qualcosa(x: &Foo) {  //riceve un tratto Foo
+							    x.metodo();
+							}
+
+							fn main() {
+							    let x = 5u8;      		//qui invio un 5 u8
+							    fai_qualcosa(&x as &Foo);  //puntatore al tipo &x + &Foo
+							}
+
+			che tramite la forzatura:
+
+
+				//@funzione_(che prende un @oggetto@tratto non è specializzata)
+				fn fai_qualcosa(x: &Foo) {
+					    x.metodo();
+					}
+
+					fn main() {
+					    let x = "Hello".to_string();
+					    fai_qualcosa(&x);
+					}
+
+			DISPACHT DINAMICO RENDE PIU LENTE LE FUNZIONI VIRTUALI: Una funzione che prende un oggetto-tratto non è specializzata per ognuno dei tipi che implementano Foo: ne viene generata solamente una copia, con la conseguenza che spesso (ma non sempre) si riduce il gonfiore di codice. 
+
+			Però, ciò comporta il costo di richiedere le più lente chiamate di funzioni virtuali, e di inibire ogni possibilità di espandere in linea e di applicare le relative ottimizzazioni.
+
+
+
+
+
+ 	Perché i puntatori?									4.22.4
+			
+			@tratti@puntatori_(nei tratti non ci sono puntatori default ma puntatore che rappresentato tipo e dimensione) 	
+
+ 		RUST IL PUNTATORE DEVE CONOSCERE LA DIMENSIONE DEI TIPI = Rust non mette le cose dietro un puntatore di default, diversamente da molti linguaggi gestiti ["managed"], e quindi i tipi possono avere dimensioni diverse. 
+
+ 		IMPORTANTE LA DIMENSIONE DEL VALORE: Conoscere la dimensione del valore in fase di compilazione è importante per cose  come 
+ 				passarlo come argomento a una funzione, 
+ 				spostarlo in giro per lo stack, 
+ 					e 
+				allocare (e deallocare) spazio sullo heap per immagazzinarlo.
+		
+		NECESSARIO IL PUNTATORE: Per Foo, avrebbo bisogno di avere un valore che potesse rappresentare almeno una String (24 byte) o un u8 (1 byte), e così pure qualunque altro tipo per cui i crate dipendenti possono implementare Foo (assolutamente qualunque numero di bytes). 
+
+		Non c'è modo di garantire che quest'ultimo punto possa funzionare se i valori vengono immagazzinati senza un puntatore, perché quegli altri tipi possono essere arbitrariamente grandi.
+
+		IMPORTANTE LA DIMENSIONE DEL PUNTATORE = Mettere il valore dietro un puntatore significa che la dimensione di tale valore non è rilevante quando si maneggia un oggetto-tratto, e importa solo la dimensione del puntatore stesso.
+
+
+
+
+ 	Rappresentazione									4.22.5
+ 		
+ 				@oggetti@tratto_(@non@chiaro @non@chiara la esposizione o il @significato)
+
+ 		VTABLE NECESSARIA PER CHIAMARE I METODI DEL PUNTATORE  A FUNZIONE : I metodi del tratto possono essere chiamati su un oggetto-tratto tramite uno speciale record di puntatori di funzione tradizionalmente chiamato ‘vtable’ (creato e gestito dal compilatore).
+
+ 		Gli oggetti-tratto sono sia semplici che complicati: la loro rappresentazione e disposizione interna è davvero immediata, ma ci sono da scoprire alcuni messaggi d'errore contorti e alcuni comportamenti sorprendenti.
+
+ 		Iniziamo dal facile, con la rappresentazione in fase di esecuzione di un oggetto-tratto. Il modulo std::raw contiene le struct con le disposizioni che sono le medesime dei complicati tipi incorporati, compresi gli oggetti-tratto:
+
+
+
+		fn main() {
+				    
+				    mod foo {
+				pub struct TraitObject {
+				    //due puntatori uno a data ed uno alla vtable
+				    pub data: *mut (),
+				    pub vtable: *mut (),
+				}
+				}
+				}
+
+				Cioè, un oggetto-tratto come &Foo consiste in un puntatore ‘data’ e un puntatore ‘vtable’.
+
+				Il puntatore 
+					data indirizza i dati (di qualche tipo sconosciuto T) che l'oggetto-tratto sta immagazzinando, 
+						e il 
+					puntatore vtable punta alla vtable (‘tabella dei metodi virtuali’) corrispondente all'implementazione di Foo per T.
+
+
+
+				VTABLE - STRUCT PUNTATORI A FUNZIONE: 
+				Una vtable è essenzialmente una struct di puntatori a funzione, che puntano al pezzo concreto di codice macchina per ogni metodo nell'implementazione. 
+
+				Una chiamata di metodo come oggetto_tratto.metodo() recupererà il puntatore corretto dalla vtable e poi farà una chiamata dinamica ad esso. Per esempio:
+
+						fn main() {
+							    struct FooVtable {
+						    	//camp destructor punta ad una funzione che rilascera memoria
+							    destructor: fn(*mut ()),
+							    //campo size + align immagazzinano il tipo e la dimensione
+							    size: usize,
+							    align: usize,
+							    method: fn(*const ()) -> String,
+							}
+
+							// u8:
+
+							fn call_method_on_u8(x: *const ()) -> String {
+							    // il compilatore garantisce che questa funzione è chiamata solamente
+							    // con `x` che punta a un u8
+							    let byte: &u8 = unsafe { &*(x as *const u8) };
+
+							    byte.method()
+							}
+
+							static Foo_for_u8_vtable: FooVtable = FooVtable {
+							    destructor: /* magia del compilatore */,
+							    size: 1,
+							    align: 1,
+
+							    // cast a un puntatore a funzione
+							    method: call_method_on_u8 as fn(*const ()) -> String,
+							};
+
+
+							// String:
+
+							fn call_method_on_String(x: *const ()) -> String {
+							    // il compilatore garantisce che questa funzione è chiamata solamente
+							    // con `x` che punta a una String
+							    let string: &String = unsafe { &*(x as *const String) };
+
+							    string.method()
+							}
+
+							static Foo_for_String_vtable: FooVtable = FooVtable {
+							    destructor: /* magia del compilatore */,
+							    // questi sono i valori per un target a 64 bit;
+							    // bisogna dimezzarli per un target a 32 bit
+							    size: 24,
+							    align: 8,
+
+							    method: call_method_on_String as fn(*const ()) -> String,
+							};
+							}
+					Il campo destructor in ogni vtable punta a una funzione che rilascerà qualunque risorsa del tipo vtable: per u8 è banale, ma per String libererà della memoria. Questo è necessario per gli oggetti-tratto che possiedono, come Box<Foo>, che ha bisogno di rilasciare sia l'allocazione di Box che il tipo interno, quando escono dall'ambito. I campi size e align immagazzinano la dimensione del tipo cancellato, nonché i suoi requisiti di allineamento; questi campi sono essenzialmente inutilizzati al momento, dato che questa informazione è incorporata nel distruttore, ma verrà usata in futuro, dato che gli oggetti-tratto sono resi progressivamente più flessibili.
+
+					Supponiamo di avere alcuni valori che implementano Foo. La forma esplicita di costruzione e utilizzo degli oggetti-tratto di Foo potrebbe sembrare un po' così (ignorando gli errori di tipo: comunque sono tutti puntatori):
+
+
+						fn main() {
+
+						    let a: String = "foo".to_string();
+								let x: u8 = 1;
+
+								// let b: &Foo = &a;
+								let b = TraitObject {
+
+								    // immagazzina i dati
+								    data: &a,
+								    // immagazzina i metodi
+								    vtable: &Foo_for_String_vtable
+								};
+
+								// let y: &Foo = x;
+								let y = TraitObject {
+
+								    // immagazzina i dati
+								    data: &x,
+								    // immagazzina i metodi
+								    vtable: &Foo_for_u8_vtable
+								};
+
+								// b.method();
+								(b.vtable.method)(b.data);
+
+								// y.method();
+								(y.vtable.method)(y.data);
+								}
+
+
+ 	Sicurezza			 come oggetto								4.22.6
+
+ 		OGGETTI-TRATTO NO VETTORI : Non tutti i tratti possono essere usati per costruire un oggetto-tratto. Per esempio, i vettori implementano Clone, ma se proviamo a costruirne un oggetto-tratto:
+
+ 			fn main() {
+				    let v = vec![1, 2, 3];
+				let o = &v as &Clone;
+				}
+
+				@TRATTI@SICURI_(sono tratti sicuri se non ha Self:Size e i suoi metodi sono sicuri)
+				@tratti@trasformati_(in @oggetti-tratto sono sicuri)
+
+				@tratti@non@trasformabili_(non sono trasformabili i oggetto tratti i vettori perchè creano @oggetti@non@sicuri, @no@object@safe)
+
+		L'errore dice che Clone non è ‘object-safe’, cioè ’sicuro come oggetto’. Solamente i tratti che sono sicuri come oggetti possono essere trasformati in oggetti-tratto. Un tratto è sicuro come oggetto se sono vere entrambe le seguenti proprietà:
+
+			il tratto non richiede che valga Self: Sized
+			tutti i suoi metodi sono sicuri come oggetti
+
+					@metodi@sicuri_(metodi sicuri come oggetto xhe ha Self:Size oppure NON HA parametri tipo o non usi Self)
+
+			METODI SICURI COME OGGETTO : Ma che cosa rende un metodo sicuro come oggetto? Ogni metodo deve richiedere che 
+				valga Self: Sized 
+
+					oppure che valga tutto il seguente:
+
+				deve non avere parametri di tipo
+				deve non usare Self
+
+			Urca! Come si può vedere, quasi tutte queste regole parlano di Self. Una buona intuizione è “eccetto in circostanze speciali, se il metodo del tratto usa Self, non è object-safe.”
+
+
+
+ CHIUSURE												4.23.
+ 	Sintassi 											4.23.1
+ 	Le chiusure e il loro ambiente						4.23.2
+ 	Le chiusure move 									4.23.3
+ 	Implementazione delle chiusure						4.23.4
+ 	Prendere chiusure come argomenti					4.23.5
+ 	Puntatori a funzione e chiusure						4.23.6
+ 	Restituire chiusure									4.23.7
 
  		@da@finire@carlomilanesi
  			https://carlomilanesi.github.io/linguaggio-rust/traits.html
 
+ SINTASSI UNIVERSALE DI CHIAMATA DI FUNZIONE			4.24.
+ 	["Universal Function Call Syntax" o "UFCS"]			4.24.1
+ 	Forma a parentesi angolari							4.24.2
 
 
- CHIUSURE												4.23.	
- SINTASSI UNIVERSALE DI CHIAMATA DI FUNZIONE			4.24.	
  CRATE E MODULI											4.25.	
  CONST E STATIC											4.26.	
  ATTRIBUTI												4.27.	
