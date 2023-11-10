@@ -29,10 +29,51 @@ git utilizzo username : icivixwalter@gmail
 
 nome del branch completo:
 	
+	https://github.com/icivixwalter/RUST_TUTORIAL
 	https://github.com/icivixwalter/RUST_TUTORIAL.git
 
 	master
-	
+
+
+COMANDI
+		https://www.freecodecamp.org/italian/news/git-push-to-remote-branch-how-to-push-a-local-branch-to-origin/
+
+	git push
+			
+		La forma generica del comando è:
+
+			git push <remote> <branch>
+
+				Come fare il push di un branch locale all'origin
+					Se esegui il semplice comando git push, Git sceglierà di default altri 
+					due parametri: 
+						il repository remoto e il 
+						branch da cui fare il push.
+
+					origin
+
+						Di default, Git sceglie 
+						remote =origin per il remoto 
+							e il tuo 
+						branch = main attuale come branch da mandare.
+
+
+				Per sapere quale è il branch remoto origin e quale è la repository ed il branch corrente in
+					github esegui comando:
+
+					git remote -v 
+
+						ottieni
+
+					origin  git@github.com:icivixwalter/RUST_TUTORIAL.git (fetch)                                                                   
+					origin  git@github.com:icivixwalter/RUST_TUTORIAL.git (push)
+
+
+					quando fai push puoi vedere il push locale:
+						 b8975c3..6ad68e8  master -> master  (da master locale a master github)
+
+
+			 	Come forzare il push di un branch in Git (con rebase da locale per sincronizzarlo in remoto)
 
 
 
