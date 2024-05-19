@@ -87,6 +87,14 @@ T
 			@tipi@di@valori_(intero @32, )
 		u32 = intero senza segno a 32 bit
 
+
+U
+	UTILITA
+		per avere i vari errori di rust controllare il file utilita
+		del dos, devi aprire queste file:
+			
+			start "apri" C:\CASA\LINGUAGGI\DOS\UTILITA_FILE.md
+
 W
 	WEB
 	    il tutorial su rust si trova qui:

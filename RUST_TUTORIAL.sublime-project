@@ -2,8 +2,7 @@
 	"folders":
 	[
 		{
-			//in windows la path: c:\CASA\LINGUAGGI\RUST_TUTORIAL\
-			"path": ".",
+			"path": "."
 		}
-	],
+	]
 }
