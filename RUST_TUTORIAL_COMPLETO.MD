@@ -7,6 +7,8 @@ RUST_TUTORIAL_COMPLETO.MD
 
 PDF
     TROVA ELENCO COMANDI
+
+            @comandi@pdf_(vedi la path dei comandi @rust piu importanti)
          START "apri il progetto dei comandi di TUTTI@PROGETTI" "c:\\Casa\\LINGUAGGI\RUST\\RUST_TUTORIAL\PDF\\Rust_Cheat_Sheet.pdf"
        
          start "apri path" call "c:\\Casa\\LINGUAGGI\\RUST\\RUST_TUTORIAL\\PDF\\"
