@@ -2,6 +2,14 @@
    Note
       faccio un riassunto del libro di rust
 
+GITHUB
+   @Progetto@web
+      si trova in questa posizione su github:
+         https://github.com/icivixwalter/RUST_TUTORIAL
+
+   @comando@githu@unico
+      copiare il comando ..
+         git pull & git add . & git commit -m "agg" & git push
 
 SUBLIMETEXT
    Comandi contenuti in Preferences-->Key Bindings
