@@ -9,7 +9,7 @@ GITHUB
 
    @comando@githu@unico
       copiare il comando ..
-         git pull & git add . & git commit -m "agg" & git push
+         git status & git pull & git add . & git commit -m "agg" & git push
 
 SUBLIMETEXT
    Comandi contenuti in Preferences-->Key Bindings
