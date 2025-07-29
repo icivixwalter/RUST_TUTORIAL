@@ -15,10 +15,48 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/README.MD",
+			"settings":
+			{
+				"buffer_size": 2246,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			},
+			"undo_stack":
+			[
+				[
+					7,
+					1,
+					"insert",
+					{
+						"characters": "@"
+					},
+					"AQAAAPoDAAAAAAAA+wMAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA+gMAAAAAAAD6AwAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		}
 	],
-	"build_system": "",
+	"build_system": "Packages/User/PandocToWord.sublime-build",
 	"build_system_choices":
 	[
+		[
+			[
+				[
+					"Packages/MarkdownPreview/Markdown.sublime-build",
+					""
+				],
+				[
+					"Packages/User/PandocToWord.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/PandocToWord.sublime-build",
+				""
+			]
+		]
 	],
 	"build_varint": "",
 	"command_palette":
@@ -27,6 +65,58 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"OPEN PREVI",
+				"MarkdownLivePreview: Open Preview"
+			],
+			[
+				"PREIV",
+				"MarkdownLivePreview: Open Preview"
+			],
+			[
+				"preview",
+				"MarkdownLivePreview: Open Preview"
+			],
+			[
+				"mard",
+				"MarkdownEditing: Toggle Task"
+			],
+			[
+				"previe",
+				"MarkdownLivePreview: Open Preview"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"togl",
+				"View: Toggle Open Files in Side Bar"
+			],
+			[
+				"previ",
+				"Markdown Preview: Open Markdown Cheat sheet"
+			],
+			[
+				"eding",
+				"MarkdownEditing: New Image"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Preferences: Browse Packages"
+			],
+			[
+				"packa",
+				"Preferences: Browse Packages"
+			],
+			[
+				"MA",
+				"MarkdownLivePreview: Open Preview"
+			],
 			[
 				"Package Control: ",
 				"Package Control: Upgrade Package"
@@ -59,6 +149,7 @@
 		"height": 231.0,
 		"history":
 		[
+			"import urllib.request, zipfile, os\nfrom io import BytesIO\n\n# Scarica il pacchetto di Package Control\nurl = 'https://packagecontrol.io/Package%20Control.sublime-package'\nresponse = urllib.request.urlopen(url)\ndata = BytesIO(response.read())\n\n# Estrai il pacchetto nella cartella giusta\ninstall_dir = os.path.join(sublime.packages_path(), 'Package Control')\nwith zipfile.ZipFile(data) as zf:\n    zf.extractall(install_dir)\n"
 		]
 	},
 	"distraction_free":
@@ -72,11 +163,18 @@
 	},
 	"expanded_folders":
 	[
-		"/C/CASA/LINGUAGGI/RUST/RUST_TUTORIAL",
-		"/C/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL"
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL",
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN"
 	],
 	"file_history":
 	[
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/README.MD",
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/RIASSUNTO_TONY_CHAN.md",
+		"/C/Users/icivi/AppData/Roaming/Sublime Text/Packages/User/PandocToWord.sublime-build",
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/HomePage.md",
+		"/C/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/RIASSUNTO_TONY_CHAN.md",
+		"/C/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL.sublime-project",
+		"/C/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/README.MD",
 		"/C/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_COMPLETO.MD",
 		"/C/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_PROJECT_TUTORIAL/README_COMANDI_RUST.MD",
 		"/C/CASA/LINGUAGGI/DOS/UTILITA_FILE.MD",
@@ -139,7 +237,7 @@
 	],
 	"find":
 	{
-		"height": 50.4
+		"height": 34.4
 	},
 	"find_in_files":
 	{
@@ -154,6 +252,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"            =",
+			"\\",
 			"utilita",
 			"@aggiornamento",
 			"@filtroOn",
@@ -246,12 +346,44 @@
 		{
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/README.MD",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2246,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1019,
+								1019
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
+							"tab_size": 3,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 37.6
+		"height": 34.4
 	},
 	"input":
 	{
@@ -282,17 +414,30 @@
 	"menu_visible": true,
 	"output.Terminus":
 	{
-		"height": 186.399993896
+		"height": 341.0,
+		"history":
+		[
+		]
+	},
+	"output.exec":
+	{
+		"height": 486.0,
+		"history":
+		[
+		]
 	},
 	"output.find_results":
 	{
-		"height": 0.0
+		"height": 0.0,
+		"history":
+		[
+		]
 	},
 	"pinned_build_system": "",
 	"project": "RUST_TUTORIAL.sublime-project",
 	"replace":
 	{
-		"height": 72.0
+		"height": 65.6
 	},
 	"save_all_on_build": false,
 	"select_file":
@@ -331,7 +476,7 @@
 	{
 	},
 	"show_minimap": false,
-	"show_open_files": true,
+	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
 	"side_bar_width": 358.0,
