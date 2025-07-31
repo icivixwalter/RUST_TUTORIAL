@@ -11,6 +11,9 @@ GITHUB
       copiare il comando ..
          git status & git pull & git add . & git commit -m "agg" & git push
 
+@DOS
+     dir /A /b *.*  >> A.TXT           = salvo su a.txt le cartellse senza path
+
 SUBLIMETEXT
    Comandi contenuti in Preferences-->Key Bindings
 
@@ -24,13 +27,20 @@ COMANDI MARKDOWN
 
          view ---> row2                 = visualizzo in orizzontale pannello 1 sopra e 2 sotto
          ctrl+shift+p+ OPEN PREVIEW     = command palette + OPEN PREVIEW ---> PREVIEW IN MARKDOWN IN 
-                                          UNA TAB SEPRATA
+                                          UNA TAB SEPARATA,   @visualizza@markdown@preview
          alt+shift+1                    = a 1 scheda
          ctrl+shift+p                   = command palette
          cr                             = ritorno a capo con 2 spazi
                                         oppure <br> come forzatura
+         grassetto                      = puoi utilizzare doppio asterisco o doppio undescore
+                                          es.   **grassetto** oppure __grassetto__
+         dimensione carattere           = non esiste in mardown la possibilita di aumentare la   
+                                        dimensione del carattere ma si puo utilizzare Html es:  
+                                        grassetto + carattere 24 px
+                                        **<span style="font-size: 24px;">trait</span>**
 
          alt+shift+8                   = visualizzo in 2 pannelli orizzontali
+
 
 
 TRASFORMARE .MD IN @WORD
@@ -45,10 +55,11 @@ TRASFORMARE .MD IN @WORD
                                               "selector": "text.html.markdown"
                                              }
 
-                                       3) per attivare pando e trasformare il file aperto corrente  
+                                       3) per attivare pandoc e trasformare il file aperto corrente  
                                        da .md a docx attivare lo script :  
                                           Tools --> Builds with --> Pandoc
                                           e verra creato il file .docs nella stessa cartella.
+                                             @creare@file@doc@docs
                                           
 
 

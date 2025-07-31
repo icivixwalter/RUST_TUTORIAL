@@ -16,24 +16,462 @@
 	"buffers":
 	[
 		{
-			"file": "/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/README.MD",
+			"contents": "#RIASSUNTO_TONY_CHAN.md\n@RAUST@TUTORIAL@TONY@CHAN\n\n## GUIDA MARK DOWN\n   si trova qui: https://learnxinyminutes.com/it/markdown/\n\n   esempio i titoli:\n\n            # Questo è un <h1>\n            ## Questo è un <h2>\n            ### Questo è un <h3>\n            #### Questo è un <h4>\n            ##### Questo è un <h5>\n            ###### Questo è un <h6>1\n\n### Guida completa per sviluppatori e principianti @giacom\\o\nLibro cha ha acquistato giacomo.\n\n### Introduzione\nSviluppato inizialmente da  Graydon Hoare e sponsorizzato  \nda Mozzilla nato con l'obiettivo di combinare prestazioni elevate e  \ncontrollo della memoria di C e C++ orientato alla prevenzione della \nsicurezza e degli errori tipo:  \n   data races\n   buffer overflows\nSponsorizzato da Mozzilla perche migliorava le prestazioni di Firefox-\nQuali paradigmi di programmazione offre:\n   programmazione imperativa\n   programmazione funzionale\n   programmazione orientata agli oggetti\n\n   concetto di ownership   = per la gestione\n      sicura della memoria e l'assenza di errore di concorenza.\n   Cargo = il suo sistema di gestione dei pacchetti e build toll valido per sistema embeddet e motori di gioco.\n\n   Sintassi familiare con C e C++\n\n#### Breve storia\nInizia del 2006 quando Graydon Hoare creo nel tempo libero questo linguaggio cercando di\nrisolvere i problemi di sicurezza di C e C++ progettato per offrire prestazioni di basso livello di C e C++ \nsenza i problemi di memoria di\n\n   buffer overflows\n\n   data races        = In ambito informatico, una data race (o corsa ai dati) è una condizione che si verifica \n   quando più thread o processi accedono contemporaneamente a una risorsa condivisa (come una variabile), \n   e almeno uno di questi accessi è una scrittura. Questo può portare a risultati inattesi, imprevedibili e, \n   spesso, errati, poiché l'ordine in cui i thread accedono alla risorsa non è controllato.\n\nNel 2009 fu sponsorizzato da mozzilla per miglioare le prestazione di Firefox e nel 2010 fu creato il primo \ncompilatore rustc scritto interamente in Rust.\n\nInnovativo è stato il sistema di \"ownership = proprieta\"\n\nNel **2015** ragiunse la prima versione stabile 1.0 e con esso fu utilizzato per il progetto  del nuovo\n\n   motore di rendering\n\n   Un motore di **rendering**\n\n     è un componente software o hardware che trasforma dati\n     codificati, come il codice HTML di una pagina web o i dati di\n     un modello 3D, in una rappresentazione visiva, che può essere\n     visualizzata su uno schermo. In altre parole, è il responsabile di prendere le istruzioni e trasformarle in immagini o video\n     che possiamo vedere.\nNel 2017 vennero introdotte nuove funzionalita\n\n   non-lexical lifetimes   = semplificarono la gestione della memoria\n   async/await             = resero la programmazione asincrona piu accessibile e potente.\n\n\nNel 2021 con la versione 1.50 rusto miglioro il suo ecosistema ed ha\nintrodotto ottimizzazione del compilatore e nuove libreria standard.\n\n#### Lo standard e le ultime versioni Lo standard viene mantenuta dalla\ncomunita attiva Rust Fundation con un modello di rilascio stabile e  \norganizzato con versioni stabili ogni 6 settimane e con impegno alla \nretro compatibilita.\n\nLe innovazioni ultime sono:\n\n   - miglioramento della programmazione asincrona\n   - trait migliorati per il polimorfismo\n   - Cargo ha semplifato la gestione dei pacchetti e dipendenze;\n   - vers. 1.81 migliorato la funzione estena con extern C che\n      prima creava panico non gestito oggi blocca il compilatore;\n   - i metodi ambigui sono stati migliorati con la nuova versione\n         i metodi sono piu prevedibili\n\n### Rust pro e contro\n\n##### Tra i punti di forza la sicurezza di gestione e previene gli errori di\n\n      - null pointer dreference\n      - buffer overflows\n      - la concorrenza senza la garbace colletion\n   in questo modo è un liguaggio adatto per il software critico dove la sicurezza e l'affidambilita sono fondamentali;\n   motoridi gioco e sofware di rete.\n\n   La memoria viene gestia in modo sicuro con\n      - ownership\n         ogni valore stringa o numero ha un proprietario alla volta\n         fino all'uscita dello scope dove la memoria viene deallocata\n      - borrow checker\n            Ruolo principale del borrow checker\n\n               Garantire la sicurezza della memoria: Rust utilizza un\n               sistema di ownership che stabilisce chi possiede un\n               dato in memoria e per quanto tempo. Il borrow checker\n               verifica che le regole di ownership siano rispettate:\n               Ogni dato ha un proprietario. Può esistere solo un\n               proprietario alla volta. Il dato viene deallocato\n               automaticamente quando il proprietario esce dallo scope.\n\n               Gestire il borrowing: Borrowing consente di accedere ai dati senza trasferire la proprietà. Questo può avvenire\n               in due modi:\n                     - Mutabile: un solo riferimento mutabile  alla volta.\n                     - Immutabile: multipli riferimenti immutabili\n                     sono consentiti, ma non contemporaneamente a\n                     riferimenti  mutabili.\n\n               Il borrow checker garantisce che questi riferimenti non entrino in conflitto tra loro.\n\n               Prevenire data race: Una data race si verifica quando:\n               Due o più thread accedono simultaneamente alla stessa risorsa. Almeno uno di essi modifica la risorsa.\n               Non ci sono meccanismi di sincronizzazione per gestire l’accesso. Il borrow checker impedisce questi \n               scenari, obbligando l'accesso sicuro alle risorse condivise.\n\n               Impedire l'uso di dati non validi: Il borrow checker garantisce che i dati non vengano utilizzati dopo\n               essere stati spostati, invalidati o rilasciati.\n         - Cargo, ecosistema che semplifica  la gestione dei pacchetti\n               e tooll, questo è uno dei punti forza.\n         - Rust supporta i paradigmi (modelli o insieme di teorie\n               che la comunita scientifica utilizza per la propria\n               ricerca pratica e quindi il cambio di paradigma o\n               rivoluzione scientifica avviene quando un modello\n               sostituisce un'altro) e i tre paradigmi sono:\n                  - imperativa;\n                  - funzionale;\n                  - concorrente;\n               rendendo rust flessibile adatto a diversi progetti e\n               permettendo agli sviluppatore di sceglire l'approccio\n               piu adatto.\n\n               Esempi:\n\n               1. ✅ Paradigma Imperativo\n                  Nel paradigma imperativo descrivi passo dopo passo cosa deve fare il computer.\n\n                  🔧 Esempio: Calcolo della somma di numeri\n                  rust\n                  Copia\n                  Modifica\n\n                        fn main() {\n                            let mut sum = 0;\n                            for i in 1..=5 {\n                                sum += i;\n                            }\n                            println!(\"La somma è: {}\", sum);\n                        }\n                  Spiegazione:\n\n                        let mut sum = 0; definisce una variabile mutabile.\n\n                        Il ciclo for è tipico dello stile imperativo.\n\n                        Modifichiamo lo stato (variabile sum) passo per passo.\n               2. ✅ Paradigma Funzionale\n\n                  Rust supporta caratteristiche funzionali: funzioni pure, closure, iteratori, immutabilità, ecc.\n\n                  🔧 Esempio: Somma con stile funzionale usando iteratori\n\n                        fn main() {\n                               let sum: i32 = (1..=5).sum();\n                               println!(\"La somma è: {}\", sum);\n                           }\n\n                     Oppure con map e filter:\n                        fn main() {\n                            let squares: Vec<i32> = (1..=5)\n                                .map(|x| x * x)\n                                .filter(|x| x % 2 == 0)\n                                .collect();\n\n                            println!(\"Quadrati pari: {:?}\", squares);\n                        }\n\n                     Spiegazione:\n\n                        map, filter, collect sono tipici della programmazione funzionale.\n\n                        Non c’è mutabilità o gestione manuale dello stato.\n               3. ✅ Paradigma Concorrente\n\n                  Rust ha un eccellente supporto alla programmazione concorrente e parallela, grazie alla ownership e al\n                  compilatore che garantisce la sicurezza dei thread.\n\n                  🔧 Esempio: Esecuzione concorrente con std::thread\n                        use std::thread;\n\n                           fn main() {\n                               let handle = thread::spawn(|| {\n                                   for i in 1..=5 {\n                                       println!(\"Thread secondario: {}\", i);\n                                   }\n                               });\n\n                               for i in 1..=5 {\n                                   println!(\"Thread principale: {}\", i);\n                               }\n\n                               handle.join().unwrap(); // Attende la fine del thread secondario\n                           }\n\n                   Spiegazione:\n\n                     thread::spawn crea un nuovo thread.\n\n                     join() sincronizza e attende il completamento.\n\n                     Nessun uso esplicito di unsafe, tutto è gestito in sicurezza dal compilatore.\n\n                  Altri strumenti per la concorrenza:\n                     std::sync::mpsc per canali (message passing)\n\n                     tokio per programmazione asincrona\n\n                     rayon per parallelismo con iteratori paralleli\n\n            ✅ Conclusione\n\n               Paradigma   | Caratteristiche in Rust                        | Esempio\n               ------------|------------------------------------------------|-------------------------------\n               Imperativo  | Stato mutabile, cicli, controllo esplicito     | for, let mut, if, while\n               Funzionale  | Closure, immutabilità, iteratori               | map, filter, fold, sum()\n               Concorrente | Sicurezza a compile-time, gestione thread-safe | thread::spawn, join, channel\n\n   Gli svantaggi\n   - curva di apprendimento difficile\n   - sintassi complessa e gestione della ownership complicata;\n   - linguaggio eccessivo per progetti semplici;\n   - tempo di compilazione lungo;\n\n#### Strumenti e tools di lavoro\n   \n      puo essere utilizzato un semplice codice di testo ma quando i progetti\n      sono complesso occorre un IDE; inoltre non utilizza il modello \n   \n      JIT = just in time come C# ma il modello:\n   \n         AOT = ahead-of-time = ossia il codice viene tradotto in binari\n         eseguibili  nella compilazione prima della sua esecuzione, garantendo\n         sicurezza e ottimizzazione delle prestazione.\n\n#### LINGUAGGIO MACCHINA\n   La programmazione si distingue in BASSO LIVELLO = come assembly che costringe i  \n   programmatori a lavorare molto vicino all'hardware ed a controllare la memoria.  \n   \n   Rust è un linguaggio ad ALTO LIVELLO  progettato per fornire astrazioni moderne  \n   e controllando le risorse come la memoria.\n   Essendo un linguaggio AOT = aead-of-time = significa che il compilatore rustc  \n   trasforma in binario eseguibile il listato del programmatore risultando diverso  \n   dai linguaggi Just-In-Time tipo Java o C# dove il linguaggio viene parzialmente  \n   interpretato. Inoltre a differenza di C++ o Assembly dove il programmatore deve  \n   deallocare la memoria, rust utilizza  il suo sitema di ownership e borrow cheching  \n   consentendo sicurezza della memoria.\n   Rust è anche cross-compilation = puo essere compilato per diverse piattaforme.  \n#### AI INTELLIGENZA ARTIFICIALE\n   Possiamo utilizzare Ai per avere un tutor in rust.  \n\n### Debug, Boilerplate code e convenzioni\n      - debugging\n         Rust utilizza macro dbg!() che stampa su console il valore e la posizione del codice  \n         es.   let x = 5; dbg!(x) //stampa il valore 5;  \n\n      - println!()  = consente di stampare variabili in fase di esecuzione ma alcuni tipi devono  \n      essere implementati con trait Debug; e puoi anche creare tipi personalizzati da richiamare  \n      con #[derive(Debug)]\n\n      - boilreplate code  \n         rust riduce la possibilita di costruire codice codice ripetitivo e rindodante con :\n            @ i trait = che permetto di generare codice ripetitivo automaticamente  \n            @ macro   = tipo vec![] crea un vettore con tutti gli elementi in modo automatico.  \n      - zero-cost abstractions  \n         puoi utilizzare strutture ad altro livello tipo Result + Option senza costi extra in termini  \n         di prestazioni e potento scrivere codice boilerplate per la gestione degli errori e dei valori  \n         nulli.\n\n\n### Termini comuni in rust\n   * Inferire  \n        Il compilatore puo inferire o ricavare i tipi di variabili  \n        senza dichiararli im modo esplicito ma sono dedotti automaticamente  \n        dalla verbosita.  \n   * Monomorfizzazione:  processo in cui il compilatore genera funzioni generiche  \n        per ciascun tipo utilizzato ottimizzando il codice ed eliminando l'overhead  \n        associato al dispach dinamico.\n            spiegazione: (In sintesi, l'overhead del dispatch dinamico è il costo aggiuntivo, .\n            in termini di tempo di esecuzione, associato alla determinazione  \n            della funzione da chiamare a runtime. Questo costo è assente nel dispatch statico,  \n            che risolve la chiamata di funzione a tempo di compilazione.)  \n   * Puntatori e puntatori raw:  \n      a)  i puntatori in Rust, come & e &mut, sono sicuri perché rispettano le regole  \n          del  borrowing  e  dell'ownership;  \n      b) i  puntatori  raw,  come  *const  e  *mut,  sono  meno  sicuri  perché  \n         permettono l'accesso diretto alla memoria senza le garanzie del borrowing.  \n   * Heap e stack:  \n      a) heap  =  il primo è usato per dati dinamici con dimensioni variabili, richiedendo però più risorse  \n         per gestire la memoria.  \n      b) stack = L’altro per dati di dimensioni fisse. Ha un accesso molto più rapido.  \n   * Ownership  e  borrowing:  \n      a) ownership    =  l'ownership  rappresenta  il  controllo  esclusivo  di  una  variabile  \n      b) borrowing    =   prendere in prestito il valore di una variabile temporaneamente, sia in modo  \n         _**mutabile**_   che _**immutabile**_, mantenendo la sicurezza della memoria. \n   * Operazioni  atomiche: \n      sono  operazioni  che  vengono  eseguite  come  un'unica  operazione  indivisibile,  \n      usate per sincronizzare l'accesso concorrente ai dati tra thread senza incorrere in race conditions.  \n\n   * Struct,  trait  e  crate:  \n         - struct       = è  una  struttura  dati  che  raggruppa  variabili;  \n         -  trait       = i  trait  definiscono  il comportamento  che  può  essere  \n                        implementato  dalle  strutture  \n         - crate        =  è  un'unità  di compilazione, come una libreria o un pacchetto.  \n   * Null  pointer,  race  condition:\n         - null  pointer   =   rappresenta  un  puntatore  che  non  punta  a  nessun  \n                           valore  valido\n         - race  condition =   si  verifica  quando  più  thread  accedono  a  dati  condivisi  \n                  senza la corretta sincronizzazione, causando comportamenti imprevedibili. \n   * Attributi e riferimenti:  \n      - gli attributi    = servono a modificare il comportamento del compilatore o del codice.  \n      - i riferimenti    =  (&  e  &mut)  sono  puntatori  sicuri  che  permettono  l'accesso  \n                  - a  valori  senza  trasferirne l'ownership. \n                  - \n   * Pattern  Matching:  \n         consente  di  DESTRUTTURARE, CONFRONTARE  E GESTIRE I DATI in  modo  sicuro  e  conciso.  \n         Utilizzando  la parola chiave  match, si  possono  esaminare  diversi casi di un  tipo,  \n         come un  enum  o  Option, e gestire tutte le possibilità in modo esaustivo,  \n         migliorando la sicurezza del codice. \n   * Polimorfismo ad hoc:  \n         La capacita di una funzione o di un metodo di lavorare con diversi tipi di dati ma con  \n         comportamenti diversi per ciascuno di loro. Si utilizza il \n         **<span style=\"font-size: 24px;\">trait</span>**  che consentono di definire un insieme di\n         metodi che devono essere implementati dai tipi che aderiscono al metodo. Ogni metodo puo\n         avere una implementazione specifica per comportamenti differenziati.\n\n   * Pattern\n         Sono schemi ripetibili ed efficaci come soluzioni ricorrente ad esemp Option e Result  \n         che gestiscono valori opzionali e gli errori in modo sicuro.  \n   * Anti Pattern \n         Pratica dannosa che comporta la cattiva manutenzione degli errori. Ad es. utilizzo eccessivo ..\n         dei puntatori raw con vulnerabilita della memoria in quanto non hanno il sistema  \n         ownership e borrowing.  \n### Commentare il codice\n   - Commenti su riga      //\n   - Commenti multilinea   /**/\n   - Commenti per la documentazione  ///  che sono utili per le funzioni le strutture ed i moduli  \n         per spiegare come utilizzarli e con l'utility rustdoc genero la documentazione Html. \n\n\n\n\n\n\n\n## 1 Le prime basi\n   Rust utilizza **ownership** che permette di sapere chi possiede una risorsa in ogni \n   momento evitando i problemi dell'accesso concorrente.  \n   FFI Foreign Function Interface che permette l'integrazione  con C e C++ quindi permette si  \n   di scrivere codice sicuro, ma anche senza sacrificare la flessibilita sia per i progetti  \n   nuovi e per quelli gia avviati.  \n### Cargo e la sintassi di base\n   Strumenti  di gestione dei paccjhetti e il build sistem per rust e gestisce tutto il ciclo  \n   di vita dall'inizio dello svilupp fino alla distribuzione.\n   * cargo new primo_progetto \n         crea un nuovo progetto con questo schema\n            primo_progetto \n            ├── Cargo.toml       = Il file Cargo.toml contiene i metadati del progetto e la lista delle dipendenze.\n            └── src \n                └── main.rs  \n   * cargo test \n         compila il progetto, esegue i test definiti e mostra i risultati. \n\n\n   Puoi utilizzare cargo test  che compila il progetto ed esegure i test definiti e mostra  \n   risultati.\n      * use             = importa i moduli e le funzionalità specifiche da librerie esterne o interne.  \n      * main            = punto di ingresso dell'applicazione che non accetta argomenti per default  \n                           ma puo essere utilizzata.\n      * mut             = le variabili sono immutabili per default salvo con l'utilizzo di mut.  \n         esempio:  \n\n               fn main() { \n                   let messaggio = \"Ciao, mondo!\"; // Variabile immutabile \n                   println!(\"{}\", messaggio); // Stampa sulla console \n                \n                   let mut numero = 42; // Variabile mutabile \n                   numero = 43; // È possibile modificarla \n                   println!(\"Il numero è {}\", numero); \n               } \n\n      * cicli ripetuti  = if,else, loop, while e for  ..\n      * Result  e  Option.\n            permette la gestione sicura degli errori; esempio funzione che restituiscono un  \n            Result che viene gestito con un match oppure utilizzanto :\n                  - unwrap(), .expect(); oppure l'operatore ? per propgare l'errore; esempio\n                      \n                      fn main() { \n                         let risultato = divisione(10, 2); \n                          \n                         match risultato { \n                             Ok(valore) => println!(\"Risultato: {}\", valore), \n                             Err(e) => println!(\"Errore: {}\", e), \n                         } \n                     } \n                      \n                     fn divisione(a: i32, b: i32) -> Result<i32, String> { \n                         if b == 0 { \n                             Err(String::from(\"Divisione per zero\")) \n                         } else { \n                             Ok(a / b) \n                         } \n                     } \n         \n\n\n\n      * mod    = moduli \n            rust puo organizzare il codice  in moduli  per suddividere il codice in  parte  \n            piu piccolo e gestibili, possono definiti nello stesso file e su file diversi e\n            resi pubblici mediante pub.\n\n                \n                     mod calcoli { \n                         pub fn somma(a: i32, b: i32) -> i32 { \n                             a + b \n                         } \n                     } \n                      \n                     fn main() { \n                         let risultato = calcoli::somma(5, 3); \n                         println!(\"Il risultato della somma è: {}\", risultato); \n                     } \n      * use std::io \n            Partiamo con use std::io per importare le funzionalità di input/output. La funzione \n            main legge un numero dall'utente, lo converte da stringa a intero e lo valuta con \n            una struttura if. Il programma gestisce eventuali errori durante la lettura dell'input   \n            o la conversione del numero, utilizzando .expect() per fornire messaggi di errore   \n            chiari in caso di fallimento.\n      * ownership\n            sistema che gestisce la memoria in modo sicuro ogni valore spetta al proprietario \n            e quando esce dall'ambito (scope) viene automaticamente deallocato ed in questo modo\n            elimina la garbace collection e previene i bug.\n      * borrowing \n            permette di prestare una variabile senza trasferirne la proprieta sia con prestito\n            MUTABILE che IMMUTABILE.\n               ESEMPIO:\n                  fn main() { \n                      let s = String::from(\"ciao\"); \n                      prendi_ownership(s); // Ownership trasferita \n                      // Non possiamo più usare `s` qui \n                   \n                      let x = 10; \n                      prendi_in_prestito(&x); // `x` viene preso in prestito, ownership non trasferita \n                      // Possiamo ancora usare `x` qui \n                     } \n \n                  fn prendi_ownership(s: String) { \n                      println!(\"{}\", s); \n                  } \n                   \n                  fn prendi_in_prestito(y: &i32) { \n                      println!(\"{}\", y); \n                  } \n      * use\n         serve per importare  \n            - i moduli                       = interi moduli o sottosezioni di essi;\n            - le funzioni, strutture e tipi  = specifici elementi di un modulo  \n            - Enum e varianti                = tipi di enum e loro varianti\n            - Elementi di un modulo standard o di librerie esterne \n                  puoi accedere alle funzionalita delle librerie standard di terze parti.\n                  ed un esempio la libreria st ricca di moduli.\n            - Vedi esempio con l'utilizzo di std::io  che gestisce l'imputo e l'output  \n                  della tastiera e lo schermo e fornisce gli strumenti per la gestione \n                  dei flussi stream i/o e gestione errori.\n              Vedi In io::stdin  legge  una  linea  di  input  dall'utente  \n                     \n            - Vedi  std::fs: fornisce funzionalità per lavorare con il file system,  \n            - \n            - Vedi  std::collection: fornisce strutture dati utili come HashMap, Vec, BTreeMap  \n                  strutture  dati  fondamentali  per  organizzare  e  gestire  le  collezioni  in  \n                  modo efficiente:  \n                  \n            - Vedi  std::thread: gestisce la concorrenza con i thread\n            \n                  vedi i progetti  :\n                  progetto ----> @std@io           = gestisce input output\n                  progetto ----> @std@in           = in attesa di leggere linea input\n                  progetto ----> @std@fs           = file system\n                  progetto ----> @std@fcollection  = gestione strutture dati\n                  progetto ----> @std@thread       = migliora le prestazioni con i thread\n\n\n",
+			"file": "/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/RIASSUNTO_TONY_CHAN.md",
+			"file_size": 24951,
+			"file_write_time": 133983637944981337,
 			"settings":
 			{
-				"buffer_size": 2246,
-				"encoding": "UTF-8",
+				"buffer_size": 24357,
 				"line_ending": "Windows"
 			},
 			"undo_stack":
 			[
 				[
-					7,
+					12,
+					1,
+					"duplicate_line",
+					null,
+					"AQAAAIZcAAAAAAAA51wAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAASVwAAAAAAABJXAAAAAAAAAAAAAAAwHhA"
+				],
+				[
+					13,
+					3,
+					"swap_line_down",
+					null,
+					"BgAAAEtdAAAAAAAArF0AAAAAAAAAAAAAhlwAAAAAAACGXAAAAAAAAGEAAAAgICAgICAgICAgICAtIFZlZGkgIHN0ZDo6Y29sbGVjdGlvbjogZm9ybmlzY2Ugc3RydXR0dXJlIGRhdGkgdXRpbGkgY29tZSBIYXNoTWFwLCBWZWMsIEJUcmVlTWFwICAKcF0AAAAAAADRXQAAAAAAAAAAAADqXAAAAAAAAOpcAAAAAAAAYQAAACAgICAgICAgICAgIC0gVmVkaSAgc3RkOjpjb2xsZWN0aW9uOiBmb3JuaXNjZSBzdHJ1dHR1cmUgZGF0aSB1dGlsaSBjb21lIEhhc2hNYXAsIFZlYywgQlRyZWVNYXAgIAqDXQAAAAAAAORdAAAAAAAAAAAAAA9dAAAAAAAAD10AAAAAAABhAAAAICAgICAgICAgICAgLSBWZWRpICBzdGQ6OmNvbGxlY3Rpb246IGZvcm5pc2NlIHN0cnV0dHVyZSBkYXRpIHV0aWxpIGNvbWUgSGFzaE1hcCwgVmVjLCBCVHJlZU1hcCAgCg",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAqlwAAAAAAACqXAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					15,
+					1,
+					"insert_snippet",
+					{
+						"contents": "${TM_CURRENT_LINE/^(?:\\s*((?:>\\s*)*)([-+*])(\\s+)).*/\n$1$2$3/}"
+					},
+					"AQAAAIJdAAAAAAAAkV0AAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAgl0AAAAAAACCXQAAAAAAAP///////+9/"
+				],
+				[
+					16,
+					1,
+					"run_macro_file",
+					{
+						"file": "Packages/MarkdownEditing/macros/Delete Empty List Item.sublime-macro"
+					},
+					"AgAAAINdAAAAAAAAg10AAAAAAAAOAAAAICAgICAgICAgICAgLSCDXQAAAAAAAI9dAAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAkV0AAAAAAACRXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					21,
 					1,
 					"insert",
 					{
-						"characters": "@"
+						"characters": "thread"
 					},
-					"AQAAAPoDAAAAAAAA+wMAAAAAAAAAAAAA",
-					"AQAAAAAAAAABAAAA+gMAAAAAAAD6AwAAAAAAAAAAAAAAAPC/"
+					"BgAAADtdAAAAAAAAPF0AAAAAAAAKAAAAY29sbGVjdGlvbjxdAAAAAAAAPV0AAAAAAAAAAAAAPV0AAAAAAAA+XQAAAAAAAAAAAAA+XQAAAAAAAD9dAAAAAAAAAAAAAD9dAAAAAAAAQF0AAAAAAAAAAAAAQF0AAAAAAABBXQAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAO10AAAAAAABFXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					25,
+					1,
+					"insert",
+					{
+						"characters": "gesti"
+					},
+					"BQAAAENdAAAAAAAARF0AAAAAAAA7AAAAZm9ybmlzY2Ugc3RydXR0dXJlIGRhdGkgdXRpbGkgY29tZSBIYXNoTWFwLCBWZWMsIEJUcmVlTWFwICBEXQAAAAAAAEVdAAAAAAAAAAAAAEVdAAAAAAAARl0AAAAAAAAAAAAARl0AAAAAAABHXQAAAAAAAAAAAABHXQAAAAAAAEhdAAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAQ10AAAAAAAB+XQAAAAAAAP///////+9/"
+				],
+				[
+					26,
+					1,
+					"insert",
+					{
+						"characters": "sce"
+					},
+					"AwAAAEhdAAAAAAAASV0AAAAAAAAAAAAASV0AAAAAAABKXQAAAAAAAAAAAABKXQAAAAAAAEtdAAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAASF0AAAAAAABIXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					27,
+					1,
+					"insert",
+					{
+						"characters": " la"
+					},
+					"AwAAAEtdAAAAAAAATF0AAAAAAAAAAAAATF0AAAAAAABNXQAAAAAAAAAAAABNXQAAAAAAAE5dAAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAS10AAAAAAABLXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					28,
+					1,
+					"insert",
+					{
+						"characters": " concorrenz"
+					},
+					"CwAAAE5dAAAAAAAAT10AAAAAAAAAAAAAT10AAAAAAABQXQAAAAAAAAAAAABQXQAAAAAAAFFdAAAAAAAAAAAAAFFdAAAAAAAAUl0AAAAAAAAAAAAAUl0AAAAAAABTXQAAAAAAAAAAAABTXQAAAAAAAFRdAAAAAAAAAAAAAFRdAAAAAAAAVV0AAAAAAAAAAAAAVV0AAAAAAABWXQAAAAAAAAAAAABWXQAAAAAAAFddAAAAAAAAAAAAAFddAAAAAAAAWF0AAAAAAAAAAAAAWF0AAAAAAABZXQAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAATl0AAAAAAABOXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					29,
+					1,
+					"insert",
+					{
+						"characters": "a"
+					},
+					"AQAAAFldAAAAAAAAWl0AAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAWV0AAAAAAABZXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					30,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAFpdAAAAAAAAW10AAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAWl0AAAAAAABaXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					31,
+					1,
+					"insert",
+					{
+						"characters": "c"
+					},
+					"AQAAAFtdAAAAAAAAXF0AAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAW10AAAAAAABbXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					32,
+					1,
+					"left_delete",
+					null,
+					"AQAAAFtdAAAAAAAAW10AAAAAAAABAAAAYw",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAXF0AAAAAAABcXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					33,
+					1,
+					"insert",
+					{
+						"characters": "con"
+					},
+					"AwAAAFtdAAAAAAAAXF0AAAAAAAAAAAAAXF0AAAAAAABdXQAAAAAAAAAAAABdXQAAAAAAAF5dAAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAW10AAAAAAABbXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					34,
+					1,
+					"insert",
+					{
+						"characters": " i"
+					},
+					"AgAAAF5dAAAAAAAAX10AAAAAAAAAAAAAX10AAAAAAABgXQAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAXl0AAAAAAABeXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					35,
+					1,
+					"insert",
+					{
+						"characters": " tre"
+					},
+					"BAAAAGBdAAAAAAAAYV0AAAAAAAAAAAAAYV0AAAAAAABiXQAAAAAAAAAAAABiXQAAAAAAAGNdAAAAAAAAAAAAAGNdAAAAAAAAZF0AAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAYF0AAAAAAABgXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					36,
+					2,
+					"left_delete",
+					null,
+					"AgAAAGNdAAAAAAAAY10AAAAAAAABAAAAZWJdAAAAAAAAYl0AAAAAAAABAAAAcg",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAZF0AAAAAAABkXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					37,
+					1,
+					"insert",
+					{
+						"characters": "hread"
+					},
+					"BQAAAGJdAAAAAAAAY10AAAAAAAAAAAAAY10AAAAAAABkXQAAAAAAAAAAAABkXQAAAAAAAGVdAAAAAAAAAAAAAGVdAAAAAAAAZl0AAAAAAAAAAAAAZl0AAAAAAABnXQAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAYl0AAAAAAABiXQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					39,
+					1,
+					"duplicate_line",
+					null,
+					"AQAAAMleAAAAAAAAFl8AAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAwV4AAAAAAADBXgAAAAAAAAAAAAAAuIdA"
+				],
+				[
+					42,
+					1,
+					"insert",
+					{
+						"characters": "tread"
+					},
+					"BQAAAO9eAAAAAAAA8F4AAAAAAAALAAAAZmNvbGxlY3Rpb27wXgAAAAAAAPFeAAAAAAAAAAAAAPFeAAAAAAAA8l4AAAAAAAAAAAAA8l4AAAAAAADzXgAAAAAAAAAAAADzXgAAAAAAAPReAAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAA714AAAAAAAD6XgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					43,
+					3,
+					"left_delete",
+					null,
+					"AwAAAPNeAAAAAAAA814AAAAAAAABAAAAZPJeAAAAAAAA8l4AAAAAAAABAAAAYfFeAAAAAAAA8V4AAAAAAAABAAAAZQ",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAA9F4AAAAAAAD0XgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					44,
+					1,
+					"insert",
+					{
+						"characters": "h"
+					},
+					"AQAAAPFeAAAAAAAA8l4AAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAA8V4AAAAAAADxXgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					45,
+					2,
+					"left_delete",
+					null,
+					"AgAAAPFeAAAAAAAA8V4AAAAAAAABAAAAaPBeAAAAAAAA8F4AAAAAAAABAAAAcg",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAA8l4AAAAAAADyXgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					46,
+					1,
+					"insert",
+					{
+						"characters": "hread"
+					},
+					"BQAAAPBeAAAAAAAA8V4AAAAAAAAAAAAA8V4AAAAAAADyXgAAAAAAAAAAAADyXgAAAAAAAPNeAAAAAAAAAAAAAPNeAAAAAAAA9F4AAAAAAAAAAAAA9F4AAAAAAAD1XgAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAA8F4AAAAAAADwXgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					48,
+					1,
+					"insert",
+					{
+						"characters": "\t\t"
+					},
+					"AgAAAPdeAAAAAAAA+V4AAAAAAAAAAAAA+V4AAAAAAAD8XgAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAA914AAAAAAAD3XgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					51,
+					1,
+					"insert",
+					{
+						"characters": "migliora"
+					},
+					"CAAAAP5eAAAAAAAA/14AAAAAAAAXAAAAZ2VzdGlvbmUgc3RydXR0dXJlIGRhdGn/XgAAAAAAAABfAAAAAAAAAAAAAABfAAAAAAAAAV8AAAAAAAAAAAAAAV8AAAAAAAACXwAAAAAAAAAAAAACXwAAAAAAAANfAAAAAAAAAAAAAANfAAAAAAAABF8AAAAAAAAAAAAABF8AAAAAAAAFXwAAAAAAAAAAAAAFXwAAAAAAAAZfAAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAA/l4AAAAAAAAVXwAAAAAAAP///////+9/"
+				],
+				[
+					52,
+					1,
+					"insert",
+					{
+						"characters": " le"
+					},
+					"AwAAAAZfAAAAAAAAB18AAAAAAAAAAAAAB18AAAAAAAAIXwAAAAAAAAAAAAAIXwAAAAAAAAlfAAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAABl8AAAAAAAAGXwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					53,
+					1,
+					"insert",
+					{
+						"characters": " prestazion"
+					},
+					"CwAAAAlfAAAAAAAACl8AAAAAAAAAAAAACl8AAAAAAAALXwAAAAAAAAAAAAALXwAAAAAAAAxfAAAAAAAAAAAAAAxfAAAAAAAADV8AAAAAAAAAAAAADV8AAAAAAAAOXwAAAAAAAAAAAAAOXwAAAAAAAA9fAAAAAAAAAAAAAA9fAAAAAAAAEF8AAAAAAAAAAAAAEF8AAAAAAAARXwAAAAAAAAAAAAARXwAAAAAAABJfAAAAAAAAAAAAABJfAAAAAAAAE18AAAAAAAAAAAAAE18AAAAAAAAUXwAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAACV8AAAAAAAAJXwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					54,
+					1,
+					"insert",
+					{
+						"characters": "i"
+					},
+					"AQAAABRfAAAAAAAAFV8AAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAFF8AAAAAAAAUXwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					55,
+					1,
+					"insert",
+					{
+						"characters": " con"
+					},
+					"BAAAABVfAAAAAAAAFl8AAAAAAAAAAAAAFl8AAAAAAAAXXwAAAAAAAAAAAAAXXwAAAAAAABhfAAAAAAAAAAAAABhfAAAAAAAAGV8AAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAFV8AAAAAAAAVXwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					56,
+					1,
+					"insert",
+					{
+						"characters": " i"
+					},
+					"AgAAABlfAAAAAAAAGl8AAAAAAAAAAAAAGl8AAAAAAAAbXwAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAGV8AAAAAAAAZXwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					57,
+					1,
+					"insert",
+					{
+						"characters": " thread"
+					},
+					"BwAAABtfAAAAAAAAHF8AAAAAAAAAAAAAHF8AAAAAAAAdXwAAAAAAAAAAAAAdXwAAAAAAAB5fAAAAAAAAAAAAAB5fAAAAAAAAH18AAAAAAAAAAAAAH18AAAAAAAAgXwAAAAAAAAAAAAAgXwAAAAAAACFfAAAAAAAAAAAAACFfAAAAAAAAIl8AAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAG18AAAAAAAAbXwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					76,
+					1,
+					"insert",
+					{
+						"characters": "\n\n\n"
+					},
+					"AwAAACNfAAAAAAAAJF8AAAAAAAAAAAAAJF8AAAAAAAAlXwAAAAAAAAAAAAAlXwAAAAAAACZfAAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAI18AAAAAAAAjXwAAAAAAAAAAAAAAmI5A"
+				],
+				[
+					77,
+					1,
+					"paste",
+					null,
+					"AQAAACZfAAAAAAAAE2AAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAJl8AAAAAAAAmXwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					78,
+					1,
+					"insert",
+					{
+						"characters": "\n\n"
+					},
+					"AwAAABNgAAAAAAAAIGAAAAAAAAAAAAAAIGAAAAAAAAAtYAAAAAAAAAAAAAAUYAAAAAAAABRgAAAAAAAADAAAACAgICAgICAgICAgIA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAE2AAAAAAAAATYAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					79,
+					1,
+					"paste",
+					null,
+					"AQAAACFgAAAAAAAA32AAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAIWAAAAAAAAAhYAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					81,
+					1,
+					"right_delete",
+					null,
+					"AQAAABRgAAAAAAAAFGAAAAAAAAABAAAACg",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAFGAAAAAAAAAUYAAAAAAAAAAAAAAAADZA"
+				],
+				[
+					83,
+					2,
+					"right_delete",
+					null,
+					"AgAAADRgAAAAAAAANGAAAAAAAAABAAAAIDRgAAAAAAAANGAAAAAAAAABAAAACg",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAANGAAAAAAAAA0YAAAAAAAAAAAAAAAAAAA"
+				],
+				[
+					85,
+					2,
+					"right_delete",
+					null,
+					"AgAAALtgAAAAAAAAu2AAAAAAAAABAAAAILtgAAAAAAAAu2AAAAAAAAABAAAACg",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAu2AAAAAAAAC7YAAAAAAAAAAAAAAAAAAA"
+				],
+				[
+					88,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAANpgAAAAAAAA22AAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAA2mAAAAAAAADaYAAAAAAAAP///////+9/"
+				],
+				[
+					90,
+					1,
+					"cut",
+					null,
+					"AQAAACVfAAAAAAAAJV8AAAAAAAC2AQAACnVzZSBzdGQ6OnRocmVhZDsgCnVzZSBzdGQ6OnRpbWU6OkR1cmF0aW9uOyAKIApmbiBtYWluKCkgeyAKICAgIGxldCBoYW5kbGUgPSB0aHJlYWQ6OnNwYXduKHx8IHsgCiAgICAgICAgZm9yIGkgaW4gMS4uMTAgeyAKICAgICAgICAgICAgcHJpbnRsbiEoIkNpYW8gZGFsIHRocmVhZCBzZWNvbmRhcmlvISB7fSIsIGkpOyAKICAgICAgICAgICAgdGhyZWFkOjpzbGVlcChEdXJhdGlvbjo6ZnJvbV9taWxsaXMoMTAwKSk7IAogICAgICAgICAgICAgICAgICAgIH0gCiAgICB9KTsgCiAgICBmb3IgaSBpbiAxLi41IHsgCiAgICAgICAgcHJpbnRsbiEoIkNpYW8gZGFsIHRocmVhZCBwcmluY2lwYWxlISB7fSIsIGkpOyAKICAgICAgICB0aHJlYWQ6OnNsZWVwKER1cmF0aW9uOjpmcm9tX21pbGxpcyg1MCkpOyAKICAgIH0gCiAgICBoYW5kbGUuam9pbigpLnVud3JhcCgpOyAKfSAK",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAA22AAAAAAAAAlXwAAAAAAAAAAAAAAAAAA"
+				]
+			]
+		},
+		{
+			"contents": "Searching 694 files for \"@std@io\"\n\nc:\\CASA\\LINGUAGGI\\RUST\\RUST_TUTORIAL\\RUST_TUTORIAL_TONY_CHAN\\RIASSUNTO_TONY_CHAN.md:\n  496              \n  497                    vedi i progetti  :\n  498:                   progetto ----> @std@io           = gestisce input output\n  499                    progetto ----> @std@in           = in attesa di leggere linea input\n  500                    progetto ----> @std@fs           = file system\n\nc:\\CASA\\LINGUAGGI\\RUST\\RUST_TUTORIAL\\RUST_TUTORIAL_TONY_CHAN\\EXAMPLE\\calcolo\\src\\main.rs:\n    8  chiari in caso di fallimento.\n    9  \n   10: @std@io_(Esempio di utilizzo di std::io per le funzionalita di imput/output)\n   11  */\n   12  \n\nc:\\CASA\\LINGUAGGI\\RUST\\RUST_TUTORIAL\\RUST_TUTORIAL_TONY_CHAN\\EXAMPLE\\std_io\\src\\main.rs:\n    1  /* PROGETTO DI GESTIONE DELLA @LIBRERIA@ST::IO\n    2  \n    3:    @std@io_(esempio di gestione dell'imput da tastiera e l'outuput a video)\n    4  \n    5  \n\n3 matches across 3 files\n",
+			"settings":
+			{
+				"buffer_size": 946,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/EXAMPLE/calcolo/src/main.rs",
+			"settings":
+			{
+				"buffer_size": 2200,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					8,
+					1,
+					"insert",
+					{
+						"characters": " CON"
+					},
+					"BAAAABYCAAAAAAAAFwIAAAAAAAAAAAAAFwIAAAAAAAAYAgAAAAAAAAAAAAAYAgAAAAAAABkCAAAAAAAAAAAAABkCAAAAAAAAGgIAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAFgIAAAAAAAAWAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					9,
+					1,
+					"insert",
+					{
+						"characters": " IL"
+					},
+					"AwAAABoCAAAAAAAAGwIAAAAAAAAAAAAAGwIAAAAAAAAcAgAAAAAAAAAAAAAcAgAAAAAAAB0CAAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAGgIAAAAAAAAaAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					10,
+					1,
+					"insert",
+					{
+						"characters": " PROGRAMMA"
+					},
+					"CgAAAB0CAAAAAAAAHgIAAAAAAAAAAAAAHgIAAAAAAAAfAgAAAAAAAAAAAAAfAgAAAAAAACACAAAAAAAAAAAAACACAAAAAAAAIQIAAAAAAAAAAAAAIQIAAAAAAAAiAgAAAAAAAAAAAAAiAgAAAAAAACMCAAAAAAAAAAAAACMCAAAAAAAAJAIAAAAAAAAAAAAAJAIAAAAAAAAlAgAAAAAAAAAAAAAlAgAAAAAAACYCAAAAAAAAAAAAACYCAAAAAAAAJwIAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAHQIAAAAAAAAdAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					11,
+					1,
+					"insert",
+					{
+						"characters": " CALCOLO"
+					},
+					"CAAAACcCAAAAAAAAKAIAAAAAAAAAAAAAKAIAAAAAAAApAgAAAAAAAAAAAAApAgAAAAAAACoCAAAAAAAAAAAAACoCAAAAAAAAKwIAAAAAAAAAAAAAKwIAAAAAAAAsAgAAAAAAAAAAAAAsAgAAAAAAAC0CAAAAAAAAAAAAAC0CAAAAAAAALgIAAAAAAAAAAAAALgIAAAAAAAAvAgAAAAAAAAAAAAA",
+					"BAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvwAAAAABAAAAJwIAAAAAAAAnAgAAAAAAAAAAAAAAAPC/"
 				]
 			]
 		}
@@ -66,6 +504,26 @@
 		"selected_items":
 		[
 			[
+				"open prev",
+				"MarkdownLivePreview: Open Preview"
+			],
+			[
+				"Package Control: ",
+				"Package Control: List Packages"
+			],
+			[
+				"PREVIE",
+				"MarkdownLivePreview: Open Preview"
+			],
+			[
+				"previe",
+				"MarkdownLivePreview: Open Preview"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
 				"OPEN PREVI",
 				"MarkdownLivePreview: Open Preview"
 			],
@@ -80,14 +538,6 @@
 			[
 				"mard",
 				"MarkdownEditing: Toggle Task"
-			],
-			[
-				"previe",
-				"MarkdownLivePreview: Open Preview"
-			],
-			[
-				"insta",
-				"Package Control: Install Package"
 			],
 			[
 				"togl",
@@ -116,10 +566,6 @@
 			[
 				"MA",
 				"MarkdownLivePreview: Open Preview"
-			],
-			[
-				"Package Control: ",
-				"Package Control: Upgrade Package"
 			],
 			[
 				"",
@@ -163,13 +609,21 @@
 	},
 	"expanded_folders":
 	[
-		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL",
-		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN"
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL"
 	],
 	"file_history":
 	[
-		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/README.MD",
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/EXAMPLE/std_thread/src/main.rs",
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/EXAMPLE/std_io/src/main.rs",
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/EXAMPLE/std_in/src/main.rs",
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/EXAMPLE/std_fs/src/main.rs",
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/EXAMPLE/std_collection/src/main.rs",
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/EXAMPLE/calcolo/src/main.rs",
 		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/RIASSUNTO_TONY_CHAN.md",
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/README.MD",
+		"/C/Users/icivi/AppData/Roaming/Sublime Text/Packages/User/Default.sublime-theme",
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/EXAMPLE/st_in/src/main.rs",
+		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/EXAMPLE/st_io/src/main.rs",
 		"/C/Users/icivi/AppData/Roaming/Sublime Text/Packages/User/PandocToWord.sublime-build",
 		"/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/HomePage.md",
 		"/C/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/RIASSUNTO_TONY_CHAN.md",
@@ -237,7 +691,7 @@
 	],
 	"find":
 	{
-		"height": 34.4
+		"height": 32.0
 	},
 	"find_in_files":
 	{
@@ -252,6 +706,15 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"@std@io",
+			"@std@thread",
+			"@std@thread  ",
+			"@visualizza",
+			"@std@io",
+			"seleziona",
+			"selezione",
+			"@web",
+			"progetto",
 			"            =",
 			"\\",
 			"utilita",
@@ -348,25 +811,113 @@
 			[
 				{
 					"buffer": 0,
-					"file": "/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/README.MD",
+					"file": "/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/RIASSUNTO_TONY_CHAN.md",
 					"selected": true,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2246,
+						"buffer_size": 24357,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1019,
-								1019
+								23995,
+								24002
 							]
 						],
 						"settings":
 						{
+							"mde.match_heading_hashes": false,
 							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
+							"tab_size": 3,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 11250.4,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 946,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										224,
+										231
+									],
+									[
+										574,
+										581
+									],
+									[
+										831,
+										838
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								630,
+								630
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/c/CASA/LINGUAGGI/RUST/RUST_TUTORIAL/RUST_TUTORIAL_TONY_CHAN/EXAMPLE/calcolo/src/main.rs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2200,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								706,
+								706
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rust/Rust.sublime-syntax",
 							"tab_size": 3,
 							"translate_tabs_to_spaces": true
 						},
@@ -374,7 +925,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"stack_multiselect": false,
 					"type": "text"
 				}
@@ -383,7 +934,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 34.4
+		"height": 32.0
 	},
 	"input":
 	{
@@ -437,7 +988,7 @@
 	"project": "RUST_TUTORIAL.sublime-project",
 	"replace":
 	{
-		"height": 65.6
+		"height": 60.8
 	},
 	"save_all_on_build": false,
 	"select_file":

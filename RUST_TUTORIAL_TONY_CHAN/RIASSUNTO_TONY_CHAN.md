@@ -289,13 +289,214 @@ Le innovazioni ultime sono:
          nulli.
 
 
-   
-   
+### Termini comuni in rust
+   * Inferire  
+        Il compilatore puo inferire o ricavare i tipi di variabili  
+        senza dichiararli im modo esplicito ma sono dedotti automaticamente  
+        dalla verbosita.  
+   * Monomorfizzazione:  processo in cui il compilatore genera funzioni generiche  
+        per ciascun tipo utilizzato ottimizzando il codice ed eliminando l'overhead  
+        associato al dispach dinamico.
+            spiegazione: (In sintesi, l'overhead del dispatch dinamico è il costo aggiuntivo, .
+            in termini di tempo di esecuzione, associato alla determinazione  
+            della funzione da chiamare a runtime. Questo costo è assente nel dispatch statico,  
+            che risolve la chiamata di funzione a tempo di compilazione.)  
+   * Puntatori e puntatori raw:  
+      a)  i puntatori in Rust, come & e &mut, sono sicuri perché rispettano le regole  
+          del  borrowing  e  dell'ownership;  
+      b) i  puntatori  raw,  come  *const  e  *mut,  sono  meno  sicuri  perché  
+         permettono l'accesso diretto alla memoria senza le garanzie del borrowing.  
+   * Heap e stack:  
+      a) heap  =  il primo è usato per dati dinamici con dimensioni variabili, richiedendo però più risorse  
+         per gestire la memoria.  
+      b) stack = L’altro per dati di dimensioni fisse. Ha un accesso molto più rapido.  
+   * Ownership  e  borrowing:  
+      a) ownership    =  l'ownership  rappresenta  il  controllo  esclusivo  di  una  variabile  
+      b) borrowing    =   prendere in prestito il valore di una variabile temporaneamente, sia in modo  
+         _**mutabile**_   che _**immutabile**_, mantenendo la sicurezza della memoria. 
+   * Operazioni  atomiche: 
+      sono  operazioni  che  vengono  eseguite  come  un'unica  operazione  indivisibile,  
+      usate per sincronizzare l'accesso concorrente ai dati tra thread senza incorrere in race conditions.  
 
-   
+   * Struct,  trait  e  crate:  
+         - struct       = è  una  struttura  dati  che  raggruppa  variabili;  
+         -  trait       = i  trait  definiscono  il comportamento  che  può  essere  
+                        implementato  dalle  strutture  
+         - crate        =  è  un'unità  di compilazione, come una libreria o un pacchetto.  
+   * Null  pointer,  race  condition:
+         - null  pointer   =   rappresenta  un  puntatore  che  non  punta  a  nessun  
+                           valore  valido
+         - race  condition =   si  verifica  quando  più  thread  accedono  a  dati  condivisi  
+                  senza la corretta sincronizzazione, causando comportamenti imprevedibili. 
+   * Attributi e riferimenti:  
+      - gli attributi    = servono a modificare il comportamento del compilatore o del codice.  
+      - i riferimenti    =  (&  e  &mut)  sono  puntatori  sicuri  che  permettono  l'accesso  
+                  - a  valori  senza  trasferirne l'ownership. 
+                  - 
+   * Pattern  Matching:  
+         consente  di  DESTRUTTURARE, CONFRONTARE  E GESTIRE I DATI in  modo  sicuro  e  conciso.  
+         Utilizzando  la parola chiave  match, si  possono  esaminare  diversi casi di un  tipo,  
+         come un  enum  o  Option, e gestire tutte le possibilità in modo esaustivo,  
+         migliorando la sicurezza del codice. 
+   * Polimorfismo ad hoc:  
+         La capacita di una funzione o di un metodo di lavorare con diversi tipi di dati ma con  
+         comportamenti diversi per ciascuno di loro. Si utilizza il 
+         **<span style="font-size: 24px;">trait</span>**  che consentono di definire un insieme di
+         metodi che devono essere implementati dai tipi che aderiscono al metodo. Ogni metodo puo
+         avere una implementazione specifica per comportamenti differenziati.
+
+   * Pattern
+         Sono schemi ripetibili ed efficaci come soluzioni ricorrente ad esemp Option e Result  
+         che gestiscono valori opzionali e gli errori in modo sicuro.  
+   * Anti Pattern 
+         Pratica dannosa che comporta la cattiva manutenzione degli errori. Ad es. utilizzo eccessivo ..
+         dei puntatori raw con vulnerabilita della memoria in quanto non hanno il sistema  
+         ownership e borrowing.  
+### Commentare il codice
+   - Commenti su riga      //
+   - Commenti multilinea   /**/
+   - Commenti per la documentazione  ///  che sono utili per le funzioni le strutture ed i moduli  
+         per spiegare come utilizzarli e con l'utility rustdoc genero la documentazione Html. 
+
+
+
 
 
 
 
 ## 1 Le prime basi
-         ddd dd
+   Rust utilizza **ownership** che permette di sapere chi possiede una risorsa in ogni 
+   momento evitando i problemi dell'accesso concorrente.  
+   FFI Foreign Function Interface che permette l'integrazione  con C e C++ quindi permette si  
+   di scrivere codice sicuro, ma anche senza sacrificare la flessibilita sia per i progetti  
+   nuovi e per quelli gia avviati.  
+### Cargo e la sintassi di base
+   Strumenti  di gestione dei paccjhetti e il build sistem per rust e gestisce tutto il ciclo  
+   di vita dall'inizio dello svilupp fino alla distribuzione.
+   * cargo new primo_progetto 
+         crea un nuovo progetto con questo schema
+            primo_progetto 
+            ├── Cargo.toml       = Il file Cargo.toml contiene i metadati del progetto e la lista delle dipendenze.
+            └── src 
+                └── main.rs  
+   * cargo test 
+         compila il progetto, esegue i test definiti e mostra i risultati. 
+
+
+   Puoi utilizzare cargo test  che compila il progetto ed esegure i test definiti e mostra  
+   risultati.
+      * use             = importa i moduli e le funzionalità specifiche da librerie esterne o interne.  
+      * main            = punto di ingresso dell'applicazione che non accetta argomenti per default  
+                           ma puo essere utilizzata.
+      * mut             = le variabili sono immutabili per default salvo con l'utilizzo di mut.  
+         esempio:  
+
+               fn main() { 
+                   let messaggio = "Ciao, mondo!"; // Variabile immutabile 
+                   println!("{}", messaggio); // Stampa sulla console 
+                
+                   let mut numero = 42; // Variabile mutabile 
+                   numero = 43; // È possibile modificarla 
+                   println!("Il numero è {}", numero); 
+               } 
+
+      * cicli ripetuti  = if,else, loop, while e for  ..
+      * Result  e  Option.
+            permette la gestione sicura degli errori; esempio funzione che restituiscono un  
+            Result che viene gestito con un match oppure utilizzanto :
+                  - unwrap(), .expect(); oppure l'operatore ? per propgare l'errore; esempio
+                      
+                      fn main() { 
+                         let risultato = divisione(10, 2); 
+                          
+                         match risultato { 
+                             Ok(valore) => println!("Risultato: {}", valore), 
+                             Err(e) => println!("Errore: {}", e), 
+                         } 
+                     } 
+                      
+                     fn divisione(a: i32, b: i32) -> Result<i32, String> { 
+                         if b == 0 { 
+                             Err(String::from("Divisione per zero")) 
+                         } else { 
+                             Ok(a / b) 
+                         } 
+                     } 
+         
+
+
+
+      * mod    = moduli 
+            rust puo organizzare il codice  in moduli  per suddividere il codice in  parte  
+            piu piccolo e gestibili, possono definiti nello stesso file e su file diversi e
+            resi pubblici mediante pub.
+
+                
+                     mod calcoli { 
+                         pub fn somma(a: i32, b: i32) -> i32 { 
+                             a + b 
+                         } 
+                     } 
+                      
+                     fn main() { 
+                         let risultato = calcoli::somma(5, 3); 
+                         println!("Il risultato della somma è: {}", risultato); 
+                     } 
+      * use std::io 
+            Partiamo con use std::io per importare le funzionalità di input/output. La funzione 
+            main legge un numero dall'utente, lo converte da stringa a intero e lo valuta con 
+            una struttura if. Il programma gestisce eventuali errori durante la lettura dell'input   
+            o la conversione del numero, utilizzando .expect() per fornire messaggi di errore   
+            chiari in caso di fallimento.
+      * ownership
+            sistema che gestisce la memoria in modo sicuro ogni valore spetta al proprietario 
+            e quando esce dall'ambito (scope) viene automaticamente deallocato ed in questo modo
+            elimina la garbace collection e previene i bug.
+      * borrowing 
+            permette di prestare una variabile senza trasferirne la proprieta sia con prestito
+            MUTABILE che IMMUTABILE.
+               ESEMPIO:
+                  fn main() { 
+                      let s = String::from("ciao"); 
+                      prendi_ownership(s); // Ownership trasferita 
+                      // Non possiamo più usare `s` qui 
+                   
+                      let x = 10; 
+                      prendi_in_prestito(&x); // `x` viene preso in prestito, ownership non trasferita 
+                      // Possiamo ancora usare `x` qui 
+                     } 
+ 
+                  fn prendi_ownership(s: String) { 
+                      println!("{}", s); 
+                  } 
+                   
+                  fn prendi_in_prestito(y: &i32) { 
+                      println!("{}", y); 
+                  } 
+      * use
+         serve per importare  
+            - i moduli                       = interi moduli o sottosezioni di essi;
+            - le funzioni, strutture e tipi  = specifici elementi di un modulo  
+            - Enum e varianti                = tipi di enum e loro varianti
+            - Elementi di un modulo standard o di librerie esterne 
+                  puoi accedere alle funzionalita delle librerie standard di terze parti.
+                  ed un esempio la libreria st ricca di moduli.
+            - Vedi esempio con l'utilizzo di std::io  che gestisce l'imputo e l'output  
+                  della tastiera e lo schermo e fornisce gli strumenti per la gestione 
+                  dei flussi stream i/o e gestione errori.
+              Vedi In io::stdin  legge  una  linea  di  input  dall'utente  
+                     
+            - Vedi  std::fs: fornisce funzionalità per lavorare con il file system,  
+            - 
+            - Vedi  std::collection: fornisce strutture dati utili come HashMap, Vec, BTreeMap  
+                  strutture  dati  fondamentali  per  organizzare  e  gestire  le  collezioni  in  
+                  modo efficiente:  
+                  
+            - Vedi  std::thread: gestisce la concorrenza con i thread
+            
+                  vedi i progetti  :
+                  progetto ----> @std@io           = gestisce input output
+                  progetto ----> @std@in           = in attesa di leggere linea input
+                  progetto ----> @std@fs           = file system
+                  progetto ----> @std@fcollection  = gestione strutture dati
+                  progetto ----> @std@thread       = migliora le prestazioni con i thread
