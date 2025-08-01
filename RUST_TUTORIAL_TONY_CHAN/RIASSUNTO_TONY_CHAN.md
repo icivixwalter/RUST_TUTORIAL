@@ -365,11 +365,11 @@ Le innovazioni ultime sono:
 
 
 ## 1 Le prime basi
-   Rust utilizza **ownership** che permette di sapere chi possiede una risorsa in ogni 
-   momento evitando i problemi dell'accesso concorrente.  
-   FFI Foreign Function Interface che permette l'integrazione  con C e C++ quindi permette si  
-   di scrivere codice sicuro, ma anche senza sacrificare la flessibilita sia per i progetti  
-   nuovi e per quelli gia avviati.  
+      Rust utilizza **ownership** che permette di sapere chi possiede una risorsa in ogni 
+      momento evitando i problemi dell'accesso concorrente.  
+      FFI Foreign Function Interface che permette l'integrazione  con C e C++ quindi permette si  
+      di scrivere codice sicuro, ma anche senza sacrificare la flessibilita sia per i progetti  
+      nuovi e per quelli gia avviati.  
 ### Cargo e la sintassi di base
    Strumenti  di gestione dei paccjhetti e il build sistem per rust e gestisce tutto il ciclo  
    di vita dall'inizio dello svilupp fino alla distribuzione.
@@ -380,52 +380,46 @@ Le innovazioni ultime sono:
             └── src 
                 └── main.rs  
    * cargo test 
-         compila il progetto, esegue i test definiti e mostra i risultati. 
-
-
-   Puoi utilizzare cargo test  che compila il progetto ed esegure i test definiti e mostra  
-   risultati.
-      * use             = importa i moduli e le funzionalità specifiche da librerie esterne o interne.  
-      * main            = punto di ingresso dell'applicazione che non accetta argomenti per default  
-                           ma puo essere utilizzata.
-      * mut             = le variabili sono immutabili per default salvo con l'utilizzo di mut.  
-         esempio:  
-
-               fn main() { 
-                   let messaggio = "Ciao, mondo!"; // Variabile immutabile 
-                   println!("{}", messaggio); // Stampa sulla console 
-                
-                   let mut numero = 42; // Variabile mutabile 
-                   numero = 43; // È possibile modificarla 
-                   println!("Il numero è {}", numero); 
-               } 
-
+      * test
+         Compila il progetto, esegue i test definiti e mostra i risultati. 
+            Puoi utilizzare cargo test  che compila il progetto ed esegure i test definiti e mostra  
+            risultati.
+               * use             = importa i moduli e le funzionalità specifiche da librerie esterne o interne.  
+               * main            = punto di ingresso dell'applicazione che non accetta argomenti per default  
+                                    ma puo essere utilizzata.
+               * mut             = le variabili sono immutabili per default salvo con l'utilizzo di mut.  
+                  esempio:  
+         
+                        fn main() { 
+                            let messaggio = "Ciao, mondo!"; // Variabile immutabile 
+                            println!("{}", messaggio); // Stampa sulla console 
+                         
+                            let mut numero = 42; // Variabile mutabile 
+                            numero = 43; // È possibile modificarla 
+                            println!("Il numero è {}", numero); 
+                        } 
       * cicli ripetuti  = if,else, loop, while e for  ..
       * Result  e  Option.
-            permette la gestione sicura degli errori; esempio funzione che restituiscono un  
-            Result che viene gestito con un match oppure utilizzanto :
-                  - unwrap(), .expect(); oppure l'operatore ? per propgare l'errore; esempio
-                      
-                      fn main() { 
-                         let risultato = divisione(10, 2); 
-                          
-                         match risultato { 
-                             Ok(valore) => println!("Risultato: {}", valore), 
-                             Err(e) => println!("Errore: {}", e), 
-                         } 
-                     } 
-                      
-                     fn divisione(a: i32, b: i32) -> Result<i32, String> { 
-                         if b == 0 { 
-                             Err(String::from("Divisione per zero")) 
-                         } else { 
-                             Ok(a / b) 
-                         } 
-                     } 
-         
-
-
-
+               permette la gestione sicura degli errori; esempio funzione che restituiscono un  
+               Result che viene gestito con un match oppure utilizzanto :
+                     - unwrap(), .expect(); oppure l'operatore ? per propgare l'errore; esempio
+                         
+                         fn main() { 
+                            let risultato = divisione(10, 2); 
+                             
+                            match risultato { 
+                                Ok(valore) => println!("Risultato: {}", valore), 
+                                Err(e) => println!("Errore: {}", e), 
+                            } 
+                        } 
+                         
+                        fn divisione(a: i32, b: i32) -> Result<i32, String> { 
+                            if b == 0 { 
+                                Err(String::from("Divisione per zero")) 
+                            } else { 
+                                Ok(a / b) 
+                            } 
+                        } 
       * mod    = moduli 
             rust puo organizzare il codice  in moduli  per suddividere il codice in  parte  
             piu piccolo e gestibili, possono definiti nello stesso file e su file diversi e
@@ -493,10 +487,221 @@ Le innovazioni ultime sono:
                   modo efficiente:  
                   
             - Vedi  std::thread: gestisce la concorrenza con i thread
-            
+            - Vedi  std::async : per la sincronizzazione dei thread
+            - Vedi  std::time  : per gestire il tempo e le durate temporali.
+            - Vedi  std::env   : interagisco con l'ambiente di sistema come le variabili 
+                              - di ambiente
+            - 
                   vedi i progetti  :
                   progetto ----> @std@io           = gestisce input output
                   progetto ----> @std@in           = in attesa di leggere linea input
                   progetto ----> @std@fs           = file system
                   progetto ----> @std@fcollection  = gestione strutture dati
                   progetto ----> @std@thread       = migliora le prestazioni con i thread
+                  progetto ----> @std@async.04?    = sincronizzazione dei thread con Mutex e Arc
+                  progetto ----> @std@time.05?     = misura la durata delle operazioni
+                  progetto ----> @std@env.06?      = misura la durata delle operazioni
+
+
+
+         use strumento performante
+            La  dichiarazione  use  è  uno  strumento  performante  che  semplifica  l'accesso  alle 
+            funzionalità  dei  moduli.  Che  si  tratti  di  leggere  input,  lavorare  con  file,  utilizzare 
+            strutture  dati  avanzate  o  gestire  la  concorrenza,  Rust  offre  una  vasta  gamma  di 
+            moduli standard accessibili tramite questa istruzione.
+            Ciò permette di mantenere il codice organizzato e pulito, evitando ripetizioni inutili. 
+
+            Questo è l'elenco degli strumenti  potenti  per  gestire  I/O,  dati,  concorrenza,  
+            sincronizzazione,  e temporizzazione:
+            +-------------------+-------------------------------+-------------------------------------------------------------+
+            | Modulo            | Classi / Funzioni             | Descrizione                                                 |
+            +-------------------+-------------------------------+-------------------------------------------------------------+
+            | std::io           | stdin, stdout, Read, Write    | Gestisce l'I/O; lettura e scrittura da/verso flussi.       |
+            | std::fs           | File, read_to_string, write   | Interazione con il file system; leggere/scrivere file.      |
+            | std::collections  | HashMap, Vec, BTreeMap        | Strutture dati come mappe hash, vettori e alberi.           |
+            | std::thread       | spawn, JoinHandle             | Concorrenza tramite thread per esecuzione parallela.        |
+            | std::sync         | Mutex, Arc, RwLock            | Sincronizzazione e accesso sicuro a risorse condivise.      |
+            | std::time         | Duration, Instant             | Tempo e durate temporali; utile per timeout e misurazioni.  |
+            | std::env          | args, var, set_var            | Interazione con ambiente di sistema (argomenti/env).        |
+            | std::net          | TcpListener, TcpStream,       | Funzionalità di rete per TCP e UDP.                         |
+            |                   | UdpSocket                     |                                                             |
+            | std::process      | Command, exit, Child          | Esecuzione di processi esterni e comandi di sistema.        |
+            | std::cmp          | min, max, Ordering            | Funzioni e tipi per confronto e ordinamento.                |
+            | std::option       | Option                        | Rappresenta un valore opzionale (presente o assente).       |
+            | std::result       | Result                        | Gestione di successo o errore nelle operazioni.             |
+            +-------------------+-------------------------------+-------------------------------------------------------------+
+
+
+       Rust linguaggio sicuro 
+         è progettato per il codice sicuro privo di errori nella gestione della memoria come ad
+         esempio: dangling pointer
+            (Un dangling pointer (in italiano: puntatore pendente o appeso) 
+            è un puntatore che fa riferimento a una zona di memoria non 
+            più valida o deallocata. Usarlo può causare crash, 
+            comportamento indefinito o vulnerabilità di sicurezza.)
+
+               es.
+
+               int* p;
+                  {
+                      int x = 42;
+                      p = &x; // p punta a x
+                  } // x non esiste più: p ora è dangling!
+                  printf("%d", *p); // ERRORE: accesso a memoria invalida
+
+            🔥 Conclusione
+               Un dangling pointer è un pericolo nei linguaggi che non gestiscono la memoria in modo sicuro.
+               In Rust, non può succedere a meno che tu usi unsafe.
+               Il sistema di ownership + lifetimes lo impedisce a compile time, proteggendo il tuo programma.
+         Quando si tratta di mutuo accesso ai dati in ambienti concorrenti, Rust introduce 
+         un meccanismo di borrowing e reference counting che garantisce che due parti del 
+         codice non possano accedere mutualmente e simultaneamente ai dati in modo che 
+         possa  causare  conflitti
+         Previene il race conditions,
+              linguaggio  assicura  che  un  dato  non  possa essere mutato mentre 
+              viene letto da altre parti del programma
+      Protezione lifetime e delle reference
+         cioè è il compilatore che individua e traccia chi sta accedendo a cosa e per quanto tempo.
+         inoltre estende la protezione anche alle operazioni concorrenti e cioè eseguire delle 
+         operazioni in parellelo senza  preoccupazione di deallocare la memoria oppure che si
+         creano race conditions = dati lette mutato da altri.
+         La programmazione asincrona è sicura in quanto perche utilizza
+            Un task asincrono è un'unità di lavoro che può sospendersi e riprendere più tardi, senza bloccare il thread.
+            Ti permette di scrivere codice che fa "altro" mentre aspetta (es. attende dati dalla rete, un file, un timer…).
+            Viene gestito da una runtime asincrona (come tokio o async-std in Rust), che programma i task in modo efficiente.
+            Cos'è un Future? = Un Future è un oggetto che rappresenta il risultato di un'operazione asincrona che 
+            non è ancora disponibile, ma lo sarà in futuro.
+
+### Scope delle variabili
+   todo : da finire
+
+
+
+
+### Le costanti e le variabili
+   Le costanti mantengono i loro valori immutabili. Le variabili consentono la  
+   la memorizzazione e la manipolazione dei dati.  
+   Pag. 38 - Sia le COSTANTI che le VARIABILI sfruttano la memoria RAM e cessano al termine  
+   delle'esecuzione salvo in cui sono salvata su dispositivi esterni.  
+   Let = parola chiave di dichiarazione e di default immutabili salvo se necesario per cambiare valore occorre  
+   la parola chiame: mut  
+         es. immutabile
+            let x = 5; 
+            println!("Il valore di x è: {}", x);  
+         es. MUTABILE  
+                let mut y = 10; //DICHIARATA 10 MA MUTABILE
+                println!("Il valore iniziale di y è: {}", y); 
+                y = 20; //ASSEGNO NUOVO VALORE
+                println!("Il valore modificato di y è: {}", y);  
+   Le costanti dichiarate con const sono empre immutabili. Rispetto alle variabili le costanti devono avere sempre  
+      il tipo dichiarato  e possono essere utilizzate ovuncque nel programma; es   const MAX_PUNTI: u32 = 100_000;    
+      MAX_PUNTI = valore massimo dichiarato come u32.   
+   shadowing = consente di riutilizzare il nome della variabile in uno scope successivo quindi utile quando si ha  
+      bisogno di trasformare il valore della variabile SENZA MODIFICARNE IL TIPO O LA MUTABILITA.  
+      Con shadowing una nuova variabile con lo stesso nome viene creata nascondente la precedente es.  
+            let z = 6; 
+            let z = z + 1;       //shadowing della variabile con lo stesso nome aumenta di valore  
+            let z = z * 2;       //shadowing della variabile con lo stesso nome aumenta di valore * 2 fino a 14
+            Il compilatore capisce che z è dello stesso tipo.  
+
+            ATTENZIONE che quando necessario è megli dichiare il tipo:   let a: f64 = 3.14;  // dichiarazione di una variabile di tipo floating point  
+            la corretta tipizzazione delle variabili rende i codice Rust sicuro. 
+### Tipologia delle variabili
+PAG 40 - Le variabili sono contenitori che consentono ai programmatori di memorizzare e manipolare di dati durante l'esecuzione  
+del programma; ed in base al tipo associato, si stabilisce il valore che puo essere manipolato. In Rust le variabili sono divise  
+in tipologie per consentire al compilatore di eseguire controlli in sicurezza ed ottimizzazioni; le tipologie sono:  
+   * __Tipi scalari__   : sono variabili che rappresentano il numero INTERO, VIRGOLA MOBILE, BOOLEANO e UN CARATTERE
+      let intero: i32 = 42;         // i32, u32, i64  
+      let float: f64 = 3.14;        // Virgola mobile f32 f64  
+      let booleano: bool = true;  
+      let carattere: char = 'R';  
+   * __Tipi composti__  : sono variabili che che COMBINANO PIU VALORI in un **singolo tipo** cioè tuple ed array.  
+         
+         TUPLA  
+            es:  let tupla: (i32, f64, char) = (42, 3.14, 'R');  
+             let (x, y, z) = tupla;  
+            questa tupla contiene un inter, un virgola mobile ed un carattere ed i valori possono essre destrutturati in x,y e z.  
+         
+         ARRAY  
+                let array: [i32; 3] = [1, 2, 3];  contiene 3 numeri interi e gli elementi sono accessibile con la funzione len:  
+                     println!("L'array ha {} elementi.", array.len());    //len resituisce la lunghezza
+         
+         PATTERN MATCHING 
+           PAG 41 = consente di verificare e destrutturare i valori in base al loro schema come ad esempio nelle tuple:  
+
+               fn main() { 
+                   let tupla = (1, 0); 
+                   match tupla { 
+                        (0, y) => println!("Il primo valore è zero e il secondo è: {}", y), 
+                        (x, 0) => println!("Il secondo valore è zero e il primo è: {}", x), 
+                          _ => println!("Nessuno dei valori è zero"), 
+                      } 
+                  } 
+               con il match controlliamo la tupla e determiniamo il comportamento in base al valore.  
+         
+         PROPRIETA DELLE VARIABILI  
+            quando una variabile viene assegnata ad un'altra variabile oppure viene passata ad una funzione la  proprieta viene  
+            trasferita e la variabile originale non è piu utilizzabile, in questo modo gli errori legati alla gestione della  
+            memoria vengono evitati es.  
+
+                  let s1 = String::from("Ciao"); 
+                   let s2 = s1;  // La proprietà di s1 è trasferita a s2 
+                   
+                   // println!("{}", s1); // Questo darà errore perché s1 non è più valido 
+                   println!("{}", s2);  // Questo è valido
+         BORROW - PRESTITO  
+            PAG 42 - borrow è il prestito ossia la possibilita di accedere ai dati di una variabile SENZA TRASFERIRE LA PROPRIETA. 
+              - primo modo    = leggo i dati senza modifica (PRESTITO IMMUTABILE)
+              - secondo modo = leggo i dati senza modifica
+
+   * __Le stringhe__    : sono piu complesse rispetto agli altri linguaggi per la sicurezza, e sono due tipi :  
+         - &str   = stringhe slice di tipo immutabile  
+                 let s_slice: &str = "Ciao, mondo!"; // stringa slice che punta a una stringa immutabile, utile  
+                                    per operazioni leggere e quando non è necessario modificare la stringa   
+         - String = stringhe allocate dinamicamente.  
+               -  let mut s_string = String::from("Ciao"); 
+                  s_string.push_str(", mondo!"); 
+                     Adatta per le modifiche durante l'esecuzione del programma, l'esempio inzia con Ciao e poi viene  
+                     modificata con mondo.
+         - 
+
+   * __I booleani: s__  : sono i tipi bool con due valori false o true; e quindi utilizzati per il controllo di flusso  
+         con strutture if ed while o nei pattern matching.  
+         __Option<T>__  : Pag 45 - In rust non abbiamo i valori nulli (null pointer exceptions) ed i nulli vengono gestiti con  
+               con il tipo Option che rappresenta un valore  :
+                  - Valore presente (Some(T))  
+                  - Valore assente  (None)  
+               con questo meccanismo gestisco in MODO ESPLICITO ci casi di null es:  
+
+                  fn main() { 
+                      //2 variabile un valida 42 ed una nulla
+                      let some_value: Option<i32> = Some(42); 
+                      let no_value: Option<i32> = None; 
+                   
+                      match some_value { 
+                          Some(x) => println!("Il valore è: {}", x), 
+                          None => println!("Non c'è valore."), 
+                      } 
+                        //CON IL MATH viene gestito sia il valore valido   e sia il null con un msg
+                        match no_value { 
+                             Some(x) => println!("Il valore è: {}", x),    //esiste il valore
+                             None => println!("Non c'è valore."),          //valore null msg
+                         } 
+                   }
+                  - 
+
+
+         __tipi unitari  
+            PAG 45 -rappresentati da () = che è un tipo speciale  utilizzato quando non è necessario restituire  
+                  alcune valore da una funzione o espressione è simile al void di C++ anche se viene trattato  
+                  come un vero dato; con () il ritorno è implicito ed è utilie quanto una funzione esegue una  
+                  azione come LA STAMPA DI UN MESSAGGIO SULLA CONSOLE.  
+                     ESEMPIO  
+                           fn main() { 
+                               stampa_messaggio(); 
+                           } 
+                            
+                           fn stampa_messaggio() { 
+                               println!("Questa funzione non restituisce nulla."); 
+                           } 
+
