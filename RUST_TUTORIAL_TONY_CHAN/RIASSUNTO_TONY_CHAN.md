@@ -691,8 +691,8 @@ in tipologie per consentire al compilatore di eseguire controlli in sicurezza ed
                   - 
 
 
-         __tipi unitari  
-            PAG 45 -rappresentati da () = che è un tipo speciale  utilizzato quando non è necessario restituire  
+         *__tipi unitari__  
+             PAG 45 -rappresentati da () = che è un tipo speciale  utilizzato quando non è necessario restituire  
                   alcune valore da una funzione o espressione è simile al void di C++ anche se viene trattato  
                   come un vero dato; con () il ritorno è implicito ed è utilie quanto una funzione esegue una  
                   azione come LA STAMPA DI UN MESSAGGIO SULLA CONSOLE.  
@@ -704,4 +704,35 @@ in tipologie per consentire al compilatore di eseguire controlli in sicurezza ed
                            fn stampa_messaggio() { 
                                println!("Questa funzione non restituisce nulla."); 
                            } 
+
+
+
+         é__Variabili immutabili e mutabili__
+               Le variabili sono immutabili di default e quindi il valore assegnato non puo essere  
+               cambiato in modo da scrivere codice sicuro e privo di errori.
+               Le variabili MUTABILI hanno la parola chiave mut
+
+                  fn main() { 
+                      let x = 5; // Immutabile 
+                      // x = 6; // Questo darà un errore 
+                       
+                      let mut y = 5; // Mutabile 
+                      y = 6; // Questo è valido 
+                      println!("Il valore di y è: {}", y); 
+                  } 
+                   
+
+         *__Shadowing  (Ombreggiatura)__  
+            E' possibile dichiarare una nuova variabile con lo stesso nome di un'altra mettendo  
+            in ombra la precedente e permettendo la ridefinizione se dover utilizzare la mutabilita.
+            E' utile quando  si vuole modificare il tipo di dato di una variabile o applicare una  
+            trasformazione dei suoi valori. 
+                  fn main() { 
+                      let x = 5; 
+                      let x = x + 1; 
+                      let x = x * 2; 
+                   
+                      println!("Il valore di x è: {}", x); // Stampa 12 
+                  } 
+
 
